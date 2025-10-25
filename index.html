@@ -25,13 +25,21 @@
       flex-wrap: wrap;
     }
 
-    header input {
+    #telefoneBox {
+      background: #2a2a2a;
+      border: none;
+      color: #fff;
+      padding: 8px;
+      border-radius: 8px;
+      width: 160px;
+    }
+
+    header input[type="text"] {
       background: #2a2a2a;
       border: none;
       padding: 8px;
       border-radius: 8px;
       color: #fff;
-      width: 200px;
     }
 
     header button {
@@ -63,19 +71,6 @@
     }
 
     .card:hover { transform: scale(1.02); background: #2a2a2a; }
-
-    .card input[type="checkbox"] {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      transform: scale(1.3);
-      display: none;
-    }
-
-    .card.selected input[type="checkbox"] {
-      display: block;
-    }
-
     .edit-btn {
       position: absolute;
       top: 10px;
@@ -88,9 +83,17 @@
       display: none;
     }
 
-    .card:hover .edit-btn {
-      display: block;
+    .card:hover .edit-btn { display: block; }
+
+    .card input[type="checkbox"] {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      transform: scale(1.3);
+      display: none;
     }
+
+    .card.selected input[type="checkbox"] { display: block; }
 
     .popup {
       position: fixed;
@@ -144,7 +147,10 @@
 </head>
 <body>
   <header>
-    <div id="numeroDisplay">Número: 0</div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span>📲</span>
+      <input type="text" id="telefoneBox" value="(00) 0000-0000" />
+    </div>
     <input type="text" id="search" placeholder="Pesquisar...">
     <div>
       <button id="addBtn">Adicionar</button>
@@ -197,12 +203,18 @@
 
   <script>
     let descricoes = JSON.parse(localStorage.getItem('descricoes') || '[]');
-    let numero = localStorage.getItem('numero') || 0;
+    let numero = localStorage.getItem('numero') || "(00) 0000-0000";
     let editIndex = null;
     let modoSelecao = false;
 
+    const telefoneBox = document.getElementById('telefoneBox');
     const cardsContainer = document.getElementById('cardsContainer');
-    const numeroDisplay = document.getElementById('numeroDisplay');
+
+    telefoneBox.value = numero;
+    telefoneBox.addEventListener("input", () => {
+      numero = telefoneBox.value;
+      localStorage.setItem('numero', numero);
+    });
 
     function render() {
       cardsContainer.innerHTML = "";
@@ -219,21 +231,18 @@
         const editBtn = document.createElement('button');
         editBtn.className = 'edit-btn';
         editBtn.innerHTML = '✏️';
-        editBtn.onclick = (e) => {
-          e.stopPropagation();
-          editarDescricao(i);
-        };
+        editBtn.onclick = (e) => { e.stopPropagation(); editarDescricao(i); };
 
         card.innerHTML = `<h4>${d.titulo}</h4><p>KM: ${d.km}</p><p>Valor: ${d.valor}</p>`;
         card.prepend(checkbox);
         card.appendChild(editBtn);
 
         card.onclick = () => {
-          if (modoSelecao) {
-            checkbox.checked = !checkbox.checked;
-          } else {
-            navigator.clipboard.writeText(d.descricao);
-            alert('Descrição copiada!');
+          if (modoSelecao) checkbox.checked = !checkbox.checked;
+          else {
+            const texto = `${d.descricao}\n📲 ${numero}`;
+            navigator.clipboard.writeText(texto);
+            alert('Descrição copiada com telefone!');
           }
         };
 
@@ -244,72 +253,75 @@
     function salvar() {
       localStorage.setItem('descricoes', JSON.stringify(descricoes));
       localStorage.setItem('numero', numero);
-      numeroDisplay.textContent = "Número: " + numero;
       render();
     }
 
     function abrirPopup(id) { document.getElementById(id).style.display = 'flex'; }
     function fecharPopup(id) { document.getElementById(id).style.display = 'none'; }
 
-    // Adicionar nova
+    // Adicionar
     document.getElementById('addBtn').onclick = () => {
       editIndex = null;
-      document.getElementById('titulo').value = "";
-      document.getElementById('km').value = "";
-      document.getElementById('valor').value = "";
-      document.getElementById('descricao').value = "";
-      document.getElementById('popupTitle').textContent = "Nova Descrição";
+      titulo.value = km.value = valor.value = descricao.value = "";
+      popupTitle.textContent = "Nova Descrição";
       abrirPopup('popupAdd');
     };
 
-    // Salvar descrição
-    document.getElementById('salvarBtn').onclick = () => {
+    // Formatação em tempo real
+    km.addEventListener("input", () => {
+      km.value = km.value.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    });
+
+    valor.addEventListener("input", () => {
+      let v = valor.value.replace(/\D/g, "");
+      v = (v / 100).toFixed(2) + "";
+      v = v.replace(".", ",");
+      v = v.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      valor.value = v;
+    });
+
+    salvarBtn.onclick = () => {
       const t = titulo.value.trim();
-      const km = document.getElementById('km').value.trim();
-      const valor = document.getElementById('valor').value.trim();
-      const desc = document.getElementById('descricao').value.trim();
       if (!t) return alert("Digite um título.");
-
-      if (editIndex === null) descricoes.push({ titulo: t, km, valor, descricao: desc });
-      else descricoes[editIndex] = { titulo: t, km, valor, descricao: desc };
-
+      const d = { titulo: t, km: km.value, valor: valor.value, descricao: descricao.value };
+      if (editIndex === null) descricoes.push(d);
+      else descricoes[editIndex] = d;
       fecharPopup('popupAdd');
       salvar();
     };
 
+    cancelarBtn.onclick = () => fecharPopup('popupAdd');
+
     function editarDescricao(i) {
       const d = descricoes[i];
       editIndex = i;
-      document.getElementById('titulo').value = d.titulo;
-      document.getElementById('km').value = d.km;
-      document.getElementById('valor').value = d.valor;
-      document.getElementById('descricao').value = d.descricao;
-      document.getElementById('popupTitle').textContent = "Editar Descrição";
+      titulo.value = d.titulo;
+      km.value = d.km;
+      valor.value = d.valor;
+      descricao.value = d.descricao;
+      popupTitle.textContent = "Editar Descrição";
       abrirPopup('popupAdd');
     }
 
-    // Excluir selecionados
-    document.getElementById('deleteBtn').onclick = () => {
-      const checkboxes = document.querySelectorAll('.card input[type="checkbox"]:checked');
-      if (checkboxes.length === 0) return alert("Nenhum item selecionado.");
-      if (!confirm("Deseja realmente excluir os selecionados?")) return;
-      const indices = Array.from(checkboxes).map(cb => parseInt(cb.dataset.index));
+    deleteBtn.onclick = () => {
+      const selecionados = document.querySelectorAll('.card input[type="checkbox"]:checked');
+      if (selecionados.length === 0) return alert("Nenhum item selecionado.");
+      if (!confirm("Excluir selecionados?")) return;
+      const indices = Array.from(selecionados).map(cb => parseInt(cb.dataset.index));
       descricoes = descricoes.filter((_, i) => !indices.includes(i));
-      salvar();
-      document.getElementById('deleteBtn').style.display = 'none';
       modoSelecao = false;
+      deleteBtn.style.display = 'none';
+      salvar();
     };
 
-    // Modo Seleção
-    document.getElementById('selectBtn').onclick = () => {
+    selectBtn.onclick = () => {
       modoSelecao = !modoSelecao;
-      document.getElementById('deleteBtn').style.display = modoSelecao ? 'inline-block' : 'none';
+      deleteBtn.style.display = modoSelecao ? 'inline-block' : 'none';
       render();
     };
 
-    document.getElementById('cancelarBtn').onclick = () => fecharPopup('popupAdd');
-    document.getElementById('configBtn').onclick = () => abrirPopup('popupConfig');
-    document.getElementById('search').addEventListener('input', render);
+    configBtn.onclick = () => abrirPopup('popupConfig');
+    search.addEventListener('input', render);
 
     // Tema
     function alternarTema() {
@@ -334,31 +346,27 @@
       a.download = "backup_sharkhub.json";
       a.click();
       URL.revokeObjectURL(a.href);
-      alert("✅ Backup exportado com sucesso!");
+      alert("✅ Backup exportado!");
     }
 
-    document.getElementById("inputBackup").addEventListener("change", function (event) {
+    document.getElementById("inputBackup").addEventListener("change", (event) => {
       const file = event.target.files[0];
       if (!file) return;
       const reader = new FileReader();
-      reader.onload = function (e) {
+      reader.onload = (e) => {
         try {
           const data = JSON.parse(e.target.result);
           descricoes = data.descricoes || [];
-          numero = data.numero || 0;
+          numero = data.numero || "(00) 0000-0000";
+          telefoneBox.value = numero;
           salvar();
-          alert("✅ Backup importado com sucesso!");
-        } catch (error) {
-          alert("❌ Erro ao importar backup: " + error.message);
-        }
+          alert("✅ Backup importado!");
+        } catch (err) { alert("❌ Erro: " + err.message); }
       };
       reader.readAsText(file);
     });
 
-    window.onload = () => {
-      numeroDisplay.textContent = "Número: " + numero;
-      render();
-    };
+    window.onload = render;
   </script>
 </body>
 </html>
