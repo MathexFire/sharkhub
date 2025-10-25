@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SharkHub Post</title>
+  <!-- Favicon -->
   <link rel="icon" type="image/png" href="img/fivecon.png">
 
   <style>
@@ -19,7 +20,6 @@
       min-height: 100vh;
     }
 
-    /* Header estilizado */
     header {
       display: flex;
       justify-content: space-between;
@@ -27,10 +27,9 @@
       background: #1e1e1e;
       padding: 10px 20px;
       flex-wrap: wrap;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-      gap: 10px;
     }
 
+    /* Logo do site */
     #logoHeader {
       display: flex;
       align-items: center;
@@ -38,45 +37,38 @@
     }
 
     #logoHeader img {
-      width: 100px;
+      width: 150px;
       height: auto;
     }
 
     #telefoneBox {
-      background: #2a2a2a;
-      border: 1px solid #444;
-      border-radius: 8px;
+      background: #3a3a3a; /* caixa mais clara */
+      border: none;
       color: #fff;
-      padding: 6px 10px;
-      width: 150px;
-      font-weight: bold;
+      padding: 8px;
+      border-radius: 8px;
+      width: 160px;
     }
 
-    #search {
-      flex: 1;
-      margin: 0 15px;
-      padding: 6px 10px;
-      border-radius: 8px;
+    header input[type="text"] {
+      background: #3a3a3a; /* caixa mais clara */
       border: none;
-      background: #2a2a2a;
+      padding: 8px;
+      border-radius: 8px;
       color: #fff;
     }
 
-    #headerButtons button {
-      background: #0066ff;
+    header button {
+      background: #94CF4F; /* verde dos botões */
       border: none;
-      color: #fff;
-      padding: 8px 12px;
+      color: white;
+      padding: 10px 15px;
       border-radius: 8px;
       cursor: pointer;
-      transition: background 0.2s, transform 0.2s;
-      margin: 3px;
+      margin: 5px;
     }
 
-    #headerButtons button:hover {
-      background: #0050cc;
-      transform: scale(1.05);
-    }
+    header button:hover { background: #7DB63A; }
 
     main {
       flex: 1;
@@ -91,13 +83,10 @@
       border-radius: 10px;
       padding: 15px;
       position: relative;
-      transition: transform 0.2s, background 0.2s;
+      transition: transform 0.2s;
     }
 
-    .card:hover {
-      transform: scale(1.02);
-      background: #2a2a2a;
-    }
+    .card:hover { transform: scale(1.02); background: #2a2a2a; }
 
     .edit-btn {
       position: absolute;
@@ -140,9 +129,10 @@
       max-width: 400px;
     }
 
-    .popup-content input, .popup-content textarea {
+    .popup-content input,
+    .popup-content textarea {
       width: 100%;
-      background: #2a2a2a;
+      background: #3a3a3a; /* caixa mais clara */
       border: none;
       color: #fff;
       padding: 8px;
@@ -151,19 +141,16 @@
     }
 
     .popup-content button {
-      background: #0066ff;
+      background: #94CF4F;
       color: white;
       border: none;
       padding: 10px 15px;
       border-radius: 8px;
       cursor: pointer;
       margin: 8px 5px 0 0;
-      transition: background 0.2s;
     }
 
-    .popup-content button:hover {
-      background: #0050cc;
-    }
+    .popup-content button:hover { background: #7DB63A; }
 
     footer {
       background: #1e1e1e;
@@ -174,31 +161,24 @@
     }
 
     @media (max-width: 600px) {
-      header {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      #search {
-        margin: 10px 0;
-      }
-      #headerButtons {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-      }
+      header input { width: 100%; margin-top: 10px; }
     }
   </style>
 </head>
 <body>
   <header>
+    <!-- Logo e telefone -->
     <div id="logoHeader">
-      <img src="img/fivecon.png" alt="Logo SharkHub">
+      <img src="img/Design sem nome.png" alt="Logo SharkHub">
+      <span>📲</span>
       <input type="text" id="telefoneBox" value="(00) 0000-0000" />
     </div>
 
+    <!-- Pesquisa -->
     <input type="text" id="search" placeholder="Pesquisar...">
 
-    <div id="headerButtons">
+    <!-- Botões -->
+    <div>
       <button id="addBtn">Adicionar</button>
       <button id="selectBtn">Selecionar</button>
       <button id="deleteBtn" style="display:none;">🗑️ Excluir</button>
@@ -305,7 +285,6 @@
     function abrirPopup(id) { document.getElementById(id).style.display = 'flex'; }
     function fecharPopup(id) { document.getElementById(id).style.display = 'none'; }
 
-    // Adicionar
     document.getElementById('addBtn').onclick = () => {
       editIndex = null;
       titulo.value = km.value = valor.value = descricao.value = "";
@@ -313,7 +292,6 @@
       abrirPopup('popupAdd');
     };
 
-    // Formatação em tempo real
     km.addEventListener("input", () => {
       km.value = km.value.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     });
@@ -369,7 +347,6 @@
     configBtn.onclick = () => abrirPopup('popupConfig');
     search.addEventListener('input', render);
 
-    // Tema
     function alternarTema() {
       document.body.classList.toggle('light');
       if (document.body.classList.contains('light')) {
@@ -381,7 +358,6 @@
       }
     }
 
-    // Backup
     function abrirPopupBackup() { document.getElementById('popupBackup').style.display = 'flex'; }
 
     function exportarBackup() {
