@@ -4,10 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SharkHub Post</title>
-
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="img/favicon.png">
-
   <style>
     * { box-sizing: border-box; font-family: Arial, sans-serif; }
     body {
@@ -27,18 +23,6 @@
       background: #1e1e1e;
       padding: 10px 20px;
       flex-wrap: wrap;
-    }
-
-    /* Logo no topo */
-    #logoHeader {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    #logoHeader img {
-      width: 120px;
-      height: auto;
     }
 
     #telefoneBox {
@@ -163,17 +147,11 @@
 </head>
 <body>
   <header>
-    <!-- Logo e telefone -->
-    <div id="logoHeader">
-      <img src="img/logo.png" alt="Logo SharkHub">
+    <div style="display:flex;align-items:center;gap:10px;">
       <span>📲</span>
       <input type="text" id="telefoneBox" value="(00) 0000-0000" />
     </div>
-
-    <!-- Pesquisa -->
     <input type="text" id="search" placeholder="Pesquisar...">
-
-    <!-- Botões -->
     <div>
       <button id="addBtn">Adicionar</button>
       <button id="selectBtn">Selecionar</button>
@@ -186,7 +164,7 @@
 
   <footer>SharkHub Post © 2025</footer>
 
-  <!-- POPUPS (sem alterações) -->
+  <!-- POPUP ADICIONAR/EDITAR -->
   <div class="popup" id="popupAdd">
     <div class="popup-content">
       <h3 id="popupTitle">Nova Descrição</h3>
@@ -199,6 +177,7 @@
     </div>
   </div>
 
+  <!-- POPUP CONFIGURAÇÕES -->
   <div class="popup" id="popupConfig">
     <div class="popup-content">
       <h3>Configurações</h3>
@@ -208,6 +187,7 @@
     </div>
   </div>
 
+  <!-- POPUP BACKUP -->
   <div id="popupBackup" class="popup">
     <div class="popup-content">
       <h3>Backup / Importar-Exportar</h3>
@@ -221,7 +201,6 @@
     </div>
   </div>
 
-  <!-- SCRIPT (sem alterações) -->
   <script>
     let descricoes = JSON.parse(localStorage.getItem('descricoes') || '[]');
     let numero = localStorage.getItem('numero') || "(00) 0000-0000";
@@ -280,6 +259,7 @@
     function abrirPopup(id) { document.getElementById(id).style.display = 'flex'; }
     function fecharPopup(id) { document.getElementById(id).style.display = 'none'; }
 
+    // Adicionar
     document.getElementById('addBtn').onclick = () => {
       editIndex = null;
       titulo.value = km.value = valor.value = descricao.value = "";
@@ -287,6 +267,7 @@
       abrirPopup('popupAdd');
     };
 
+    // Formatação em tempo real
     km.addEventListener("input", () => {
       km.value = km.value.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     });
@@ -323,4 +304,69 @@
     }
 
     deleteBtn.onclick = () => {
-      const selecionados = document.querySelectorAll('.card
+      const selecionados = document.querySelectorAll('.card input[type="checkbox"]:checked');
+      if (selecionados.length === 0) return alert("Nenhum item selecionado.");
+      if (!confirm("Excluir selecionados?")) return;
+      const indices = Array.from(selecionados).map(cb => parseInt(cb.dataset.index));
+      descricoes = descricoes.filter((_, i) => !indices.includes(i));
+      modoSelecao = false;
+      deleteBtn.style.display = 'none';
+      salvar();
+    };
+
+    selectBtn.onclick = () => {
+      modoSelecao = !modoSelecao;
+      deleteBtn.style.display = modoSelecao ? 'inline-block' : 'none';
+      render();
+    };
+
+    configBtn.onclick = () => abrirPopup('popupConfig');
+    search.addEventListener('input', render);
+
+    // Tema
+    function alternarTema() {
+      document.body.classList.toggle('light');
+      if (document.body.classList.contains('light')) {
+        document.body.style.background = '#f2f2f2';
+        document.body.style.color = '#000';
+      } else {
+        document.body.style.background = '#121212';
+        document.body.style.color = '#fff';
+      }
+    }
+
+    // Backup
+    function abrirPopupBackup() { document.getElementById('popupBackup').style.display = 'flex'; }
+
+    function exportarBackup() {
+      const data = { descricoes, numero };
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "backup_sharkhub.json";
+      a.click();
+      URL.revokeObjectURL(a.href);
+      alert("✅ Backup exportado!");
+    }
+
+    document.getElementById("inputBackup").addEventListener("change", (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const data = JSON.parse(e.target.result);
+          descricoes = data.descricoes || [];
+          numero = data.numero || "(00) 0000-0000";
+          telefoneBox.value = numero;
+          salvar();
+          alert("✅ Backup importado!");
+        } catch (err) { alert("❌ Erro: " + err.message); }
+      };
+      reader.readAsText(file);
+    });
+
+    window.onload = render;
+  </script>
+</body>
+</html>
