@@ -29,7 +29,6 @@
       flex-wrap: wrap;
     }
 
-    /* Logo do site */
     #logoHeader {
       display: flex;
       align-items: center;
@@ -42,7 +41,7 @@
     }
 
     #telefoneBox {
-      background: #3a3a3a; /* caixa mais clara */
+      background: #3a3a3a;
       border: none;
       color: #fff;
       padding: 8px;
@@ -51,7 +50,7 @@
     }
 
     header input[type="text"] {
-      background: #3a3a3a; /* caixa mais clara */
+      background: #3a3a3a;
       border: none;
       padding: 8px;
       border-radius: 8px;
@@ -59,7 +58,7 @@
     }
 
     header button {
-      background: #94CF4F; /* verde dos botões */
+      background: #94CF4F;
       border: none;
       color: white;
       padding: 10px 15px;
@@ -87,6 +86,12 @@
     }
 
     .card:hover { transform: scale(1.02); background: #2a2a2a; }
+
+    /* Título da moto verde */
+    .card h4 {
+      color: #94CF4F;
+      margin: 0 0 8px 0;
+    }
 
     .edit-btn {
       position: absolute;
@@ -132,7 +137,7 @@
     .popup-content input,
     .popup-content textarea {
       width: 100%;
-      background: #3a3a3a; /* caixa mais clara */
+      background: #3a3a3a;
       border: none;
       color: #fff;
       padding: 8px;
@@ -167,17 +172,14 @@
 </head>
 <body>
   <header>
-    <!-- Logo e telefone -->
     <div id="logoHeader">
       <img src="img/Design sem nome.png" alt="Logo SharkHub">
       <span>📲</span>
       <input type="text" id="telefoneBox" value="(00) 0000-0000" />
     </div>
 
-    <!-- Pesquisa -->
     <input type="text" id="search" placeholder="Pesquisar...">
 
-    <!-- Botões -->
     <div>
       <button id="addBtn">Adicionar</button>
       <button id="selectBtn">Selecionar</button>
