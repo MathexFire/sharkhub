@@ -4,11 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SharkHub Post</title>
-  <!-- Favicon -->
   <link rel="icon" type="image/png" href="img/fivecon.png">
 
   <style>
     * { box-sizing: border-box; font-family: Arial, sans-serif; }
+
     body {
       background-color: #121212;
       color: #fff;
@@ -19,6 +19,7 @@
       min-height: 100vh;
     }
 
+    /* Header estilizado */
     header {
       display: flex;
       justify-content: space-between;
@@ -26,36 +27,56 @@
       background: #1e1e1e;
       padding: 10px 20px;
       flex-wrap: wrap;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+      gap: 10px;
+    }
+
+    #logoHeader {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    #logoHeader img {
+      width: 100px;
+      height: auto;
     }
 
     #telefoneBox {
       background: #2a2a2a;
-      border: none;
-      color: #fff;
-      padding: 8px;
+      border: 1px solid #444;
       border-radius: 8px;
-      width: 160px;
+      color: #fff;
+      padding: 6px 10px;
+      width: 150px;
+      font-weight: bold;
     }
 
-    header input[type="text"] {
+    #search {
+      flex: 1;
+      margin: 0 15px;
+      padding: 6px 10px;
+      border-radius: 8px;
+      border: none;
       background: #2a2a2a;
-      border: none;
-      padding: 8px;
-      border-radius: 8px;
       color: #fff;
     }
 
-    header button {
+    #headerButtons button {
       background: #0066ff;
       border: none;
-      color: white;
-      padding: 10px 15px;
+      color: #fff;
+      padding: 8px 12px;
       border-radius: 8px;
       cursor: pointer;
-      margin: 5px;
+      transition: background 0.2s, transform 0.2s;
+      margin: 3px;
     }
 
-    header button:hover { background: #0050cc; }
+    #headerButtons button:hover {
+      background: #0050cc;
+      transform: scale(1.05);
+    }
 
     main {
       flex: 1;
@@ -70,10 +91,13 @@
       border-radius: 10px;
       padding: 15px;
       position: relative;
-      transition: transform 0.2s;
+      transition: transform 0.2s, background 0.2s;
     }
 
-    .card:hover { transform: scale(1.02); background: #2a2a2a; }
+    .card:hover {
+      transform: scale(1.02);
+      background: #2a2a2a;
+    }
 
     .edit-btn {
       position: absolute;
@@ -134,6 +158,11 @@
       border-radius: 8px;
       cursor: pointer;
       margin: 8px 5px 0 0;
+      transition: background 0.2s;
+    }
+
+    .popup-content button:hover {
+      background: #0050cc;
     }
 
     footer {
@@ -145,18 +174,31 @@
     }
 
     @media (max-width: 600px) {
-      header input { width: 100%; margin-top: 10px; }
+      header {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      #search {
+        margin: 10px 0;
+      }
+      #headerButtons {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+      }
     }
   </style>
 </head>
 <body>
   <header>
-    <div style="display:flex;align-items:center;gap:10px;">
-      <span>📲</span>
+    <div id="logoHeader">
+      <img src="img/fivecon.png" alt="Logo SharkHub">
       <input type="text" id="telefoneBox" value="(00) 0000-0000" />
     </div>
+
     <input type="text" id="search" placeholder="Pesquisar...">
-    <div>
+
+    <div id="headerButtons">
       <button id="addBtn">Adicionar</button>
       <button id="selectBtn">Selecionar</button>
       <button id="deleteBtn" style="display:none;">🗑️ Excluir</button>
@@ -206,7 +248,6 @@
   </div>
 
   <script>
-    // ----------------- JS -----------------
     let descricoes = JSON.parse(localStorage.getItem('descricoes') || '[]');
     let numero = localStorage.getItem('numero') || "(00) 0000-0000";
     let editIndex = null;
@@ -272,10 +313,11 @@
       abrirPopup('popupAdd');
     };
 
-    // Formatação
+    // Formatação em tempo real
     km.addEventListener("input", () => {
       km.value = km.value.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     });
+
     valor.addEventListener("input", () => {
       let v = valor.value.replace(/\D/g, "");
       v = (v / 100).toFixed(2) + "";
