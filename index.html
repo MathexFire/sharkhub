@@ -7,7 +7,7 @@
 <link rel="icon" type="image/png" href="img/fivecon.png">
 
 <style>
-* { box-sizing: border-box; font-family: Arial, sans-serif; }
+* { box-sizing: border-box; font-family: Arial, sans-serif; transition: all 0.3s ease; }
 
 body {
   background-color: #121212;
@@ -30,6 +30,7 @@ header {
 
 #logoHeader { display: flex; align-items: center; gap: 10px; }
 #logoHeader img { width: 150px; height: auto; }
+
 #telefoneBox {
   background: #3a3a3a;
   border: none;
@@ -72,7 +73,7 @@ main {
   border-radius: 10px;
   padding: 15px;
   position: relative;
-  transition: transform 0.2s;
+  transition: transform 0.2s, background 0.3s;
 }
 
 .card:hover { transform: scale(1.02); background: #2a2a2a; }
@@ -123,7 +124,7 @@ main {
   width: 90%;
   max-width: 400px;
   transform: translateY(-30px);
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, background 0.3s ease, color 0.3s ease;
 }
 
 .popup.show .popup-content { transform: translateY(0); }
@@ -160,7 +161,7 @@ footer { background: #1e1e1e; padding: 10px; text-align: center; color: #888; fo
   position: fixed;
   bottom: 20px;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-50%) translateY(30px);
   background: #94CF4F;
   color: #fff;
   padding: 12px 25px;
@@ -174,6 +175,59 @@ footer { background: #1e1e1e; padding: 10px; text-align: center; color: #888; fo
   display: block;
   opacity: 1;
   transform: translateX(-50%) translateY(0);
+}
+
+/* === Modo Claro === */
+body.light {
+  background: #f2f2f2;
+  color: #000;
+}
+
+body.light header {
+  background: #fff;
+}
+
+body.light #telefoneBox,
+body.light header input[type="text"] {
+  background: #e0e0e0;
+  color: #000;
+}
+
+body.light .card {
+  background: #fff;
+  color: #000;
+}
+
+body.light .card h4 {
+  color: #2a7f1d;
+}
+
+body.light .popup-content {
+  background: #fff;
+  color: #000;
+}
+
+body.light .popup-content input,
+body.light .popup-content textarea {
+  background: #e0e0e0;
+  color: #000;
+}
+
+body.light header button,
+body.light .popup-content button {
+  background: #2a7f1d;
+  color: #fff;
+}
+
+body.light header button:hover,
+body.light .popup-content button:hover {
+  background: #1f5c13;
+}
+
+body.light footer { background: #e0e0e0; color: #555; }
+
+body.light #notification {
+  background: #2a7f1d;
 }
 
 </style>
@@ -375,13 +429,6 @@ search.addEventListener('input', render);
 
 function alternarTema(){
   document.body.classList.toggle('light');
-  if(document.body.classList.contains('light')){
-    document.body.style.background='#f2f2f2';
-    document.body.style.color='#000';
-  } else {
-    document.body.style.background='#121212';
-    document.body.style.color='#fff';
-  }
 }
 
 function abrirPopupBackup(){ abrirPopup('popupBackup'); }
