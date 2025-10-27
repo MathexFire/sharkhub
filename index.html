@@ -24,8 +24,18 @@
       padding: 10px 20px;
       flex-wrap: wrap;
     }
+    #logoHeader {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    #logoHeader img {
+      width: 120px;
+      height: auto;
+    }
     #telefoneBox {
-      background: #333; 
+      background: #2e2e2e;
       border: none;
       color: #fff;
       padding: 8px;
@@ -33,12 +43,11 @@
       width: 160px;
     }
     header input[type="text"] {
-      background: #333; 
+      background: #2e2e2e;
       border: none;
       padding: 8px;
       border-radius: 8px;
       color: #fff;
-      font-size: 14px;
     }
     header button {
       background: #94CF4F;
@@ -49,7 +58,8 @@
       cursor: pointer;
       margin: 5px;
     }
-    header button:hover { background: #7eb93f; }
+    header button:hover { background: #7FBF42; }
+
     main {
       flex: 1;
       padding: 20px;
@@ -57,43 +67,47 @@
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 15px;
     }
+
     .card {
       background: #1e1e1e;
       border-radius: 10px;
-      padding: 15px;
+      padding: 10px;
       position: relative;
       transition: transform 0.2s;
     }
     .card:hover { transform: scale(1.02); background: #2a2a2a; }
-    .card h4 { color: #94CF4F; }
+    .card h4 { color: #94CF4F; margin: 0 0 5px 0; }
+
     .edit-btn {
       position: absolute;
-      top: 10px;
-      right: 10px;
+      top: 5px;
+      right: 5px;
       background: transparent;
       border: none;
       color: #aaa;
       cursor: pointer;
-      font-size: 18px;
+      font-size: 16px;
       display: none;
     }
     .card:hover .edit-btn { display: block; }
+
     .card input[type="checkbox"] {
       position: absolute;
-      top: 10px;
-      left: 10px;
-      transform: scale(1.3);
+      top: 8px;
+      left: 8px;
+      transform: scale(1.1);
       display: none;
     }
     .card.selected input[type="checkbox"] { display: block; }
+
     .popup {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.7);
+      background: rgba(0, 0, 0, 0.7);
       display: none;
       justify-content: center;
       align-items: center;
-      z-index: 100;
+      z-index: 1000;
     }
     .popup-content {
       background: #1e1e1e;
@@ -101,18 +115,15 @@
       border-radius: 10px;
       width: 90%;
       max-width: 400px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
     }
     .popup-content input, .popup-content textarea {
       width: 100%;
-      background: #333;
+      background: #2e2e2e;
       border: none;
       color: #fff;
       padding: 8px;
       border-radius: 6px;
-      font-size: 14px;
+      margin-top: 8px;
     }
     .popup-content button {
       background: #94CF4F;
@@ -121,9 +132,8 @@
       padding: 10px 15px;
       border-radius: 8px;
       cursor: pointer;
-      margin-top: 5px;
+      margin: 8px 5px 0 0;
     }
-    .popup-content button:hover { background: #7eb93f; }
     footer {
       background: #1e1e1e;
       padding: 10px;
@@ -131,41 +141,42 @@
       color: #888;
       font-size: 14px;
     }
-    #notifications {
+
+    .notificacao {
       position: fixed;
       bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      z-index: 999;
-    }
-    .noti {
       background: #94CF4F;
       color: #000;
-      padding: 10px 15px;
-      border-radius: 6px;
-      min-width: 200px;
-      text-align: center;
-      animation: slideIn 0.3s, slideOut 0.3s 2.7s forwards;
+      padding: 10px 20px;
+      border-radius: 8px;
+      margin-top: 5px;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.5s ease;
     }
-    @keyframes slideIn { from { opacity:0; transform: translateY(20px);} to {opacity:1; transform: translateY(0);} }
-    @keyframes slideOut { to { opacity:0; transform: translateY(20px);} }
-    @media (max-width:600px) { header input { width:100%; margin-top:10px; } }
+
+    @media (max-width: 600px) {
+      header input { width: 100%; margin-top: 10px; }
+    }
   </style>
 </head>
 <body>
+
   <header>
-    <div style="display:flex;align-items:center;gap:10px;">
-      <span>📲</span>
-      <input type="text" id="telefoneBox" value="(00) 0000-0000">
+    <div id="logoHeader">
+      <img src="img/Design sem nome.png" alt="Logo">
+      <input type="text" id="telefoneBox" value="(00) 0000-0000" />
     </div>
+
     <input type="text" id="search" placeholder="Pesquisar...">
+
     <div>
       <button id="addBtn">Adicionar</button>
       <button id="selectBtn">Selecionar</button>
       <button id="deleteBtn" style="display:none;">🗑️ Excluir</button>
+      <button id="rascunhoBtn">Rascunhos</button>
       <button id="configBtn">Configurações</button>
     </div>
   </header>
@@ -173,7 +184,7 @@
   <main id="cardsContainer"></main>
   <footer>SharkHub Post © 2025</footer>
 
-  <!-- POPUP CRIAR/EDITAR -->
+  <!-- POPUP ADICIONAR/EDITAR -->
   <div class="popup" id="popupAdd">
     <div class="popup-content">
       <h3 id="popupTitle">Nova Descrição</h3>
@@ -181,11 +192,9 @@
       <input type="text" id="km" placeholder="Quilometragem">
       <input type="text" id="valor" placeholder="Valor">
       <textarea id="descricao" placeholder="Descrição..."></textarea>
-      <div style="display:flex; gap:5px;">
-        <button id="salvarBtn">Salvar</button>
-        <button id="rascunhoBtn">Rascunho</button>
-        <button id="cancelarBtn">Cancelar</button>
-      </div>
+      <button id="salvarBtn">Salvar</button>
+      <button id="rascunhoSalvarBtn">Salvar como Rascunho</button>
+      <button id="cancelarBtn">Cancelar</button>
     </div>
   </div>
 
@@ -193,10 +202,18 @@
   <div class="popup" id="popupConfig">
     <div class="popup-content">
       <h3>Configurações</h3>
-      <div id="rascunhosList"></div>
       <button onclick="alternarTema()">Alternar Tema</button>
       <button onclick="abrirPopupBackup()">💾 Backup</button>
       <button onclick="fecharPopup('popupConfig')">Fechar</button>
+    </div>
+  </div>
+
+  <!-- POPUP RASCUNHOS -->
+  <div class="popup" id="popupRascunhos">
+    <div class="popup-content">
+      <h3>Rascunhos</h3>
+      <div id="rascunhosContainer"></div>
+      <button onclick="fecharPopup('popupRascunhos')">Fechar</button>
     </div>
   </div>
 
@@ -204,162 +221,254 @@
   <div id="popupBackup" class="popup">
     <div class="popup-content">
       <h3>Backup / Importar-Exportar</h3>
-      <p>Escolha o que deseja fazer:</p>
-      <div style="display:flex;flex-direction:column;gap:10px;">
-        <button onclick="exportarBackup()">⬇️ Exportar dados</button>
-        <input type="file" id="inputBackup" style="display:none;" accept=".json">
-        <button onclick="document.getElementById('inputBackup').click()">⬆️ Importar dados</button>
-        <button onclick="fecharPopup('popupBackup')">Fechar</button>
-      </div>
+      <button onclick="exportarBackup()">⬇️ Exportar dados</button>
+      <input type="file" id="inputBackup" style="display:none;" accept=".json" />
+      <button onclick="document.getElementById('inputBackup').click()">⬆️ Importar dados</button>
+      <button onclick="fecharPopup('popupBackup')">Fechar</button>
     </div>
   </div>
 
-  <div id="notifications"></div>
-
   <script>
-    let descricoes = JSON.parse(localStorage.getItem('descricoes')||'[]');
-    let rascunhos = JSON.parse(localStorage.getItem('rascunhos')||'[]');
+    let descricoes = JSON.parse(localStorage.getItem('descricoes') || '[]');
+    let rascunhos = JSON.parse(localStorage.getItem('rascunhos') || '[]');
     let numero = localStorage.getItem('numero') || "(00) 0000-0000";
     let editIndex = null;
     let modoSelecao = false;
+    let editRascunhoIndex = null;
+
     const telefoneBox = document.getElementById('telefoneBox');
     const cardsContainer = document.getElementById('cardsContainer');
-    const notifications = document.getElementById('notifications');
 
     telefoneBox.value = numero;
-    telefoneBox.addEventListener("input", ()=>{ numero = telefoneBox.value; localStorage.setItem('numero', numero); });
+    telefoneBox.addEventListener("input", () => {
+      numero = telefoneBox.value;
+      localStorage.setItem('numero', numero);
+    });
 
-    function notificar(msg){
+    function showNotification(text) {
       const n = document.createElement('div');
-      n.className='noti'; n.textContent = msg;
-      notifications.appendChild(n);
-      setTimeout(()=>{ notifications.removeChild(n); }, 3000);
+      n.className = 'notificacao';
+      n.innerText = text;
+      document.body.appendChild(n);
+      setTimeout(() => n.style.opacity = 1, 10);
+      setTimeout(() => n.style.opacity = 0, 3000);
+      setTimeout(() => n.remove(), 3500);
     }
 
-    function render(){
-      cardsContainer.innerHTML="";
-      const search=document.getElementById('search').value.toLowerCase();
-      descricoes.filter(d=>d.titulo.toLowerCase().includes(search)).forEach((d,i)=>{
-        const card=document.createElement('div');
-        card.className='card'; if(modoSelecao) card.classList.add('selected');
-        const checkbox=document.createElement('input'); checkbox.type='checkbox'; checkbox.dataset.index=i;
-        const editBtn=document.createElement('button'); editBtn.className='edit-btn'; editBtn.innerHTML='✏️';
-        editBtn.onclick=(e)=>{ e.stopPropagation(); editarDescricao(i); };
-        card.innerHTML=`<h4>${d.titulo}</h4><p>KM: ${d.km}</p><p>Valor: ${d.valor}</p>`;
-        card.prepend(checkbox); card.appendChild(editBtn);
-        card.onclick=()=>{
-          if(modoSelecao) checkbox.checked=!checkbox.checked;
-          else { navigator.clipboard.writeText(`${d.descricao}\n📲 ${numero}`); notificar('Descrição copiada!'); }
+    function render() {
+      cardsContainer.innerHTML = "";
+      const search = document.getElementById('search').value.toLowerCase();
+      descricoes.filter(d => d.titulo.toLowerCase().includes(search)).forEach((d, i) => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        if (modoSelecao) card.classList.add('selected');
+
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.dataset.index = i;
+
+        const editBtn = document.createElement('button');
+        editBtn.className = 'edit-btn';
+        editBtn.innerHTML = '✏️';
+        editBtn.onclick = (e) => { e.stopPropagation(); editarDescricao(i); };
+
+        card.innerHTML = `<h4>${d.titulo}</h4><p>KM: ${d.km}</p><p>Valor: ${d.valor}</p>`;
+        card.prepend(checkbox);
+        card.appendChild(editBtn);
+
+        card.onclick = () => {
+          if (modoSelecao) checkbox.checked = !checkbox.checked;
+          else {
+            const texto = `${d.descricao}\n📲 ${numero}`;
+            navigator.clipboard.writeText(texto);
+            showNotification('Descrição copiada!');
+          }
         };
+
         cardsContainer.appendChild(card);
       });
-      atualizarRascunhosList();
     }
 
-    function salvar(){
+    function salvar() {
       localStorage.setItem('descricoes', JSON.stringify(descricoes));
       localStorage.setItem('numero', numero);
       render();
     }
 
-    function abrirPopup(id){ document.getElementById(id).style.display='flex'; }
-    function fecharPopup(id){ document.getElementById(id).style.display='none'; }
-
-    document.getElementById('addBtn').onclick=()=>{
-      editIndex=null; titulo.value=km.value=valor.value=descricao.value="";
-      popupTitle.textContent="Nova Descrição"; abrirPopup('popupAdd');
-    };
-
-    km.addEventListener("input", ()=>{ km.value = km.value.replace(/\D/g,'').replace(/\B(?=(\d{3})+(?!\d))/g,'.'); });
-    valor.addEventListener("input", ()=>{
-      let v = valor.value.replace(/\D/g,''); v=(v/100).toFixed(2)+''; v=v.replace('.',','); v=v.replace(/\B(?=(\d{3})+(?!\d))/g,'.'); valor.value=v;
-    });
-
-    salvarBtn.onclick=()=>{
-      const t = titulo.value.trim(); if(!t) return alert("Digite um título.");
-      const d = {titulo:t, km:km.value, valor:valor.value, descricao:descricao.value};
-      if(editIndex===null) descricoes.push(d); else descricoes[editIndex]=d;
-      fecharPopup('popupAdd'); salvar(); notificar('Descrição salva!');
-    };
-
-    document.getElementById('rascunhoBtn').onclick=()=>{
-      const t = titulo.value.trim(); if(!t) return alert("Digite um título.");
-      const d = {titulo:t, km:km.value, valor:valor.value, descricao:descricao.value};
-      rascunhos.push(d); localStorage.setItem('rascunhos', JSON.stringify(rascunhos));
-      fecharPopup('popupAdd'); notificar('Rascunho salvo!');
-    };
-
-    cancelarBtn.onclick=()=>fecharPopup('popupAdd');
-
-    function editarDescricao(i){
-      const d=descricoes[i]; editIndex=i;
-      titulo.value=d.titulo; km.value=d.km; valor.value=d.valor; descricao.value=d.descricao;
-      popupTitle.textContent="Editar Descrição"; abrirPopup('popupAdd');
+    function salvarRascunho(d) {
+      rascunhos.push(d);
+      localStorage.setItem('rascunhos', JSON.stringify(rascunhos));
+      showNotification('Rascunho salvo!');
     }
 
-    deleteBtn.onclick=()=>{
-      const selecionados = document.querySelectorAll('.card input[type="checkbox"]:checked');
-      if(selecionados.length===0) return alert("Nenhum item selecionado.");
-      if(!confirm("Excluir selecionados?")) return;
-      const indices = Array.from(selecionados).map(cb=>parseInt(cb.dataset.index));
-      descricoes=descricoes.filter((_,i)=>!indices.includes(i));
-      modoSelecao=false; deleteBtn.style.display='none'; salvar(); notificar('Itens excluídos!');
+    function abrirPopup(id) { 
+      document.getElementById(id).style.display = 'flex'; 
+    }
+    function fecharPopup(id) { 
+      document.getElementById(id).style.display = 'none'; 
+    }
+
+    document.getElementById('addBtn').onclick = () => {
+      editIndex = null;
+      editRascunhoIndex = null;
+      titulo.value = km.value = valor.value = descricao.value = "";
+      popupTitle.textContent = "Nova Descrição";
+      abrirPopup('popupAdd');
     };
 
-    selectBtn.onclick=()=>{
-      modoSelecao=!modoSelecao; deleteBtn.style.display=modoSelecao?'inline-block':'none'; render();
+    document.getElementById('rascunhoSalvarBtn').onclick = () => {
+      const t = titulo.value.trim();
+      if(!t) return alert("Digite um título.");
+      const d = { titulo: t, km: km.value, valor: valor.value, descricao: descricao.value };
+      salvarRascunho(d);
+      fecharPopup('popupAdd');
     };
-    configBtn.onclick=()=>abrirPopup('popupConfig');
+
+    function abrirRascunhos() {
+      fecharPopup('popupConfig');
+      const container = document.getElementById('rascunhosContainer');
+      container.innerHTML = "";
+      rascunhos.forEach((r, i) => {
+        const div = document.createElement('div');
+        div.style.border = "1px solid #94CF4F";
+        div.style.borderRadius = "6px";
+        div.style.padding = "5px";
+        div.style.marginBottom = "5px";
+        div.style.cursor = "pointer";
+        div.innerHTML = `<strong>${r.titulo}</strong>`;
+        div.onclick = () => {
+          editRascunhoIndex = i;
+          titulo.value = r.titulo;
+          km.value = r.km || "";
+          valor.value = r.valor || "";
+          descricao.value = r.descricao || "";
+          popupTitle.textContent = "Editar Rascunho";
+          abrirPopup('popupAdd');
+          fecharPopup('popupRascunhos');
+        };
+        const delBtn = document.createElement('button');
+        delBtn.innerText = "🗑️";
+        delBtn.style.float = "right";
+        delBtn.onclick = (e) => {
+          e.stopPropagation();
+          if(confirm("Excluir rascunho?")) {
+            rascunhos.splice(i,1);
+            localStorage.setItem('rascunhos', JSON.stringify(rascunhos));
+            abrirRascunhos();
+          }
+        };
+        div.appendChild(delBtn);
+        container.appendChild(div);
+      });
+      abrirPopup('popupRascunhos');
+    }
+
+    document.getElementById('rascunhoBtn').onclick = abrirRascunhos;
+
+    // Formatação em tempo real
+    km.addEventListener("input", () => {
+      km.value = km.value.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    });
+    valor.addEventListener("input", () => {
+      let v = valor.value.replace(/\D/g,"");
+      v = (v/100).toFixed(2)+"";
+      v = v.replace(".",",");
+      v = v.replace(/\B(?=(\d{3})+(?!\d))/g,".");
+      valor.value = v;
+    });
+
+    salvarBtn.onclick = () => {
+      const t = titulo.value.trim();
+      if(!t) return alert("Digite um título.");
+      const d = { titulo: t, km: km.value, valor: valor.value, descricao: descricao.value };
+      if(editRascunhoIndex !== null) {
+        rascunhos.splice(editRascunhoIndex,1);
+        editRascunhoIndex = null;
+      }
+      if(editIndex === null) descricoes.push(d);
+      else descricoes[editIndex] = d;
+      fecharPopup('popupAdd');
+      salvar();
+      showNotification("Descrição salva!");
+    };
+
+    cancelarBtn.onclick = () => fecharPopup('popupAdd');
+
+    function editarDescricao(i) {
+      const d = descricoes[i];
+      editIndex = i;
+      titulo.value = d.titulo;
+      km.value = d.km;
+      valor.value = d.valor;
+      descricao.value = d.descricao;
+      popupTitle.textContent = "Editar Descrição";
+      abrirPopup('popupAdd');
+    }
+
+    deleteBtn.onclick = () => {
+      const selecionados = document.querySelectorAll('.card input[type="checkbox"]:checked');
+      if(selecionados.length === 0) return alert("Nenhum item selecionado.");
+      if(!confirm("Excluir selecionados?")) return;
+      const indices = Array.from(selecionados).map(cb => parseInt(cb.dataset.index));
+      descricoes = descricoes.filter((_,i)=>!indices.includes(i));
+      modoSelecao = false;
+      deleteBtn.style.display = 'none';
+      salvar();
+    };
+
+    selectBtn.onclick = () => {
+      modoSelecao = !modoSelecao;
+      deleteBtn.style.display = modoSelecao ? 'inline-block' : 'none';
+      render();
+    };
+
+    configBtn.onclick = () => abrirPopup('popupConfig');
     search.addEventListener('input', render);
 
     // Tema
-    function alternarTema(){
+    function alternarTema() {
       document.body.classList.toggle('light');
-      if(document.body.classList.contains('light')){
-        document.body.style.background='#f2f2f2'; document.body.style.color='#000';
-      } else { document.body.style.background='#121212'; document.body.style.color='#fff'; }
+      if(document.body.classList.contains('light')) {
+        document.body.style.background = '#f2f2f2';
+        document.body.style.color = '#000';
+      } else {
+        document.body.style.background = '#121212';
+        document.body.style.color = '#fff';
+      }
     }
 
-    function abrirPopupBackup(){ document.getElementById('popupBackup').style.display='flex'; }
-    function exportarBackup(){
-      const data={descricoes, rascunhos, numero};
-      const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
-      const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="backup_sharkhub.json"; a.click(); URL.revokeObjectURL(a.href); notificar('Backup exportado!');
+    // Backup
+    function abrirPopupBackup() { document.getElementById('popupBackup').style.display = 'flex'; }
+    function exportarBackup() {
+      const data = { descricoes, rascunhos, numero };
+      const blob = new Blob([JSON.stringify(data,null,2)], {type:"application/json"});
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "backup_sharkhub.json";
+      a.click();
+      URL.revokeObjectURL(a.href);
+      showNotification("✅ Backup exportado!");
     }
-
-    document.getElementById("inputBackup").addEventListener("change",(event)=>{
-      const file=event.target.files[0]; if(!file) return;
-      const reader=new FileReader();
-      reader.onload=(e)=>{
-        try{
-          const data=JSON.parse(e.target.result);
-          descricoes=data.descricoes||[];
-          rascunhos=data.rascunhos||[];
-          numero=data.numero||"(00) 0000-0000";
-          telefoneBox.value=numero; salvar();
-          notificar('Backup importado!');
-        }catch(err){ alert("❌ Erro: "+err.message); }
-      }; reader.readAsText(file);
+    document.getElementById("inputBackup").addEventListener("change", (event)=>{
+      const file = event.target.files[0];
+      if(!file) return;
+      const reader = new FileReader();
+      reader.onload = (e)=>{
+        try {
+          const data = JSON.parse(e.target.result);
+          descricoes = data.descricoes || [];
+          rascunhos = data.rascunhos || [];
+          numero = data.numero || "(00) 0000-0000";
+          telefoneBox.value = numero;
+          salvar();
+          showNotification("✅ Backup importado!");
+        } catch(err){ alert("❌ Erro: "+err.message); }
+      };
+      reader.readAsText(file);
     });
 
-    function atualizarRascunhosList(){
-      const list = document.getElementById('rascunhosList'); list.innerHTML="";
-      if(rascunhos.length===0){ list.innerHTML="<p>Sem rascunhos</p>"; return; }
-      rascunhos.forEach((r,i)=>{
-        const btn=document.createElement('button');
-        btn.textContent=r.titulo;
-        btn.onclick=()=>abrirRascunho(i);
-        list.appendChild(btn);
-      });
-    }
-
-    function abrirRascunho(i){
-      const r=rascunhos[i]; editIndex=null;
-      titulo.value=r.titulo; km.value=r.km; valor.value=r.valor; descricao.value=r.descricao;
-      popupTitle.textContent="Editar Rascunho"; abrirPopup('popupAdd');
-    }
-
-    window.onload=render;
+    window.onload = render;
   </script>
+
 </body>
 </html>
