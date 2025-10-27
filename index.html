@@ -156,7 +156,6 @@ footer { background: #1e1e1e; padding: 10px; text-align: center; color: #888; fo
 
 @media (max-width: 600px) { header input { width: 100%; margin-top: 10px; } }
 
-/* Notificação estilo push */
 #notification {
   position: fixed;
   bottom: 20px;
@@ -229,13 +228,12 @@ body.light footer { background: #e0e0e0; color: #555; }
 body.light #notification {
   background: #2a7f1d;
 }
-
 </style>
 </head>
 <body>
 <header>
   <div id="logoHeader">
-    <img src="img/Design sem nome.png" alt="Logo SharkHub">
+    <img id="logoSharkHub" src="img/Design sem nome.png" alt="Logo SharkHub">
     <span>📲</span>
     <input type="text" id="telefoneBox" value="(00) 0000-0000" />
   </div>
@@ -253,7 +251,7 @@ body.light #notification {
 <main id="cardsContainer"></main>
 <footer>SharkHub Post © 2025</footer>
 
-<!-- POPUP ADICIONAR/EDITAR -->
+<!-- POPUPS -->
 <div class="popup" id="popupAdd">
   <div class="popup-content">
     <h3 id="popupTitle">Nova Descrição</h3>
@@ -266,7 +264,6 @@ body.light #notification {
   </div>
 </div>
 
-<!-- POPUP CONFIGURAÇÕES -->
 <div class="popup" id="popupConfig">
   <div class="popup-content">
     <h3>Configurações</h3>
@@ -276,7 +273,6 @@ body.light #notification {
   </div>
 </div>
 
-<!-- POPUP BACKUP -->
 <div id="popupBackup" class="popup">
   <div class="popup-content">
     <h3>Backup / Importar-Exportar</h3>
@@ -290,7 +286,6 @@ body.light #notification {
   </div>
 </div>
 
-<!-- Notificação do site -->
 <div id="notification"></div>
 
 <script>
@@ -302,6 +297,7 @@ let modoSelecao = false;
 const telefoneBox = document.getElementById('telefoneBox');
 const cardsContainer = document.getElementById('cardsContainer');
 const notification = document.getElementById('notification');
+const logo = document.getElementById('logoSharkHub');
 
 telefoneBox.value = numero;
 telefoneBox.addEventListener("input", () => {
@@ -309,72 +305,67 @@ telefoneBox.addEventListener("input", () => {
   localStorage.setItem('numero', numero);
 });
 
-function mostrarNotificacao(msg) {
+function mostrarNotificacao(msg){
   notification.textContent = msg;
   notification.classList.add('show');
-  setTimeout(() => notification.classList.remove('show'), 3000);
+  setTimeout(()=>notification.classList.remove('show'),3000);
 }
 
-function render() {
-  cardsContainer.innerHTML = "";
+function render(){
+  cardsContainer.innerHTML="";
   const search = document.getElementById('search').value.toLowerCase();
-  descricoes.filter(d => d.titulo.toLowerCase().includes(search)).forEach((d,i)=>{
+  descricoes.filter(d=>d.titulo.toLowerCase().includes(search)).forEach((d,i)=>{
     const card = document.createElement('div');
     card.className='card';
     if(modoSelecao) card.classList.add('selected');
 
-    const checkbox = document.createElement('input');
+    const checkbox=document.createElement('input');
     checkbox.type='checkbox';
     checkbox.dataset.index=i;
 
     const editBtn=document.createElement('button');
     editBtn.className='edit-btn';
     editBtn.innerHTML='✏️';
-    editBtn.onclick = (e)=>{ e.stopPropagation(); editarDescricao(i); };
+    editBtn.onclick=(e)=>{ e.stopPropagation(); editarDescricao(i); };
 
-    card.innerHTML = `<h4>${d.titulo}</h4><p>KM: ${d.km}</p><p>Valor: ${d.valor}</p>`;
+    card.innerHTML=`<h4>${d.titulo}</h4><p>KM: ${d.km}</p><p>Valor: ${d.valor}</p>`;
     card.prepend(checkbox);
     card.appendChild(editBtn);
 
-    card.onclick = ()=>{
-      if(modoSelecao) checkbox.checked = !checkbox.checked;
+    card.onclick=()=>{
+      if(modoSelecao) checkbox.checked=!checkbox.checked;
       else {
-        const texto = `${d.descricao}\n📲 ${numero}`;
+        const texto=`${d.descricao}\n📲 ${numero}`;
         navigator.clipboard.writeText(texto);
         mostrarNotificacao("Descrição copiada com telefone!");
       }
     };
+
     cardsContainer.appendChild(card);
   });
 }
 
-function salvar() {
-  localStorage.setItem('descricoes', JSON.stringify(descricoes));
-  localStorage.setItem('numero', numero);
+function salvar(){
+  localStorage.setItem('descricoes',JSON.stringify(descricoes));
+  localStorage.setItem('numero',numero);
   render();
 }
 
-function abrirPopup(id) { 
-  const p = document.getElementById(id);
-  p.classList.add('show');
-}
-function fecharPopup(id) { 
-  const p = document.getElementById(id);
-  p.classList.remove('show');
-}
+function abrirPopup(id){ document.getElementById(id).classList.add('show'); }
+function fecharPopup(id){ document.getElementById(id).classList.remove('show'); }
 
-document.getElementById('addBtn').onclick = ()=>{
+document.getElementById('addBtn').onclick=()=>{
   editIndex=null;
   titulo.value=km.value=valor.value=descricao.value="";
   popupTitle.textContent="Nova Descrição";
   abrirPopup('popupAdd');
 };
 
-km.addEventListener("input", ()=>{
+km.addEventListener("input",()=>{
   km.value=km.value.replace(/\D/g,"").replace(/\B(?=(\d{3})+(?!\d))/g,".");
 });
 
-valor.addEventListener("input", ()=>{
+valor.addEventListener("input",()=>{
   let v=valor.value.replace(/\D/g,"");
   v=(v/100).toFixed(2)+"";
   v=v.replace(".",",");
@@ -382,7 +373,7 @@ valor.addEventListener("input", ()=>{
   valor.value=v;
 });
 
-salvarBtn.onclick = ()=>{
+salvarBtn.onclick=()=>{
   const t=titulo.value.trim();
   if(!t) return mostrarNotificacao("Digite um título.");
   const d={titulo:t, km:km.value, valor:valor.value, descricao:descricao.value};
@@ -393,7 +384,7 @@ salvarBtn.onclick = ()=>{
   mostrarNotificacao("Descrição salva!");
 };
 
-cancelarBtn.onclick = ()=>fecharPopup('popupAdd');
+cancelarBtn.onclick=()=>fecharPopup('popupAdd');
 
 function editarDescricao(i){
   const d=descricoes[i];
@@ -406,38 +397,40 @@ function editarDescricao(i){
   abrirPopup('popupAdd');
 }
 
-deleteBtn.onclick = ()=>{
-  const selecionados = document.querySelectorAll('.card input[type="checkbox"]:checked');
+deleteBtn.onclick=()=>{
+  const selecionados=document.querySelectorAll('.card input[type="checkbox"]:checked');
   if(selecionados.length===0) return mostrarNotificacao("Nenhum item selecionado.");
   if(!confirm("Excluir selecionados?")) return;
-  const indices = Array.from(selecionados).map(cb=>parseInt(cb.dataset.index));
-  descricoes = descricoes.filter((_,i)=>!indices.includes(i));
+  const indices=Array.from(selecionados).map(cb=>parseInt(cb.dataset.index));
+  descricoes=descricoes.filter((_,i)=>!indices.includes(i));
   modoSelecao=false;
   deleteBtn.style.display='none';
   salvar();
   mostrarNotificacao("Itens excluídos!");
 };
 
-selectBtn.onclick = ()=>{
-  modoSelecao = !modoSelecao;
-  deleteBtn.style.display = modoSelecao ? 'inline-block':'none';
+selectBtn.onclick=()=>{
+  modoSelecao=!modoSelecao;
+  deleteBtn.style.display=modoSelecao?'inline-block':'none';
   render();
 };
 
-configBtn.onclick = ()=>abrirPopup('popupConfig');
-search.addEventListener('input', render);
+configBtn.onclick=()=>abrirPopup('popupConfig');
+search.addEventListener('input',render);
 
 function alternarTema(){
   document.body.classList.toggle('light');
+  // Trocar logo conforme tema
+  logo.src=document.body.classList.contains('light')?"img/Design sem nome (1).png":"img/Design sem nome.png";
 }
 
 function abrirPopupBackup(){ abrirPopup('popupBackup'); }
 
 function exportarBackup(){
-  const data={descricoes, numero};
-  const blob = new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
+  const data={descricoes,numero};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
   a.download="backup_sharkhub.json";
   a.click();
   URL.revokeObjectURL(a.href);
@@ -445,9 +438,9 @@ function exportarBackup(){
 }
 
 document.getElementById("inputBackup").addEventListener("change",(event)=>{
-  const file = event.target.files[0];
+  const file=event.target.files[0];
   if(!file) return;
-  const reader = new FileReader();
+  const reader=new FileReader();
   reader.onload=(e)=>{
     try{
       const data=JSON.parse(e.target.result);
