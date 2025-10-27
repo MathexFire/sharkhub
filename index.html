@@ -6,226 +6,47 @@
 <title>SharkHub Post</title>
 <link rel="icon" type="image/png" href="img/fivecon.png">
 <style>
-* { box-sizing: border-box; font-family: Arial, sans-serif; }
-
-body {
-  background-color: #121212;
-  color: #fff;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-body.light {
-  background: #eaeaea;
-  color: #000;
-}
-
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #1e1e1e;
-  padding: 10px 20px;
-  flex-wrap: wrap;
-}
-
-header.light { background: #f0f0f0; }
-
-#logoHeader {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-#logoHeader img {
-  width: 120px;
-  height: auto;
-}
-
-#telefoneBox {
-  background: #2a2a2a;
-  border: none;
-  color: #fff;
-  padding: 8px;
-  border-radius: 8px;
-  width: 160px;
-}
-
-header.light #telefoneBox {
-  background: #fff;
-  color: #000;
-}
-
-header input[type="text"] {
-  background: #2a2a2a;
-  border: none;
-  padding: 8px;
-  border-radius: 8px;
-  color: #fff;
-}
-
-header.light input[type="text"] {
-  background: #fff;
-  color: #000;
-}
-
-header button {
-  background: #94CF4F;
-  border: none;
-  color: white;
-  padding: 10px 15px;
-  border-radius: 8px;
-  cursor: pointer;
-  margin: 5px;
-}
-
-header button:hover { background: #7fbf41; }
-
-#search { flex: 1; margin: 0 10px; min-width: 200px; }
-
-main {
-  flex: 1;
-  padding: 20px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 15px;
-}
-
-.card {
-  background: #1e1e1e;
-  border-radius: 6px;
-  padding: 10px;
-  position: relative;
-  transition: transform 0.2s;
-  cursor: pointer;
-}
-
-.card.light { background: #fff; color: #000; }
-
-.card:hover { transform: scale(1.02); background: #2a2a2a; }
-.card.light:hover { background: #d0d0d0; }
-
-.card input[type="checkbox"] { display: none; }
-.card.selected { border: 2px solid #94CF4F; }
-
-.edit-btn {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  background: transparent;
-  border: none;
-  color: #aaa;
-  cursor: pointer;
-  font-size: 18px;
-  display: none;
-}
-
-.card:hover .edit-btn { display: block; }
-
-footer {
-  background: #1e1e1e;
-  padding: 10px;
-  text-align: center;
-  color: #888;
-  font-size: 14px;
-}
-
-footer.light { background: #f0f0f0; color: #555; }
-
-/* POPUPS */
-.popup {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.7);
-  display: none;
-  justify-content: center;
-  align-items: center;
-}
-
-.popup-content {
-  background: #1e1e1e;
-  padding: 20px;
-  border-radius: 10px;
-  width: 90%;
-  max-width: 400px;
-}
-
-.popup-content input, .popup-content textarea {
-  width: 100%;
-  background: #2a2a2a;
-  border: none;
-  color: #fff;
-  padding: 8px;
-  border-radius: 6px;
-  margin-top: 8px;
-}
-
-.popup-content button {
-  background: #94CF4F;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 8px;
-  cursor: pointer;
-  margin: 8px 5px 0 0;
-}
-
-.popup-content input.light, .popup-content textarea.light {
-  background: #fff;
-  color: #000;
-}
-
-.popup.show { display: flex; animation: slideDown 0.3s forwards; }
-.popup.hide { animation: slideUp 0.3s forwards; }
-
-@keyframes slideDown {
-  0% { transform: translateY(-50px); opacity: 0; }
-  100% { transform: translateY(0); opacity: 1; }
-}
-
-@keyframes slideUp {
-  0% { transform: translateY(0); opacity: 1; }
-  100% { transform: translateY(-50px); opacity: 0; }
-}
-
-/* Notificações */
-#notifications {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  z-index: 9999;
-}
-
-.notification {
-  background: #94CF4F;
-  color: #fff;
-  padding: 10px 15px;
-  border-radius: 8px;
-  opacity: 0;
-  animation: pushUp 0.3s forwards;
-}
-
-@keyframes pushUp {
-  from { transform: translateY(20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-
-@media (max-width: 600px) { header input { width: 100%; margin-top: 10px; } }
+  * { box-sizing: border-box; font-family: Arial, sans-serif; }
+  body { 
+    margin: 0; padding: 0; display: flex; flex-direction: column; min-height: 100vh;
+    background-color: #121212; color: #fff; transition: all 0.3s;
+  }
+  header { display: flex; justify-content: space-between; align-items: center; background: #1e1e1e; padding: 10px 20px; flex-wrap: wrap; }
+  #logoHeader { display:flex; flex-direction: column; align-items:center; gap:5px; }
+  #logoHeader img { width: 150px; height:auto; }
+  #telefoneBox { background: #2a2a2a; border:none; color:#fff; padding:8px; border-radius:8px; width:160px; }
+  header input[type="text"] { background: #2a2a2a; border:none; padding:8px; border-radius:8px; color:#fff; width:250px; transition:0.2s; }
+  header button { background:#94CF4F; border:none; color:white; padding:10px 15px; border-radius:8px; cursor:pointer; margin:5px; transition: all 0.2s; }
+  header button:hover { background:#7ebf40; }
+  main { flex:1; padding:20px; display:grid; grid-template-columns: repeat(auto-fit, minmax(250px,1fr)); gap:15px; }
+  .card { background:#1e1e1e; border-radius:10px; padding:15px; position:relative; transition: all 0.2s; cursor:pointer; }
+  .card:hover { transform: scale(1.02); background:#2a2a2a; }
+  .card h4 { color:#94CF4F; }
+  .edit-btn { position:absolute; top:10px; right:10px; background:transparent; border:none; color:#aaa; cursor:pointer; font-size:18px; display:none; }
+  .card:hover .edit-btn { display:block; }
+  .popup { position: fixed; inset:0; display:none; justify-content:center; align-items:center; z-index:1000; }
+  .popup-content { background:#1e1e1e; padding:20px; border-radius:10px; width:90%; max-width:400px; transform: translateY(-50px); transition: all 0.3s; }
+  .popup.show .popup-content { transform: translateY(0); }
+  .popup-content input, .popup-content textarea { width:100%; background:#2a2a2a; border:none; color:#fff; padding:8px; border-radius:6px; margin-top:8px; }
+  .popup-content button { background:#94CF4F; color:white; border:none; padding:10px 15px; border-radius:8px; cursor:pointer; margin:8px 5px 0 0; }
+  footer { background:#1e1e1e; padding:10px; text-align:center; color:#888; font-size:14px; }
+  .notification-container { position: fixed; bottom:20px; left:50%; transform: translateX(-50%); display:flex; flex-direction:column; gap:10px; z-index:2000; }
+  .notification { background:#94CF4F; color:#fff; padding:10px 20px; border-radius:8px; min-width:200px; text-align:center; transform: translateY(50px); opacity:0; transition: all 0.3s; }
+  .notification.show { transform: translateY(0); opacity:1; }
+  @media(max-width:600px){ header input{width:100%; margin-top:10px;} }
+  body.light { background:#e8e8e8; color:#000; }
+  body.light #telefoneBox, body.light header input[type=text], body.light .popup-content input, body.light .popup-content textarea { background:#f5f5f5; color:#000; }
+  body.light .card { background:#f0f0f0; color:#000; }
+  body.light .card h4 { color:#94CF4F; }
+  .card.selected { background:#7ebf40; color:#000; }
 </style>
 </head>
 <body>
 <header>
   <div id="logoHeader">
-    <img id="logoImg" src="img/Design sem nome.png" alt="Logo">
+    <img id="logoTema" src="img/Design sem nome.png" alt="Logo SharkHub">
     <span>📲</span>
-    <input type="text" id="telefoneBox" value="(00) 0000-0000" />
+    <input type="text" id="telefoneBox" value="(00) 0000-0000">
   </div>
   <input type="text" id="search" placeholder="Pesquisar...">
   <div>
@@ -248,9 +69,11 @@ footer.light { background: #f0f0f0; color: #555; }
     <input type="text" id="km" placeholder="Quilometragem">
     <input type="text" id="valor" placeholder="Valor">
     <textarea id="descricao" placeholder="Descrição..."></textarea>
-    <button id="salvarBtn">Salvar</button>
-    <button id="saveDraftBtn">Salvar Rascunho</button>
-    <button id="cancelarBtn">Cancelar</button>
+    <div style="display:flex; gap:5px;">
+      <button id="salvarBtn">Salvar</button>
+      <button id="rascunhoBtn">Salvar Rascunho</button>
+      <button id="cancelarBtn">Cancelar</button>
+    </div>
   </div>
 </div>
 
@@ -259,238 +82,115 @@ footer.light { background: #f0f0f0; color: #555; }
     <h3>Configurações</h3>
     <button onclick="alternarTema()">Alternar Tema</button>
     <button onclick="abrirPopupBackup()">💾 Backup</button>
-    <button onclick="abrirPopupDraftManager()">Gerenciar Rascunhos</button>
+    <button onclick="abrirPopupRascunhos()">Gerenciar Rascunhos</button>
     <button onclick="fecharPopup('popupConfig')">Fechar</button>
   </div>
 </div>
 
-<div id="popupBackup" class="popup">
+<div class="popup" id="popupBackup">
   <div class="popup-content">
     <h3>Backup / Importar-Exportar</h3>
-    <p>Escolha o que deseja fazer:</p>
     <div style="display:flex;flex-direction:column;gap:10px;">
       <button onclick="exportarBackup()">⬇️ Exportar dados</button>
-      <input type="file" id="inputBackup" style="display:none;" accept=".json" />
+      <input type="file" id="inputBackup" style="display:none;" accept=".json">
       <button onclick="document.getElementById('inputBackup').click()">⬆️ Importar dados</button>
       <button onclick="fecharPopup('popupBackup')">Fechar</button>
     </div>
   </div>
 </div>
 
-<div class="popup" id="popupDrafts">
+<div class="popup" id="popupRascunhos">
   <div class="popup-content">
     <h3>Rascunhos</h3>
-    <div id="draftList" style="display:flex; flex-direction:column; gap:5px; max-height:300px; overflow:auto;"></div>
-    <button onclick="fecharPopup('popupDrafts')">Fechar</button>
+    <div id="listaRascunhos" style="display:flex;flex-direction:column; gap:5px; max-height:300px; overflow-y:auto;"></div>
+    <button id="deleteDraftsBtn">🗑️ Excluir Selecionados</button>
+    <button onclick="fecharPopup('popupRascunhos')">Fechar</button>
   </div>
 </div>
 
-<div id="notifications"></div>
+<div class="notification-container" id="notifications"></div>
 
 <script>
-let descricoes = JSON.parse(localStorage.getItem('descricoes') || '[]');
-let drafts = JSON.parse(localStorage.getItem('drafts') || '[]');
+let descricoes = JSON.parse(localStorage.getItem('descricoes')||'[]');
+let rascunhos = JSON.parse(localStorage.getItem('rascunhos')||'[]');
 let numero = localStorage.getItem('numero') || "(00) 0000-0000";
-let editIndex = null;
-let modoSelecao = false;
+let editIndex = null, modoSelecao=false, editRascunhoIndex=null;
 
 const telefoneBox = document.getElementById('telefoneBox');
 const cardsContainer = document.getElementById('cardsContainer');
-const notifications = document.getElementById('notifications');
-const body = document.body;
+const logoTema = document.getElementById('logoTema');
 
 telefoneBox.value = numero;
-telefoneBox.addEventListener("input", () => {
-  numero = telefoneBox.value;
-  localStorage.setItem('numero', numero);
-});
+telefoneBox.addEventListener("input",()=>{ numero=telefoneBox.value; localStorage.setItem('numero',numero); });
 
-function showNotification(msg) {
-  const n = document.createElement('div');
-  n.className = 'notification';
-  n.innerText = msg;
-  notifications.appendChild(n);
-  setTimeout(() => { n.remove(); }, 3000);
-}
-
-function abrirPopup(id) {
-  if(id !== 'popupAdd') fecharPopup('popupAdd');
-  const popup = document.getElementById(id);
-  popup.classList.remove('hide');
-  popup.classList.add('show');
-}
-
-function fecharPopup(id) {
-  const popup = document.getElementById(id);
-  popup.classList.remove('show');
-  popup.classList.add('hide');
-  setTimeout(() => popup.style.display = 'none', 300);
-}
-
-function render() {
-  cardsContainer.innerHTML = "";
+function render(){
+  cardsContainer.innerHTML="";
   const search = document.getElementById('search').value.toLowerCase();
-  descricoes.filter(d => d.titulo.toLowerCase().includes(search)).forEach((d, i) => {
-    const card = document.createElement('div');
-    card.className = 'card';
-    if(body.classList.contains('light')) card.classList.add('light');
-    if (modoSelecao) card.classList.add('selected');
-
-    const editBtn = document.createElement('button');
-    editBtn.className = 'edit-btn';
-    editBtn.innerHTML = '✏️';
-    editBtn.onclick = e => { e.stopPropagation(); editarDescricao(i); };
-
-    card.innerHTML = `<h4 style="color:#94CF4F;">${d.titulo}</h4><p>KM: ${d.km}</p><p>Valor: ${d.valor}</p>`;
-    card.appendChild(editBtn);
-
-    card.onclick = () => {
-      if (modoSelecao) card.classList.toggle('selected');
-      else { navigator.clipboard.writeText(`${d.descricao}\n📲 ${numero}`); showNotification("Descrição copiada!"); }
-    };
-
+  descricoes.filter(d=>d.titulo.toLowerCase().includes(search)).forEach((d,i)=>{
+    const card=document.createElement('div'); card.className='card'; if(modoSelecao) card.classList.add('selected');
+    card.innerHTML=`<h4>${d.titulo}</h4><p>KM: ${d.km}</p><p>Valor: ${d.valor}</p>`;
+    card.onclick=()=>{ if(modoSelecao){ card.classList.toggle('selected'); } else{ copiarTexto(`${d.descricao}\n📲 ${numero}`); } };
     cardsContainer.appendChild(card);
   });
 }
+function salvar(){ localStorage.setItem('descricoes',JSON.stringify(descricoes)); render(); }
+function abrirPopup(id){ const p=document.getElementById(id); p.style.display='flex'; setTimeout(()=>p.classList.add('show'),10); }
+function fecharPopup(id){ const p=document.getElementById(id); p.classList.remove('show'); setTimeout(()=>p.style.display='none',300); }
+function copiarTexto(txt){ navigator.clipboard.writeText(txt); showNotification("Descrição copiada!"); }
 
-// Adicionar
-document.getElementById('addBtn').onclick = () => {
-  editIndex = null;
-  titulo.value = km.value = valor.value = descricao.value = "";
-  popupTitle.textContent = "Nova Descrição";
-  abrirPopup('popupAdd');
-};
-
-document.getElementById('salvarBtn').onclick = () => {
-  const t = titulo.value.trim();
-  if(!t) return alert("Digite um título.");
-  const d = { titulo: t, km: km.value, valor: valor.value, descricao: descricao.value };
-  if(editIndex===null) descricoes.push(d);
-  else descricoes[editIndex]=d;
-  salvar();
-  fecharPopup('popupAdd');
-  showNotification("Descrição salva!");
-};
-
-document.getElementById('saveDraftBtn').onclick = () => {
-  const t = titulo.value.trim();
-  if(!t) return alert("Digite um título.");
-  const d = { titulo: t, km: km.value, valor: valor.value, descricao: descricao.value };
-  drafts.push(d);
-  localStorage.setItem('drafts', JSON.stringify(drafts));
-  fecharPopup('popupAdd');
-  showNotification("Rascunho salvo!");
-};
-
-document.getElementById('cancelarBtn').onclick = () => fecharPopup('popupAdd');
-
-function editarDescricao(i) {
-  const d = descricoes[i];
-  editIndex = i;
-  titulo.value=d.titulo; km.value=d.km; valor.value=d.valor; descricao.value=d.descricao;
-  popupTitle.textContent="Editar Descrição";
-  abrirPopup('popupAdd');
+function showNotification(msg){
+  const container=document.getElementById('notifications');
+  const n=document.createElement('div'); n.className='notification'; n.textContent=msg; container.appendChild(n);
+  setTimeout(()=> n.classList.add('show'),10);
+  setTimeout(()=>{ n.classList.remove('show'); setTimeout(()=>container.removeChild(n),300); },3000);
 }
 
-document.getElementById('selectBtn').onclick = () => {
-  modoSelecao = !modoSelecao;
-  render();
+document.getElementById('addBtn').onclick=()=>{ editIndex=null; titulo.value=km.value=valor.value=descricao.value=""; popupTitle.textContent="Nova Descrição"; abrirPopup('popupAdd'); };
+document.getElementById('salvarBtn').onclick=()=>{
+  const t=titulo.value.trim(); if(!t) return alert("Digite um título.");
+  const d={titulo:t,km:km.value,valor:valor.value,descricao:descricao.value};
+  if(editIndex===null) descricoes.push(d); else descricoes[editIndex]=d;
+  fecharPopup('popupAdd'); salvar(); 
 };
+document.getElementById('rascunhoBtn').onclick=()=>{
+  const d={titulo:titulo.value.trim(),km:km.value,valor:valor.value,descricao:descricao.value};
+  rascunhos.push(d); localStorage.setItem('rascunhos',JSON.stringify(rascunhos));
+  showNotification("Rascunho salvo!"); fecharPopup('popupAdd');
+};
+document.getElementById('cancelarBtn').onclick=()=>fecharPopup('popupAdd');
 
-document.getElementById('deleteBtn').onclick = () => {
-  const selecionados = Array.from(document.querySelectorAll('.card.selected'));
-  if(!selecionados.length) return showNotification("Nenhum item selecionado.");
-  selecionados.forEach(card=>{
-    const index = Array.from(cardsContainer.children).indexOf(card);
-    descricoes.splice(index,1);
+document.getElementById('draftBtn').onclick=()=>abrirPopupRascunhos();
+function abrirPopupRascunhos(){
+  renderRascunhos(); abrirPopup('popupRascunhos'); fecharPopup('popupConfig');
+}
+function renderRascunhos(){
+  const lista=document.getElementById('listaRascunhos'); lista.innerHTML="";
+  rascunhos.forEach((r,i)=>{
+    const div=document.createElement('div'); div.className='card'; div.innerHTML=`<h4>${r.titulo}</h4>`;
+    div.dataset.index=i;
+    div.onclick=()=>{ div.classList.toggle('selected'); };
+    div.ondblclick=()=>{ editRascunhoIndex=i; titulo.value=r.titulo; km.value=r.km; valor.value=r.valor; descricao.value=r.descricao; popupTitle.textContent="Editar Rascunho"; abrirPopup('popupAdd'); fecharPopup('popupRascunhos'); };
+    lista.appendChild(div);
   });
-  salvar();
-  showNotification("Itens excluídos!");
+}
+
+document.getElementById('deleteDraftsBtn').onclick=()=>{
+  const selected=document.querySelectorAll('#listaRascunhos .card.selected');
+  if(selected.length===0){ showNotification("Nenhum rascunho selecionado."); return; }
+  selected.forEach(s=>{ rascunhos.splice(s.dataset.index,1); });
+  localStorage.setItem('rascunhos',JSON.stringify(rascunhos));
+  renderRascunhos();
+  showNotification("Rascunhos excluídos!");
 };
 
-document.getElementById('configBtn').onclick = () => abrirPopup('popupConfig');
-
-document.getElementById('draftBtn').onclick = () => abrirPopupDraftManager();
-
-function abrirPopupDraftManager() {
-  fecharPopup('popupConfig');
-  const draftList = document.getElementById('draftList');
-  draftList.innerHTML = '';
-  drafts.forEach((d,i)=>{
-    const div = document.createElement('div');
-    div.style.padding='5px';
-    div.style.cursor='pointer';
-    div.style.border='1px solid #94CF4F';
-    div.style.borderRadius='4px';
-    div.innerText=d.titulo;
-    if(body.classList.contains('light')) div.style.background='#fff';
-    div.onclick = ()=>{
-      editIndex = null;
-      titulo.value=d.titulo; km.value=d.km; valor.value=d.valor; descricao.value=d.descricao;
-      popupTitle.textContent="Editar Rascunho";
-      abrirPopup('popupAdd');
-    };
-    const del = document.createElement('button');
-    del.innerText='🗑️';
-    del.style.float='right';
-    del.onclick = e=>{ e.stopPropagation(); drafts.splice(i,1); localStorage.setItem('drafts', JSON.stringify(drafts)); abrirPopupDraftManager(); };
-    div.appendChild(del);
-    draftList.appendChild(div);
-  });
-  abrirPopup('popupDrafts');
+document.getElementById('configBtn').onclick=()=>abrirPopup('popupConfig');
+function alternarTema(){
+  document.body.classList.toggle('light');
+  if(document.body.classList.contains('light')) logoTema.src='img/Design sem nome (1).png';
+  else logoTema.src='img/Design sem nome.png';
 }
 
-// Tema
-function alternarTema() {
-  body.classList.toggle('light');
-  if(body.classList.contains('light')){
-    body.style.background='#eaeaea';
-    document.querySelectorAll('.popup-content input, .popup-content textarea').forEach(i=>i.classList.add('light'));
-    document.querySelectorAll('.card').forEach(c=>c.classList.add('light'));
-  } else {
-    body.style.background='#121212';
-    document.querySelectorAll('.popup-content input, .popup-content textarea').forEach(i=>i.classList.remove('light'));
-    document.querySelectorAll('.card').forEach(c=>c.classList.remove('light'));
-  }
-}
-
-// Backup
-function abrirPopupBackup() { abrirPopup('popupBackup'); }
-function exportarBackup() {
-  const data={descricoes, numero, drafts};
-  const blob = new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  a.download="backup_sharkhub.json";
-  a.click();
-  URL.revokeObjectURL(a.href);
-  showNotification("Backup exportado!");
-}
-document.getElementById("inputBackup").addEventListener("change",(event)=>{
-  const file=event.target.files[0];
-  if(!file) return;
-  const reader=new FileReader();
-  reader.onload=(e)=>{
-    try{
-      const data=JSON.parse(e.target.result);
-      descricoes=data.descricoes||[];
-      drafts=data.drafts||[];
-      numero=data.numero||"(00) 0000-0000";
-      telefoneBox.value=numero;
-      salvar();
-      showNotification("Backup importado!");
-    }catch(err){ alert("Erro: "+err.message); }
-  };
-  reader.readAsText(file);
-});
-
-function salvar() {
-  localStorage.setItem('descricoes',JSON.stringify(descricoes));
-  localStorage.setItem('numero',numero);
-  render();
-}
-
-window.onload = render;
+window.onload=render;
 </script>
 </body>
 </html>
