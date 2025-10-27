@@ -7,6 +7,7 @@
 <link rel="icon" type="image/png" href="img/fivecon.png">
 <style>
 * { box-sizing: border-box; font-family: Arial, sans-serif; }
+
 body {
   background-color: #121212;
   color: #fff;
@@ -15,6 +16,11 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+}
+
+body.light {
+  background: #eaeaea;
+  color: #000;
 }
 
 header {
@@ -26,15 +32,16 @@ header {
   flex-wrap: wrap;
 }
 
+header.light { background: #f0f0f0; }
+
 #logoHeader {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 5px;
+  gap: 10px;
 }
 
 #logoHeader img {
-  width: 150px;
+  width: 120px;
   height: auto;
 }
 
@@ -47,12 +54,22 @@ header {
   width: 160px;
 }
 
+header.light #telefoneBox {
+  background: #fff;
+  color: #000;
+}
+
 header input[type="text"] {
   background: #2a2a2a;
   border: none;
   padding: 8px;
   border-radius: 8px;
   color: #fff;
+}
+
+header.light input[type="text"] {
+  background: #fff;
+  color: #000;
 }
 
 header button {
@@ -65,7 +82,9 @@ header button {
   margin: 5px;
 }
 
-header button:hover { background: #80b63f; }
+header button:hover { background: #7fbf41; }
+
+#search { flex: 1; margin: 0 10px; min-width: 200px; }
 
 main {
   flex: 1;
@@ -77,20 +96,25 @@ main {
 
 .card {
   background: #1e1e1e;
-  border-radius: 10px;
-  padding: 15px;
+  border-radius: 6px;
+  padding: 10px;
   position: relative;
   transition: transform 0.2s;
+  cursor: pointer;
 }
 
-.card h4 { color: #94CF4F; }
+.card.light { background: #fff; color: #000; }
 
 .card:hover { transform: scale(1.02); background: #2a2a2a; }
+.card.light:hover { background: #d0d0d0; }
+
+.card input[type="checkbox"] { display: none; }
+.card.selected { border: 2px solid #94CF4F; }
 
 .edit-btn {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 5px;
+  right: 5px;
   background: transparent;
   border: none;
   color: #aaa;
@@ -101,24 +125,24 @@ main {
 
 .card:hover .edit-btn { display: block; }
 
-.card input[type="checkbox"] {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  transform: scale(1.3);
-  display: none;
+footer {
+  background: #1e1e1e;
+  padding: 10px;
+  text-align: center;
+  color: #888;
+  font-size: 14px;
 }
 
-.card.selected input[type="checkbox"] { display: block; }
+footer.light { background: #f0f0f0; color: #555; }
 
+/* POPUPS */
 .popup {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0,0,0,0.7);
   display: none;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
 }
 
 .popup-content {
@@ -149,46 +173,58 @@ main {
   margin: 8px 5px 0 0;
 }
 
-footer {
-  background: #1e1e1e;
-  padding: 10px;
-  text-align: center;
-  color: #888;
-  font-size: 14px;
+.popup-content input.light, .popup-content textarea.light {
+  background: #fff;
+  color: #000;
 }
 
-.notificacao {
+.popup.show { display: flex; animation: slideDown 0.3s forwards; }
+.popup.hide { animation: slideUp 0.3s forwards; }
+
+@keyframes slideDown {
+  0% { transform: translateY(-50px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slideUp {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-50px); opacity: 0; }
+}
+
+/* Notificações */
+#notifications {
   position: fixed;
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 9999;
+}
+
+.notification {
   background: #94CF4F;
   color: #fff;
-  padding: 10px 20px;
+  padding: 10px 15px;
   border-radius: 8px;
   opacity: 0;
-  transition: all 0.3s ease;
-  z-index: 2000;
+  animation: pushUp 0.3s forwards;
 }
 
-@media (max-width: 600px) {
-  header input { width: 100%; margin-top: 10px; }
+@keyframes pushUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }
 
-/* Tema claro */
-body.light { background: #f0f0f0; color: #000; }
-body.light header { background: #e0e0e0; }
-body.light main { }
-body.light .card { background: #ffffff; color: #000; }
-body.light .card h4 { color: #94CF4F; }
-body.light header input[type="text"], body.light #telefoneBox, body.light .popup-content input, body.light .popup-content textarea { background: #e8e8e8; color: #000; }
-body.light .popup-content { background: #f0f0f0; color: #000; }
+@media (max-width: 600px) { header input { width: 100%; margin-top: 10px; } }
 </style>
 </head>
 <body>
 <header>
   <div id="logoHeader">
-    <img src="img/Design sem nome.png" alt="Logo Site">
+    <img id="logoImg" src="img/Design sem nome.png" alt="Logo">
+    <span>📲</span>
     <input type="text" id="telefoneBox" value="(00) 0000-0000" />
   </div>
   <input type="text" id="search" placeholder="Pesquisar...">
@@ -202,7 +238,6 @@ body.light .popup-content { background: #f0f0f0; color: #000; }
 </header>
 
 <main id="cardsContainer"></main>
-
 <footer>SharkHub Post © 2025</footer>
 
 <!-- POPUPS -->
@@ -214,7 +249,7 @@ body.light .popup-content { background: #f0f0f0; color: #000; }
     <input type="text" id="valor" placeholder="Valor">
     <textarea id="descricao" placeholder="Descrição..."></textarea>
     <button id="salvarBtn">Salvar</button>
-    <button id="salvarRascunhoBtn">Rascunho</button>
+    <button id="saveDraftBtn">Salvar Rascunho</button>
     <button id="cancelarBtn">Cancelar</button>
   </div>
 </div>
@@ -224,11 +259,12 @@ body.light .popup-content { background: #f0f0f0; color: #000; }
     <h3>Configurações</h3>
     <button onclick="alternarTema()">Alternar Tema</button>
     <button onclick="abrirPopupBackup()">💾 Backup</button>
+    <button onclick="abrirPopupDraftManager()">Gerenciar Rascunhos</button>
     <button onclick="fecharPopup('popupConfig')">Fechar</button>
   </div>
 </div>
 
-<div class="popup" id="popupBackup">
+<div id="popupBackup" class="popup">
   <div class="popup-content">
     <h3>Backup / Importar-Exportar</h3>
     <p>Escolha o que deseja fazer:</p>
@@ -241,26 +277,27 @@ body.light .popup-content { background: #f0f0f0; color: #000; }
   </div>
 </div>
 
-<div class="popup" id="popupRascunhos">
+<div class="popup" id="popupDrafts">
   <div class="popup-content">
     <h3>Rascunhos</h3>
-    <div id="rascunhosContainer"></div>
-    <button onclick="fecharPopup('popupRascunhos')">Fechar</button>
+    <div id="draftList" style="display:flex; flex-direction:column; gap:5px; max-height:300px; overflow:auto;"></div>
+    <button onclick="fecharPopup('popupDrafts')">Fechar</button>
   </div>
 </div>
 
-<div id="notificacao" class="notificacao"></div>
+<div id="notifications"></div>
 
 <script>
 let descricoes = JSON.parse(localStorage.getItem('descricoes') || '[]');
-let rascunhos = JSON.parse(localStorage.getItem('rascunhos') || '[]');
+let drafts = JSON.parse(localStorage.getItem('drafts') || '[]');
 let numero = localStorage.getItem('numero') || "(00) 0000-0000";
 let editIndex = null;
-let editRascunhoIndex = null;
 let modoSelecao = false;
 
 const telefoneBox = document.getElementById('telefoneBox');
 const cardsContainer = document.getElementById('cardsContainer');
+const notifications = document.getElementById('notifications');
+const body = document.body;
 
 telefoneBox.value = numero;
 telefoneBox.addEventListener("input", () => {
@@ -268,49 +305,55 @@ telefoneBox.addEventListener("input", () => {
   localStorage.setItem('numero', numero);
 });
 
+function showNotification(msg) {
+  const n = document.createElement('div');
+  n.className = 'notification';
+  n.innerText = msg;
+  notifications.appendChild(n);
+  setTimeout(() => { n.remove(); }, 3000);
+}
+
+function abrirPopup(id) {
+  if(id !== 'popupAdd') fecharPopup('popupAdd');
+  const popup = document.getElementById(id);
+  popup.classList.remove('hide');
+  popup.classList.add('show');
+}
+
+function fecharPopup(id) {
+  const popup = document.getElementById(id);
+  popup.classList.remove('show');
+  popup.classList.add('hide');
+  setTimeout(() => popup.style.display = 'none', 300);
+}
+
 function render() {
   cardsContainer.innerHTML = "";
   const search = document.getElementById('search').value.toLowerCase();
   descricoes.filter(d => d.titulo.toLowerCase().includes(search)).forEach((d, i) => {
     const card = document.createElement('div');
     card.className = 'card';
+    if(body.classList.contains('light')) card.classList.add('light');
     if (modoSelecao) card.classList.add('selected');
-
-    const checkbox = document.createElement('input');
-    checkbox.type = 'checkbox';
-    checkbox.dataset.index = i;
 
     const editBtn = document.createElement('button');
     editBtn.className = 'edit-btn';
     editBtn.innerHTML = '✏️';
-    editBtn.onclick = (e) => { e.stopPropagation(); editarDescricao(i); };
+    editBtn.onclick = e => { e.stopPropagation(); editarDescricao(i); };
 
-    card.innerHTML = `<h4>${d.titulo}</h4><p>KM: ${d.km}</p><p>Valor: ${d.valor}</p>`;
-    card.prepend(checkbox);
+    card.innerHTML = `<h4 style="color:#94CF4F;">${d.titulo}</h4><p>KM: ${d.km}</p><p>Valor: ${d.valor}</p>`;
     card.appendChild(editBtn);
 
     card.onclick = () => {
-      if (modoSelecao) checkbox.checked = !checkbox.checked;
-      else {
-        const texto = `${d.descricao}\n📲 ${numero}`;
-        navigator.clipboard.writeText(texto);
-        showNotification("Descrição copiada com telefone!");
-      }
+      if (modoSelecao) card.classList.toggle('selected');
+      else { navigator.clipboard.writeText(`${d.descricao}\n📲 ${numero}`); showNotification("Descrição copiada!"); }
     };
 
     cardsContainer.appendChild(card);
   });
 }
 
-function salvar() {
-  localStorage.setItem('descricoes', JSON.stringify(descricoes));
-  localStorage.setItem('numero', numero);
-  render();
-}
-
-function abrirPopup(id) { document.getElementById(id).style.display = 'flex'; }
-function fecharPopup(id) { document.getElementById(id).style.display = 'none'; }
-
+// Adicionar
 document.getElementById('addBtn').onclick = () => {
   editIndex = null;
   titulo.value = km.value = valor.value = descricao.value = "";
@@ -318,26 +361,25 @@ document.getElementById('addBtn').onclick = () => {
   abrirPopup('popupAdd');
 };
 
-document.getElementById('salvarRascunhoBtn').onclick = () => {
-  const t = titulo.value.trim();
-  if (!t) return alert("Digite um título.");
-  const r = { titulo: t, km: km.value, valor: valor.value, descricao: descricao.value };
-  if(editRascunhoIndex!==null) rascunhos[editRascunhoIndex]=r;
-  else rascunhos.push(r);
-  localStorage.setItem('rascunhos', JSON.stringify(rascunhos));
-  fecharPopup('popupAdd');
-  showNotification("Rascunho salvo!");
-};
-
 document.getElementById('salvarBtn').onclick = () => {
   const t = titulo.value.trim();
-  if (!t) return alert("Digite um título.");
+  if(!t) return alert("Digite um título.");
   const d = { titulo: t, km: km.value, valor: valor.value, descricao: descricao.value };
-  if (editIndex === null) descricoes.push(d);
-  else descricoes[editIndex] = d;
-  fecharPopup('popupAdd');
+  if(editIndex===null) descricoes.push(d);
+  else descricoes[editIndex]=d;
   salvar();
+  fecharPopup('popupAdd');
   showNotification("Descrição salva!");
+};
+
+document.getElementById('saveDraftBtn').onclick = () => {
+  const t = titulo.value.trim();
+  if(!t) return alert("Digite um título.");
+  const d = { titulo: t, km: km.value, valor: valor.value, descricao: descricao.value };
+  drafts.push(d);
+  localStorage.setItem('drafts', JSON.stringify(drafts));
+  fecharPopup('popupAdd');
+  showNotification("Rascunho salvo!");
 };
 
 document.getElementById('cancelarBtn').onclick = () => fecharPopup('popupAdd');
@@ -345,149 +387,107 @@ document.getElementById('cancelarBtn').onclick = () => fecharPopup('popupAdd');
 function editarDescricao(i) {
   const d = descricoes[i];
   editIndex = i;
-  titulo.value = d.titulo;
-  km.value = d.km;
-  valor.value = d.valor;
-  descricao.value = d.descricao;
-  popupTitle.textContent = "Editar Descrição";
+  titulo.value=d.titulo; km.value=d.km; valor.value=d.valor; descricao.value=d.descricao;
+  popupTitle.textContent="Editar Descrição";
   abrirPopup('popupAdd');
 }
 
-selectBtn.onclick = () => {
+document.getElementById('selectBtn').onclick = () => {
   modoSelecao = !modoSelecao;
-  deleteBtn.style.display = modoSelecao ? 'inline-block' : 'none';
   render();
 };
 
-deleteBtn.onclick = () => {
-  const selecionados = document.querySelectorAll('.card input[type="checkbox"]:checked');
-  if (selecionados.length === 0) return showNotification("Nenhum item selecionado.");
-  // Exclusão pelo site
-  const confirmBox = document.createElement('div');
-  confirmBox.className = 'notificacao';
-  confirmBox.innerHTML = 'Deseja excluir os itens selecionados? <button style="margin-left:10px;background:#FF4D4D;color:#fff;border:none;padding:3px 5px;border-radius:3px;cursor:pointer;">Sim</button> <button style="margin-left:5px;background:#888;color:#fff;border:none;padding:3px 5px;border-radius:3px;cursor:pointer;">Não</button>';
-  document.body.appendChild(confirmBox);
-  setTimeout(()=>confirmBox.style.opacity=1,10);
-
-  confirmBox.querySelector('button:nth-child(1)').onclick = () => {
-    const indices = Array.from(selecionados).map(cb => parseInt(cb.dataset.index));
-    descricoes = descricoes.filter((_, i) => !indices.includes(i));
-    salvar();
-    confirmBox.remove();
-    showNotification("Itens excluídos!");
-  };
-  confirmBox.querySelector('button:nth-child(2)').onclick = ()=>{ confirmBox.remove(); };
-  setTimeout(()=>confirmBox.style.opacity=0,3000);
-  setTimeout(()=>confirmBox.remove(),3500);
+document.getElementById('deleteBtn').onclick = () => {
+  const selecionados = Array.from(document.querySelectorAll('.card.selected'));
+  if(!selecionados.length) return showNotification("Nenhum item selecionado.");
+  selecionados.forEach(card=>{
+    const index = Array.from(cardsContainer.children).indexOf(card);
+    descricoes.splice(index,1);
+  });
+  salvar();
+  showNotification("Itens excluídos!");
 };
 
-configBtn.onclick = () => abrirPopup('popupConfig');
-draftBtn.onclick = () => abrirRascunhos();
-search.addEventListener('input', render);
+document.getElementById('configBtn').onclick = () => abrirPopup('popupConfig');
 
-km.addEventListener("input", () => {
-  km.value = km.value.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-});
+document.getElementById('draftBtn').onclick = () => abrirPopupDraftManager();
 
-valor.addEventListener("input", () => {
-  let v = valor.value.replace(/\D/g, "");
-  v = (v / 100).toFixed(2) + "";
-  v = v.replace(".", ",");
-  v = v.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  valor.value = v;
-});
-
-function alternarTema() {
-  document.body.classList.toggle('light');
-  showNotification(document.body.classList.contains('light') ? "Tema claro ativado" : "Tema escuro ativado");
+function abrirPopupDraftManager() {
+  fecharPopup('popupConfig');
+  const draftList = document.getElementById('draftList');
+  draftList.innerHTML = '';
+  drafts.forEach((d,i)=>{
+    const div = document.createElement('div');
+    div.style.padding='5px';
+    div.style.cursor='pointer';
+    div.style.border='1px solid #94CF4F';
+    div.style.borderRadius='4px';
+    div.innerText=d.titulo;
+    if(body.classList.contains('light')) div.style.background='#fff';
+    div.onclick = ()=>{
+      editIndex = null;
+      titulo.value=d.titulo; km.value=d.km; valor.value=d.valor; descricao.value=d.descricao;
+      popupTitle.textContent="Editar Rascunho";
+      abrirPopup('popupAdd');
+    };
+    const del = document.createElement('button');
+    del.innerText='🗑️';
+    del.style.float='right';
+    del.onclick = e=>{ e.stopPropagation(); drafts.splice(i,1); localStorage.setItem('drafts', JSON.stringify(drafts)); abrirPopupDraftManager(); };
+    div.appendChild(del);
+    draftList.appendChild(div);
+  });
+  abrirPopup('popupDrafts');
 }
 
-function abrirPopupBackup() { abrirPopup('popupBackup'); }
+// Tema
+function alternarTema() {
+  body.classList.toggle('light');
+  if(body.classList.contains('light')){
+    body.style.background='#eaeaea';
+    document.querySelectorAll('.popup-content input, .popup-content textarea').forEach(i=>i.classList.add('light'));
+    document.querySelectorAll('.card').forEach(c=>c.classList.add('light'));
+  } else {
+    body.style.background='#121212';
+    document.querySelectorAll('.popup-content input, .popup-content textarea').forEach(i=>i.classList.remove('light'));
+    document.querySelectorAll('.card').forEach(c=>c.classList.remove('light'));
+  }
+}
 
+// Backup
+function abrirPopupBackup() { abrirPopup('popupBackup'); }
 function exportarBackup() {
-  const data = { descricoes, numero, rascunhos };
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+  const data={descricoes, numero, drafts};
+  const blob = new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
-  a.download = "backup_sharkhub.json";
+  a.download="backup_sharkhub.json";
   a.click();
   URL.revokeObjectURL(a.href);
-  showNotification("✅ Backup exportado!");
+  showNotification("Backup exportado!");
 }
-
-document.getElementById("inputBackup").addEventListener("change", (event) => {
-  const file = event.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    try {
-      const data = JSON.parse(e.target.result);
-      descricoes = data.descricoes || [];
-      numero = data.numero || "(00) 0000-0000";
-      rascunhos = data.rascunhos || [];
-      telefoneBox.value = numero;
+document.getElementById("inputBackup").addEventListener("change",(event)=>{
+  const file=event.target.files[0];
+  if(!file) return;
+  const reader=new FileReader();
+  reader.onload=(e)=>{
+    try{
+      const data=JSON.parse(e.target.result);
+      descricoes=data.descricoes||[];
+      drafts=data.drafts||[];
+      numero=data.numero||"(00) 0000-0000";
+      telefoneBox.value=numero;
       salvar();
-      showNotification("✅ Backup importado!");
-    } catch (err) { showNotification("❌ Erro: " + err.message); }
+      showNotification("Backup importado!");
+    }catch(err){ alert("Erro: "+err.message); }
   };
   reader.readAsText(file);
 });
 
-function showNotification(msg) {
-  const noti = document.getElementById('notificacao');
-  noti.textContent = msg;
-  noti.style.opacity = 1;
-  setTimeout(()=>{ noti.style.opacity=0; },3000);
-}
-
-function abrirRascunhos() {
-  fecharPopup('popupConfig');
-  const container = document.getElementById('rascunhosContainer');
-  container.innerHTML = "";
-  rascunhos.forEach((r, i) => {
-    const div = document.createElement('div');
-    div.style.border = "1px solid #94CF4F";
-    div.style.borderRadius = "6px";
-    div.style.padding = "5px 35px 5px 5px";
-    div.style.marginBottom = "5px";
-    div.style.cursor = "pointer";
-    div.style.position = "relative";
-    div.innerHTML = `<strong>${r.titulo}</strong>`;
-
-    const delBtn = document.createElement('button');
-    delBtn.innerText = "🗑️";
-    delBtn.style.position = "absolute";
-    delBtn.style.right = "5px";
-    delBtn.style.top = "5px";
-    delBtn.style.background = "transparent";
-    delBtn.style.border = "none";
-    delBtn.style.cursor = "pointer";
-    delBtn.style.color = "#FF4D4D";
-    delBtn.style.fontSize = "14px";
-
-    delBtn.onclick = (e) => {
-      e.stopPropagation();
-      rascunhos.splice(i,1);
-      localStorage.setItem('rascunhos', JSON.stringify(rascunhos));
-      abrirRascunhos();
-      showNotification("Rascunho excluído!");
-    };
-
-    div.appendChild(delBtn);
-    div.onclick = () => {
-      editRascunhoIndex = i;
-      titulo.value = r.titulo;
-      km.value = r.km || "";
-      valor.value = r.valor || "";
-      descricao.value = r.descricao || "";
-      popupTitle.textContent = "Editar Rascunho";
-      abrirPopup('popupAdd');
-      fecharPopup('popupRascunhos');
-    };
-
-    container.appendChild(div);
-  });
-  abrirPopup('popupRascunhos');
+function salvar() {
+  localStorage.setItem('descricoes',JSON.stringify(descricoes));
+  localStorage.setItem('numero',numero);
+  render();
 }
 
 window.onload = render;
