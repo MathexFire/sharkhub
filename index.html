@@ -1,474 +1,496 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SharkHub Post</title>
-  <link rel="icon" type="image/png" href="img/fivecon.png">
-  <style>
-    * { box-sizing: border-box; font-family: Arial, sans-serif; }
-    body {
-      background-color: #121212;
-      color: #fff;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #1e1e1e;
-      padding: 10px 20px;
-      flex-wrap: wrap;
-    }
-    #logoHeader {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 8px;
-    }
-    #logoHeader img {
-      width: 120px;
-      height: auto;
-    }
-    #telefoneBox {
-      background: #2e2e2e;
-      border: none;
-      color: #fff;
-      padding: 8px;
-      border-radius: 8px;
-      width: 160px;
-    }
-    header input[type="text"] {
-      background: #2e2e2e;
-      border: none;
-      padding: 8px;
-      border-radius: 8px;
-      color: #fff;
-    }
-    header button {
-      background: #94CF4F;
-      border: none;
-      color: white;
-      padding: 10px 15px;
-      border-radius: 8px;
-      cursor: pointer;
-      margin: 5px;
-    }
-    header button:hover { background: #7FBF42; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SharkHub Post</title>
+<link rel="icon" type="image/png" href="img/fivecon.png">
+<style>
+* { box-sizing: border-box; font-family: Arial, sans-serif; }
+body {
+  background-color: #121212;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
 
-    main {
-      flex: 1;
-      padding: 20px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 15px;
-    }
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #1e1e1e;
+  padding: 10px 20px;
+  flex-wrap: wrap;
+}
 
-    .card {
-      background: #1e1e1e;
-      border-radius: 10px;
-      padding: 10px;
-      position: relative;
-      transition: transform 0.2s;
-    }
-    .card:hover { transform: scale(1.02); background: #2a2a2a; }
-    .card h4 { color: #94CF4F; margin: 0 0 5px 0; }
+#logoHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
 
-    .edit-btn {
-      position: absolute;
-      top: 5px;
-      right: 5px;
-      background: transparent;
-      border: none;
-      color: #aaa;
-      cursor: pointer;
-      font-size: 16px;
-      display: none;
-    }
-    .card:hover .edit-btn { display: block; }
+#logoHeader img {
+  width: 150px;
+  height: auto;
+}
 
-    .card input[type="checkbox"] {
-      position: absolute;
-      top: 8px;
-      left: 8px;
-      transform: scale(1.1);
-      display: none;
-    }
-    .card.selected input[type="checkbox"] { display: block; }
+#telefoneBox {
+  background: #2a2a2a;
+  border: none;
+  color: #fff;
+  padding: 8px;
+  border-radius: 8px;
+  width: 160px;
+}
 
-    .popup {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.7);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
-    .popup-content {
-      background: #1e1e1e;
-      padding: 20px;
-      border-radius: 10px;
-      width: 90%;
-      max-width: 400px;
-    }
-    .popup-content input, .popup-content textarea {
-      width: 100%;
-      background: #2e2e2e;
-      border: none;
-      color: #fff;
-      padding: 8px;
-      border-radius: 6px;
-      margin-top: 8px;
-    }
-    .popup-content button {
-      background: #94CF4F;
-      color: white;
-      border: none;
-      padding: 10px 15px;
-      border-radius: 8px;
-      cursor: pointer;
-      margin: 8px 5px 0 0;
-    }
-    footer {
-      background: #1e1e1e;
-      padding: 10px;
-      text-align: center;
-      color: #888;
-      font-size: 14px;
-    }
+header input[type="text"] {
+  background: #2a2a2a;
+  border: none;
+  padding: 8px;
+  border-radius: 8px;
+  color: #fff;
+}
 
-    .notificacao {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #94CF4F;
-      color: #000;
-      padding: 10px 20px;
-      border-radius: 8px;
-      margin-top: 5px;
-      opacity: 0;
-      pointer-events: none;
-      transition: all 0.5s ease;
-    }
+header button {
+  background: #94CF4F;
+  border: none;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin: 5px;
+}
 
-    @media (max-width: 600px) {
-      header input { width: 100%; margin-top: 10px; }
-    }
-  </style>
+header button:hover { background: #80b63f; }
+
+main {
+  flex: 1;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+}
+
+.card {
+  background: #1e1e1e;
+  border-radius: 10px;
+  padding: 15px;
+  position: relative;
+  transition: transform 0.2s;
+}
+
+.card h4 { color: #94CF4F; }
+
+.card:hover { transform: scale(1.02); background: #2a2a2a; }
+
+.edit-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  color: #aaa;
+  cursor: pointer;
+  font-size: 18px;
+  display: none;
+}
+
+.card:hover .edit-btn { display: block; }
+
+.card input[type="checkbox"] {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  transform: scale(1.3);
+  display: none;
+}
+
+.card.selected input[type="checkbox"] { display: block; }
+
+.popup {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-content {
+  background: #1e1e1e;
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 400px;
+}
+
+.popup-content input, .popup-content textarea {
+  width: 100%;
+  background: #2a2a2a;
+  border: none;
+  color: #fff;
+  padding: 8px;
+  border-radius: 6px;
+  margin-top: 8px;
+}
+
+.popup-content button {
+  background: #94CF4F;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin: 8px 5px 0 0;
+}
+
+footer {
+  background: #1e1e1e;
+  padding: 10px;
+  text-align: center;
+  color: #888;
+  font-size: 14px;
+}
+
+.notificacao {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #94CF4F;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  opacity: 0;
+  transition: all 0.3s ease;
+  z-index: 2000;
+}
+
+@media (max-width: 600px) {
+  header input { width: 100%; margin-top: 10px; }
+}
+
+/* Tema claro */
+body.light { background: #f0f0f0; color: #000; }
+body.light header { background: #e0e0e0; }
+body.light main { }
+body.light .card { background: #ffffff; color: #000; }
+body.light .card h4 { color: #94CF4F; }
+body.light header input[type="text"], body.light #telefoneBox, body.light .popup-content input, body.light .popup-content textarea { background: #e8e8e8; color: #000; }
+body.light .popup-content { background: #f0f0f0; color: #000; }
+</style>
 </head>
 <body>
-
-  <header>
-    <div id="logoHeader">
-      <img src="img/Design sem nome.png" alt="Logo">
-      <input type="text" id="telefoneBox" value="(00) 0000-0000" />
-    </div>
-
-    <input type="text" id="search" placeholder="Pesquisar...">
-
-    <div>
-      <button id="addBtn">Adicionar</button>
-      <button id="selectBtn">Selecionar</button>
-      <button id="deleteBtn" style="display:none;">🗑️ Excluir</button>
-      <button id="rascunhoBtn">Rascunhos</button>
-      <button id="configBtn">Configurações</button>
-    </div>
-  </header>
-
-  <main id="cardsContainer"></main>
-  <footer>SharkHub Post © 2025</footer>
-
-  <!-- POPUP ADICIONAR/EDITAR -->
-  <div class="popup" id="popupAdd">
-    <div class="popup-content">
-      <h3 id="popupTitle">Nova Descrição</h3>
-      <input type="text" id="titulo" placeholder="Título">
-      <input type="text" id="km" placeholder="Quilometragem">
-      <input type="text" id="valor" placeholder="Valor">
-      <textarea id="descricao" placeholder="Descrição..."></textarea>
-      <button id="salvarBtn">Salvar</button>
-      <button id="rascunhoSalvarBtn">Salvar como Rascunho</button>
-      <button id="cancelarBtn">Cancelar</button>
-    </div>
+<header>
+  <div id="logoHeader">
+    <img src="img/Design sem nome.png" alt="Logo Site">
+    <input type="text" id="telefoneBox" value="(00) 0000-0000" />
   </div>
-
-  <!-- POPUP CONFIGURAÇÕES -->
-  <div class="popup" id="popupConfig">
-    <div class="popup-content">
-      <h3>Configurações</h3>
-      <button onclick="alternarTema()">Alternar Tema</button>
-      <button onclick="abrirPopupBackup()">💾 Backup</button>
-      <button onclick="fecharPopup('popupConfig')">Fechar</button>
-    </div>
+  <input type="text" id="search" placeholder="Pesquisar...">
+  <div>
+    <button id="addBtn">Adicionar</button>
+    <button id="draftBtn">Rascunho</button>
+    <button id="selectBtn">Selecionar</button>
+    <button id="deleteBtn" style="display:none;">🗑️ Excluir</button>
+    <button id="configBtn">Configurações</button>
   </div>
+</header>
 
-  <!-- POPUP RASCUNHOS -->
-  <div class="popup" id="popupRascunhos">
-    <div class="popup-content">
-      <h3>Rascunhos</h3>
-      <div id="rascunhosContainer"></div>
-      <button onclick="fecharPopup('popupRascunhos')">Fechar</button>
-    </div>
+<main id="cardsContainer"></main>
+
+<footer>SharkHub Post © 2025</footer>
+
+<!-- POPUPS -->
+<div class="popup" id="popupAdd">
+  <div class="popup-content">
+    <h3 id="popupTitle">Nova Descrição</h3>
+    <input type="text" id="titulo" placeholder="Título">
+    <input type="text" id="km" placeholder="Quilometragem">
+    <input type="text" id="valor" placeholder="Valor">
+    <textarea id="descricao" placeholder="Descrição..."></textarea>
+    <button id="salvarBtn">Salvar</button>
+    <button id="salvarRascunhoBtn">Rascunho</button>
+    <button id="cancelarBtn">Cancelar</button>
   </div>
+</div>
 
-  <!-- POPUP BACKUP -->
-  <div id="popupBackup" class="popup">
-    <div class="popup-content">
-      <h3>Backup / Importar-Exportar</h3>
+<div class="popup" id="popupConfig">
+  <div class="popup-content">
+    <h3>Configurações</h3>
+    <button onclick="alternarTema()">Alternar Tema</button>
+    <button onclick="abrirPopupBackup()">💾 Backup</button>
+    <button onclick="fecharPopup('popupConfig')">Fechar</button>
+  </div>
+</div>
+
+<div class="popup" id="popupBackup">
+  <div class="popup-content">
+    <h3>Backup / Importar-Exportar</h3>
+    <p>Escolha o que deseja fazer:</p>
+    <div style="display:flex;flex-direction:column;gap:10px;">
       <button onclick="exportarBackup()">⬇️ Exportar dados</button>
       <input type="file" id="inputBackup" style="display:none;" accept=".json" />
       <button onclick="document.getElementById('inputBackup').click()">⬆️ Importar dados</button>
       <button onclick="fecharPopup('popupBackup')">Fechar</button>
     </div>
   </div>
+</div>
 
-  <script>
-    let descricoes = JSON.parse(localStorage.getItem('descricoes') || '[]');
-    let rascunhos = JSON.parse(localStorage.getItem('rascunhos') || '[]');
-    let numero = localStorage.getItem('numero') || "(00) 0000-0000";
-    let editIndex = null;
-    let modoSelecao = false;
-    let editRascunhoIndex = null;
+<div class="popup" id="popupRascunhos">
+  <div class="popup-content">
+    <h3>Rascunhos</h3>
+    <div id="rascunhosContainer"></div>
+    <button onclick="fecharPopup('popupRascunhos')">Fechar</button>
+  </div>
+</div>
 
-    const telefoneBox = document.getElementById('telefoneBox');
-    const cardsContainer = document.getElementById('cardsContainer');
+<div id="notificacao" class="notificacao"></div>
 
-    telefoneBox.value = numero;
-    telefoneBox.addEventListener("input", () => {
-      numero = telefoneBox.value;
-      localStorage.setItem('numero', numero);
-    });
+<script>
+let descricoes = JSON.parse(localStorage.getItem('descricoes') || '[]');
+let rascunhos = JSON.parse(localStorage.getItem('rascunhos') || '[]');
+let numero = localStorage.getItem('numero') || "(00) 0000-0000";
+let editIndex = null;
+let editRascunhoIndex = null;
+let modoSelecao = false;
 
-    function showNotification(text) {
-      const n = document.createElement('div');
-      n.className = 'notificacao';
-      n.innerText = text;
-      document.body.appendChild(n);
-      setTimeout(() => n.style.opacity = 1, 10);
-      setTimeout(() => n.style.opacity = 0, 3000);
-      setTimeout(() => n.remove(), 3500);
-    }
+const telefoneBox = document.getElementById('telefoneBox');
+const cardsContainer = document.getElementById('cardsContainer');
 
-    function render() {
-      cardsContainer.innerHTML = "";
-      const search = document.getElementById('search').value.toLowerCase();
-      descricoes.filter(d => d.titulo.toLowerCase().includes(search)).forEach((d, i) => {
-        const card = document.createElement('div');
-        card.className = 'card';
-        if (modoSelecao) card.classList.add('selected');
+telefoneBox.value = numero;
+telefoneBox.addEventListener("input", () => {
+  numero = telefoneBox.value;
+  localStorage.setItem('numero', numero);
+});
 
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.dataset.index = i;
+function render() {
+  cardsContainer.innerHTML = "";
+  const search = document.getElementById('search').value.toLowerCase();
+  descricoes.filter(d => d.titulo.toLowerCase().includes(search)).forEach((d, i) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    if (modoSelecao) card.classList.add('selected');
 
-        const editBtn = document.createElement('button');
-        editBtn.className = 'edit-btn';
-        editBtn.innerHTML = '✏️';
-        editBtn.onclick = (e) => { e.stopPropagation(); editarDescricao(i); };
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.dataset.index = i;
 
-        card.innerHTML = `<h4>${d.titulo}</h4><p>KM: ${d.km}</p><p>Valor: ${d.valor}</p>`;
-        card.prepend(checkbox);
-        card.appendChild(editBtn);
+    const editBtn = document.createElement('button');
+    editBtn.className = 'edit-btn';
+    editBtn.innerHTML = '✏️';
+    editBtn.onclick = (e) => { e.stopPropagation(); editarDescricao(i); };
 
-        card.onclick = () => {
-          if (modoSelecao) checkbox.checked = !checkbox.checked;
-          else {
-            const texto = `${d.descricao}\n📲 ${numero}`;
-            navigator.clipboard.writeText(texto);
-            showNotification('Descrição copiada!');
-          }
-        };
+    card.innerHTML = `<h4>${d.titulo}</h4><p>KM: ${d.km}</p><p>Valor: ${d.valor}</p>`;
+    card.prepend(checkbox);
+    card.appendChild(editBtn);
 
-        cardsContainer.appendChild(card);
-      });
-    }
+    card.onclick = () => {
+      if (modoSelecao) checkbox.checked = !checkbox.checked;
+      else {
+        const texto = `${d.descricao}\n📲 ${numero}`;
+        navigator.clipboard.writeText(texto);
+        showNotification("Descrição copiada com telefone!");
+      }
+    };
 
-    function salvar() {
-      localStorage.setItem('descricoes', JSON.stringify(descricoes));
-      localStorage.setItem('numero', numero);
-      render();
-    }
+    cardsContainer.appendChild(card);
+  });
+}
 
-    function salvarRascunho(d) {
-      rascunhos.push(d);
+function salvar() {
+  localStorage.setItem('descricoes', JSON.stringify(descricoes));
+  localStorage.setItem('numero', numero);
+  render();
+}
+
+function abrirPopup(id) { document.getElementById(id).style.display = 'flex'; }
+function fecharPopup(id) { document.getElementById(id).style.display = 'none'; }
+
+document.getElementById('addBtn').onclick = () => {
+  editIndex = null;
+  titulo.value = km.value = valor.value = descricao.value = "";
+  popupTitle.textContent = "Nova Descrição";
+  abrirPopup('popupAdd');
+};
+
+document.getElementById('salvarRascunhoBtn').onclick = () => {
+  const t = titulo.value.trim();
+  if (!t) return alert("Digite um título.");
+  const r = { titulo: t, km: km.value, valor: valor.value, descricao: descricao.value };
+  if(editRascunhoIndex!==null) rascunhos[editRascunhoIndex]=r;
+  else rascunhos.push(r);
+  localStorage.setItem('rascunhos', JSON.stringify(rascunhos));
+  fecharPopup('popupAdd');
+  showNotification("Rascunho salvo!");
+};
+
+document.getElementById('salvarBtn').onclick = () => {
+  const t = titulo.value.trim();
+  if (!t) return alert("Digite um título.");
+  const d = { titulo: t, km: km.value, valor: valor.value, descricao: descricao.value };
+  if (editIndex === null) descricoes.push(d);
+  else descricoes[editIndex] = d;
+  fecharPopup('popupAdd');
+  salvar();
+  showNotification("Descrição salva!");
+};
+
+document.getElementById('cancelarBtn').onclick = () => fecharPopup('popupAdd');
+
+function editarDescricao(i) {
+  const d = descricoes[i];
+  editIndex = i;
+  titulo.value = d.titulo;
+  km.value = d.km;
+  valor.value = d.valor;
+  descricao.value = d.descricao;
+  popupTitle.textContent = "Editar Descrição";
+  abrirPopup('popupAdd');
+}
+
+selectBtn.onclick = () => {
+  modoSelecao = !modoSelecao;
+  deleteBtn.style.display = modoSelecao ? 'inline-block' : 'none';
+  render();
+};
+
+deleteBtn.onclick = () => {
+  const selecionados = document.querySelectorAll('.card input[type="checkbox"]:checked');
+  if (selecionados.length === 0) return showNotification("Nenhum item selecionado.");
+  // Exclusão pelo site
+  const confirmBox = document.createElement('div');
+  confirmBox.className = 'notificacao';
+  confirmBox.innerHTML = 'Deseja excluir os itens selecionados? <button style="margin-left:10px;background:#FF4D4D;color:#fff;border:none;padding:3px 5px;border-radius:3px;cursor:pointer;">Sim</button> <button style="margin-left:5px;background:#888;color:#fff;border:none;padding:3px 5px;border-radius:3px;cursor:pointer;">Não</button>';
+  document.body.appendChild(confirmBox);
+  setTimeout(()=>confirmBox.style.opacity=1,10);
+
+  confirmBox.querySelector('button:nth-child(1)').onclick = () => {
+    const indices = Array.from(selecionados).map(cb => parseInt(cb.dataset.index));
+    descricoes = descricoes.filter((_, i) => !indices.includes(i));
+    salvar();
+    confirmBox.remove();
+    showNotification("Itens excluídos!");
+  };
+  confirmBox.querySelector('button:nth-child(2)').onclick = ()=>{ confirmBox.remove(); };
+  setTimeout(()=>confirmBox.style.opacity=0,3000);
+  setTimeout(()=>confirmBox.remove(),3500);
+};
+
+configBtn.onclick = () => abrirPopup('popupConfig');
+draftBtn.onclick = () => abrirRascunhos();
+search.addEventListener('input', render);
+
+km.addEventListener("input", () => {
+  km.value = km.value.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+});
+
+valor.addEventListener("input", () => {
+  let v = valor.value.replace(/\D/g, "");
+  v = (v / 100).toFixed(2) + "";
+  v = v.replace(".", ",");
+  v = v.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  valor.value = v;
+});
+
+function alternarTema() {
+  document.body.classList.toggle('light');
+  showNotification(document.body.classList.contains('light') ? "Tema claro ativado" : "Tema escuro ativado");
+}
+
+function abrirPopupBackup() { abrirPopup('popupBackup'); }
+
+function exportarBackup() {
+  const data = { descricoes, numero, rascunhos };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "backup_sharkhub.json";
+  a.click();
+  URL.revokeObjectURL(a.href);
+  showNotification("✅ Backup exportado!");
+}
+
+document.getElementById("inputBackup").addEventListener("change", (event) => {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const data = JSON.parse(e.target.result);
+      descricoes = data.descricoes || [];
+      numero = data.numero || "(00) 0000-0000";
+      rascunhos = data.rascunhos || [];
+      telefoneBox.value = numero;
+      salvar();
+      showNotification("✅ Backup importado!");
+    } catch (err) { showNotification("❌ Erro: " + err.message); }
+  };
+  reader.readAsText(file);
+});
+
+function showNotification(msg) {
+  const noti = document.getElementById('notificacao');
+  noti.textContent = msg;
+  noti.style.opacity = 1;
+  setTimeout(()=>{ noti.style.opacity=0; },3000);
+}
+
+function abrirRascunhos() {
+  fecharPopup('popupConfig');
+  const container = document.getElementById('rascunhosContainer');
+  container.innerHTML = "";
+  rascunhos.forEach((r, i) => {
+    const div = document.createElement('div');
+    div.style.border = "1px solid #94CF4F";
+    div.style.borderRadius = "6px";
+    div.style.padding = "5px 35px 5px 5px";
+    div.style.marginBottom = "5px";
+    div.style.cursor = "pointer";
+    div.style.position = "relative";
+    div.innerHTML = `<strong>${r.titulo}</strong>`;
+
+    const delBtn = document.createElement('button');
+    delBtn.innerText = "🗑️";
+    delBtn.style.position = "absolute";
+    delBtn.style.right = "5px";
+    delBtn.style.top = "5px";
+    delBtn.style.background = "transparent";
+    delBtn.style.border = "none";
+    delBtn.style.cursor = "pointer";
+    delBtn.style.color = "#FF4D4D";
+    delBtn.style.fontSize = "14px";
+
+    delBtn.onclick = (e) => {
+      e.stopPropagation();
+      rascunhos.splice(i,1);
       localStorage.setItem('rascunhos', JSON.stringify(rascunhos));
-      showNotification('Rascunho salvo!');
-    }
+      abrirRascunhos();
+      showNotification("Rascunho excluído!");
+    };
 
-    function abrirPopup(id) { 
-      document.getElementById(id).style.display = 'flex'; 
-    }
-    function fecharPopup(id) { 
-      document.getElementById(id).style.display = 'none'; 
-    }
-
-    document.getElementById('addBtn').onclick = () => {
-      editIndex = null;
-      editRascunhoIndex = null;
-      titulo.value = km.value = valor.value = descricao.value = "";
-      popupTitle.textContent = "Nova Descrição";
+    div.appendChild(delBtn);
+    div.onclick = () => {
+      editRascunhoIndex = i;
+      titulo.value = r.titulo;
+      km.value = r.km || "";
+      valor.value = r.valor || "";
+      descricao.value = r.descricao || "";
+      popupTitle.textContent = "Editar Rascunho";
       abrirPopup('popupAdd');
+      fecharPopup('popupRascunhos');
     };
 
-    document.getElementById('rascunhoSalvarBtn').onclick = () => {
-      const t = titulo.value.trim();
-      if(!t) return alert("Digite um título.");
-      const d = { titulo: t, km: km.value, valor: valor.value, descricao: descricao.value };
-      salvarRascunho(d);
-      fecharPopup('popupAdd');
-    };
+    container.appendChild(div);
+  });
+  abrirPopup('popupRascunhos');
+}
 
-    function abrirRascunhos() {
-      fecharPopup('popupConfig');
-      const container = document.getElementById('rascunhosContainer');
-      container.innerHTML = "";
-      rascunhos.forEach((r, i) => {
-        const div = document.createElement('div');
-        div.style.border = "1px solid #94CF4F";
-        div.style.borderRadius = "6px";
-        div.style.padding = "5px";
-        div.style.marginBottom = "5px";
-        div.style.cursor = "pointer";
-        div.innerHTML = `<strong>${r.titulo}</strong>`;
-        div.onclick = () => {
-          editRascunhoIndex = i;
-          titulo.value = r.titulo;
-          km.value = r.km || "";
-          valor.value = r.valor || "";
-          descricao.value = r.descricao || "";
-          popupTitle.textContent = "Editar Rascunho";
-          abrirPopup('popupAdd');
-          fecharPopup('popupRascunhos');
-        };
-        const delBtn = document.createElement('button');
-        delBtn.innerText = "🗑️";
-        delBtn.style.float = "right";
-        delBtn.onclick = (e) => {
-          e.stopPropagation();
-          if(confirm("Excluir rascunho?")) {
-            rascunhos.splice(i,1);
-            localStorage.setItem('rascunhos', JSON.stringify(rascunhos));
-            abrirRascunhos();
-          }
-        };
-        div.appendChild(delBtn);
-        container.appendChild(div);
-      });
-      abrirPopup('popupRascunhos');
-    }
-
-    document.getElementById('rascunhoBtn').onclick = abrirRascunhos;
-
-    // Formatação em tempo real
-    km.addEventListener("input", () => {
-      km.value = km.value.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    });
-    valor.addEventListener("input", () => {
-      let v = valor.value.replace(/\D/g,"");
-      v = (v/100).toFixed(2)+"";
-      v = v.replace(".",",");
-      v = v.replace(/\B(?=(\d{3})+(?!\d))/g,".");
-      valor.value = v;
-    });
-
-    salvarBtn.onclick = () => {
-      const t = titulo.value.trim();
-      if(!t) return alert("Digite um título.");
-      const d = { titulo: t, km: km.value, valor: valor.value, descricao: descricao.value };
-      if(editRascunhoIndex !== null) {
-        rascunhos.splice(editRascunhoIndex,1);
-        editRascunhoIndex = null;
-      }
-      if(editIndex === null) descricoes.push(d);
-      else descricoes[editIndex] = d;
-      fecharPopup('popupAdd');
-      salvar();
-      showNotification("Descrição salva!");
-    };
-
-    cancelarBtn.onclick = () => fecharPopup('popupAdd');
-
-    function editarDescricao(i) {
-      const d = descricoes[i];
-      editIndex = i;
-      titulo.value = d.titulo;
-      km.value = d.km;
-      valor.value = d.valor;
-      descricao.value = d.descricao;
-      popupTitle.textContent = "Editar Descrição";
-      abrirPopup('popupAdd');
-    }
-
-    deleteBtn.onclick = () => {
-      const selecionados = document.querySelectorAll('.card input[type="checkbox"]:checked');
-      if(selecionados.length === 0) return alert("Nenhum item selecionado.");
-      if(!confirm("Excluir selecionados?")) return;
-      const indices = Array.from(selecionados).map(cb => parseInt(cb.dataset.index));
-      descricoes = descricoes.filter((_,i)=>!indices.includes(i));
-      modoSelecao = false;
-      deleteBtn.style.display = 'none';
-      salvar();
-    };
-
-    selectBtn.onclick = () => {
-      modoSelecao = !modoSelecao;
-      deleteBtn.style.display = modoSelecao ? 'inline-block' : 'none';
-      render();
-    };
-
-    configBtn.onclick = () => abrirPopup('popupConfig');
-    search.addEventListener('input', render);
-
-    // Tema
-    function alternarTema() {
-      document.body.classList.toggle('light');
-      if(document.body.classList.contains('light')) {
-        document.body.style.background = '#f2f2f2';
-        document.body.style.color = '#000';
-      } else {
-        document.body.style.background = '#121212';
-        document.body.style.color = '#fff';
-      }
-    }
-
-    // Backup
-    function abrirPopupBackup() { document.getElementById('popupBackup').style.display = 'flex'; }
-    function exportarBackup() {
-      const data = { descricoes, rascunhos, numero };
-      const blob = new Blob([JSON.stringify(data,null,2)], {type:"application/json"});
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(blob);
-      a.download = "backup_sharkhub.json";
-      a.click();
-      URL.revokeObjectURL(a.href);
-      showNotification("✅ Backup exportado!");
-    }
-    document.getElementById("inputBackup").addEventListener("change", (event)=>{
-      const file = event.target.files[0];
-      if(!file) return;
-      const reader = new FileReader();
-      reader.onload = (e)=>{
-        try {
-          const data = JSON.parse(e.target.result);
-          descricoes = data.descricoes || [];
-          rascunhos = data.rascunhos || [];
-          numero = data.numero || "(00) 0000-0000";
-          telefoneBox.value = numero;
-          salvar();
-          showNotification("✅ Backup importado!");
-        } catch(err){ alert("❌ Erro: "+err.message); }
-      };
-      reader.readAsText(file);
-    });
-
-    window.onload = render;
-  </script>
-
+window.onload = render;
+</script>
 </body>
 </html>
