@@ -18,7 +18,6 @@
       transition: background 0.3s, color 0.3s;
     }
 
-    /* HEADER */
     header {
       display: flex;
       justify-content: space-between;
@@ -30,13 +29,12 @@
 
     #logoHeader {
       display: flex;
-      flex-direction: column;
       align-items: center;
-      gap: 5px;
+      gap: 10px;
     }
 
     #logoHeader img {
-      max-width: 180px;
+      width: 150px;
       height: auto;
     }
 
@@ -49,17 +47,18 @@
       width: 160px;
     }
 
-    header input[type="text"]#search {
+    header input[type="text"] {
       background: #2a2a2a;
       border: none;
       padding: 8px;
       border-radius: 8px;
       color: #fff;
-      min-width: 250px;
+      flex: 1;
+      margin: 0 10px;
     }
 
     header button {
-      background: #94CF4F;
+      background: #94cf4f;
       border: none;
       color: white;
       padding: 10px 15px;
@@ -69,9 +68,8 @@
       transition: background 0.2s;
     }
 
-    header button:hover { background: #7fbf45; }
+    header button:hover { background: #7ebf42; }
 
-    /* MAIN */
     main {
       flex: 1;
       padding: 20px;
@@ -86,9 +84,11 @@
       padding: 15px;
       position: relative;
       transition: transform 0.2s, background 0.2s;
+      cursor: pointer;
     }
 
-    .card:hover { transform: scale(1.02); background: #2a2a2a; }
+    .card.selected { background: #333333; }
+    .card:hover { transform: scale(1.02); }
 
     .edit-btn {
       position: absolute;
@@ -104,17 +104,6 @@
 
     .card:hover .edit-btn { display: block; }
 
-    .card input[type="checkbox"] {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      transform: scale(1.3);
-      display: none;
-    }
-
-    .card.selected input[type="checkbox"] { display: block; }
-
-    /* POPUPS */
     .popup {
       position: fixed;
       inset: 0;
@@ -123,13 +112,10 @@
       justify-content: center;
       align-items: center;
       opacity: 0;
-      transition: opacity 0.3s ease;
+      transition: opacity 0.3s;
     }
 
-    .popup.show {
-      display: flex;
-      opacity: 1;
-    }
+    .popup.show { display: flex; opacity: 1; }
 
     .popup-content {
       background: #1e1e1e;
@@ -137,6 +123,7 @@
       border-radius: 10px;
       width: 90%;
       max-width: 400px;
+      transition: transform 0.3s;
     }
 
     .popup-content input, .popup-content textarea {
@@ -150,17 +137,14 @@
     }
 
     .popup-content button {
-      background: #94CF4F;
+      background: #94cf4f;
       color: white;
       border: none;
       padding: 10px 15px;
       border-radius: 8px;
       cursor: pointer;
       margin: 8px 5px 0 0;
-      transition: background 0.2s;
     }
-
-    .popup-content button:hover { background: #7fbf45; }
 
     footer {
       background: #1e1e1e;
@@ -170,62 +154,46 @@
       font-size: 14px;
     }
 
-    @media (max-width: 600px) {
-      header input#search { width: 100%; margin-top: 10px; }
-    }
-
-    /* NOTIFICAÇÕES */
-    #notificacoes {
+    .notification {
       position: fixed;
       bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-      z-index: 1000;
-    }
-
-    .noti {
-      background: #94CF4F;
+      background: #94cf4f;
       color: #fff;
-      padding: 10px 15px;
-      border-radius: 8px;
+      padding: 10px 20px;
+      border-radius: 6px;
+      margin-top: 5px;
       min-width: 200px;
-      max-width: 300px;
       text-align: center;
       opacity: 0;
-      animation: fadeInOut 3s forwards;
+      pointer-events: none;
+      transition: all 0.5s ease;
     }
 
-    @keyframes fadeInOut {
-      0% { opacity: 0; transform: translateY(20px); }
-      10%, 90% { opacity: 1; transform: translateY(0); }
-      100% { opacity: 0; transform: translateY(20px); }
-    }
+    body.light { background: #e5e5e5; color: #000; }
+    body.light .popup-content { background: #fff; color: #000; }
+    body.light header, body.light footer { background: #ccc; color: #000; }
+    body.light #telefoneBox, body.light header input[type="text"] { background: #f2f2f2; color: #000; }
 
-    /* MODO CLARO */
-    body.light {
-      background: #f2f2f2;
-      color: #000;
+    @media (max-width: 600px) {
+      header input { width: 100%; margin-top: 10px; }
     }
-    body.light main .card { background: #e0e0e0; color: #000; }
-    body.light .popup-content { background: #f5f5f5; color: #000; }
-    body.light header input, body.light #telefoneBox { background: #fff; color: #000; }
   </style>
 </head>
 <body>
   <header>
     <div id="logoHeader">
       <img id="logoImg" src="img/Design sem nome.png" alt="Logo SharkHub">
+      <span>📲</span>
       <input type="text" id="telefoneBox" value="(00) 0000-0000" />
     </div>
     <input type="text" id="search" placeholder="Pesquisar...">
     <div>
       <button id="addBtn">Adicionar</button>
+      <button id="draftBtn">Rascunho</button>
       <button id="selectBtn">Selecionar</button>
       <button id="deleteBtn" style="display:none;">🗑️ Excluir</button>
-      <button id="draftBtn">Rascunho</button>
       <button id="configBtn">Configurações</button>
     </div>
   </header>
@@ -234,9 +202,7 @@
 
   <footer>SharkHub Post © 2025</footer>
 
-  <div id="notificacoes"></div>
-
-  <!-- POPUPS -->
+  <!-- Popups -->
   <div class="popup" id="popupAdd">
     <div class="popup-content">
       <h3 id="popupTitle">Nova Descrição</h3>
@@ -244,9 +210,11 @@
       <input type="text" id="km" placeholder="Quilometragem">
       <input type="text" id="valor" placeholder="Valor">
       <textarea id="descricao" placeholder="Descrição..."></textarea>
-      <button id="saveDraftBtn">Salvar Rascunho</button>
-      <button id="salvarBtn">Salvar</button>
-      <button id="cancelarBtn">Cancelar</button>
+      <div style="display:flex;gap:10px;">
+        <button id="salvarBtn">Salvar</button>
+        <button id="rascunhoBtn">Rascunho</button>
+        <button id="cancelarBtn">Cancelar</button>
+      </div>
     </div>
   </div>
 
@@ -254,35 +222,22 @@
     <div class="popup-content">
       <h3>Configurações</h3>
       <button onclick="alternarTema()">Alternar Tema</button>
-      <button onclick="abrirPopupBackup()">💾 Backup</button>
+      <button onclick="abrirPopup('popupDrafts')">Gerenciar Rascunhos</button>
       <button onclick="fecharPopup('popupConfig')">Fechar</button>
-    </div>
-  </div>
-
-  <div id="popupBackup" class="popup">
-    <div class="popup-content">
-      <h3>Backup / Importar-Exportar</h3>
-      <p>Escolha o que deseja fazer:</p>
-      <div style="display:flex;flex-direction:column;gap:10px;">
-        <button onclick="exportarBackup()">⬇️ Exportar dados</button>
-        <input type="file" id="inputBackup" style="display:none;" accept=".json" />
-        <button onclick="document.getElementById('inputBackup').click()">⬆️ Importar dados</button>
-        <button onclick="fecharPopup('popupBackup')">Fechar</button>
-      </div>
     </div>
   </div>
 
   <div class="popup" id="popupDrafts">
     <div class="popup-content">
-      <h3>Gerenciar Rascunhos</h3>
-      <div id="draftList" style="display:flex;flex-direction:column;gap:10px;"></div>
+      <h3>Rascunhos</h3>
+      <div id="draftsContainer" style="display:flex;flex-direction:column;gap:10px;"></div>
       <button onclick="fecharPopup('popupDrafts')">Fechar</button>
     </div>
   </div>
 
   <script>
     let descricoes = JSON.parse(localStorage.getItem('descricoes') || '[]');
-    let drafts = JSON.parse(localStorage.getItem('drafts') || '[]');
+    let rascunhos = JSON.parse(localStorage.getItem('rascunhos') || '[]');
     let numero = localStorage.getItem('numero') || "(00) 0000-0000";
     let editIndex = null;
     let modoSelecao = false;
@@ -297,12 +252,13 @@
       localStorage.setItem('numero', numero);
     });
 
-    function showNoti(msg) {
-      const noti = document.createElement('div');
-      noti.className = 'noti';
-      noti.textContent = msg;
-      document.getElementById('notificacoes').appendChild(noti);
-      setTimeout(()=>noti.remove(),3000);
+    function showNotification(text) {
+      const notif = document.createElement('div');
+      notif.className = 'notification';
+      notif.innerText = text;
+      document.body.appendChild(notif);
+      setTimeout(() => notif.style.opacity = 1, 50);
+      setTimeout(() => { notif.style.opacity = 0; setTimeout(()=>notif.remove(),500); }, 3000);
     }
 
     function render() {
@@ -311,30 +267,24 @@
       descricoes.filter(d => d.titulo.toLowerCase().includes(search)).forEach((d, i) => {
         const card = document.createElement('div');
         card.className = 'card';
-        if (modoSelecao && d.selected) card.classList.add('selected');
-
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.dataset.index = i;
-        checkbox.checked = d.selected || false;
-        checkbox.addEventListener('change', (e)=>{
-          d.selected = e.target.checked;
-        });
+        if (modoSelecao) card.classList.add('selectable');
+        if (d.selected) card.classList.add('selected');
 
         const editBtn = document.createElement('button');
         editBtn.className = 'edit-btn';
         editBtn.innerHTML = '✏️';
-        editBtn.onclick = (e)=>{ e.stopPropagation(); editarDescricao(i); };
+        editBtn.onclick = (e) => { e.stopPropagation(); abrirPopupAdd(i); };
 
-        card.innerHTML = `<h4 style="color:#94CF4F">${d.titulo}</h4><p>KM: ${d.km}</p><p>Valor: ${d.valor}</p>`;
-        card.appendChild(checkbox);
+        card.innerHTML = `<h4 style="color:#94cf4f">${d.titulo}</h4><p>KM: ${d.km}</p><p>Valor: ${d.valor}</p>`;
         card.appendChild(editBtn);
 
-        card.onclick = ()=>{
-          if (modoSelecao) { d.selected = !d.selected; render(); }
-          else { 
+        card.onclick = () => {
+          if (modoSelecao) {
+            d.selected = !d.selected;
+            render();
+          } else {
             navigator.clipboard.writeText(`${d.descricao}\n📲 ${numero}`);
-            showNoti('Descrição copiada!'); 
+            showNotification("Descrição copiada!");
           }
         };
 
@@ -342,174 +292,113 @@
       });
     }
 
-    function salvar() {
+    function salvarLocal() {
       localStorage.setItem('descricoes', JSON.stringify(descricoes));
-      localStorage.setItem('drafts', JSON.stringify(drafts));
-      localStorage.setItem('numero', numero);
       render();
     }
 
     function abrirPopup(id) { 
+      fecharPopup('popupConfig');
+      fecharPopup('popupDrafts');
       document.getElementById(id).classList.add('show'); 
     }
-    function fecharPopup(id) { 
-      document.getElementById(id).classList.remove('show'); 
+    function fecharPopup(id) { document.getElementById(id).classList.remove('show'); }
+
+    function abrirPopupAdd(index=null){
+      editIndex = index;
+      if(index!==null){
+        const d = descricoes[index];
+        titulo.value = d.titulo;
+        km.value = d.km;
+        valor.value = d.valor;
+        descricao.value = d.descricao;
+        popupTitle.textContent = "Editar Descrição";
+      } else {
+        titulo.value = km.value = valor.value = descricao.value = "";
+        popupTitle.textContent = "Nova Descrição";
+      }
+      abrirPopup('popupAdd');
     }
 
-    document.getElementById('addBtn').onclick = ()=>{
+    addBtn.onclick = () => abrirPopupAdd();
+
+    salvarBtn.onclick = () => {
+      const t = titulo.value.trim();
+      if(!t) return alert("Digite um título");
+      const d = {titulo:t, km:km.value, valor:valor.value, descricao:descricao.value};
+      if(editIndex!==null) descricoes[editIndex]=d;
+      else descricoes.push(d);
+      fecharPopup('popupAdd');
+      salvarLocal();
+      showNotification("Descrição salva!");
+    };
+
+    cancelarBtn.onclick = () => fecharPopup('popupAdd');
+
+    rascunhoBtn.onclick = () => {
+      const t = titulo.value.trim();
+      if(!t) return alert("Digite um título");
+      const d = {titulo:t, km:km.value, valor:valor.value, descricao:descricao.value};
+      rascunhos.push(d);
+      localStorage.setItem('rascunhos', JSON.stringify(rascunhos));
+      fecharPopup('popupAdd');
+      showNotification("Rascunho salvo!");
+    };
+
+    selectBtn.onclick = () => {
+      modoSelecao = !modoSelecao;
+      deleteBtn.style.display = modoSelecao ? 'inline-block' : 'none';
+      descricoes.forEach(d=>d.selected=false);
+      render();
+    };
+
+    deleteBtn.onclick = () => {
+      descricoes = descricoes.filter(d=>!d.selected);
+      modoSelecao=false;
+      deleteBtn.style.display='none';
+      salvarLocal();
+      showNotification("Descrição(s) excluída(s)!");
+    };
+
+    draftBtn.onclick = () => abrirPopup('popupDrafts');
+
+    function renderDrafts(){
+      const container = document.getElementById('draftsContainer');
+      container.innerHTML="";
+      rascunhos.forEach((d,i)=>{
+        const div = document.createElement('div');
+        div.className='card';
+        div.style.cursor='pointer';
+        div.innerHTML=`<h4 style="color:#94cf4f">${d.titulo}</h4><p>KM: ${d.km}</p><p>Valor: ${d.valor}</p>`;
+        div.onclick = ()=>{ abrirPopupAddFromDraft(i); };
+        container.appendChild(div);
+      });
+    }
+
+    function abrirPopupAddFromDraft(i){
+      const d = rascunhos[i];
       editIndex = null;
-      titulo.value = km.value = valor.value = descricao.value = "";
-      popupTitle.textContent = "Nova Descrição";
-      abrirPopup('popupAdd');
-    };
-
-    document.getElementById('saveDraftBtn').onclick = ()=>{
-      const t = titulo.value.trim();
-      if(!t) return alert("Digite um título.");
-      drafts.push({titulo:t, km:km.value, valor:valor.value, descricao:descricao.value});
-      salvar();
-      fecharPopup('popupAdd');
-      showNoti('Rascunho salvo!');
-    };
-
-    document.getElementById('salvarBtn').onclick = ()=>{
-      const t = titulo.value.trim();
-      if(!t) return alert("Digite um título.");
-      const d = { titulo:t, km:km.value, valor:valor.value, descricao:descricao.value };
-      if(editIndex===null) descricoes.push(d);
-      else descricoes[editIndex]=d;
-      salvar();
-      fecharPopup('popupAdd');
-      showNoti('Descrição salva!');
-    };
-
-    document.getElementById('cancelarBtn').onclick = ()=>fecharPopup('popupAdd');
-
-    function editarDescricao(i){
-      const d = descricoes[i];
-      editIndex = i;
       titulo.value = d.titulo;
       km.value = d.km;
       valor.value = d.valor;
       descricao.value = d.descricao;
-      popupTitle.textContent="Editar Descrição";
+      popupTitle.textContent = "Editar Rascunho";
+      fecharPopup('popupDrafts');
       abrirPopup('popupAdd');
     }
 
-    // Seleção
-    const selectBtn = document.getElementById('selectBtn');
-    const deleteBtn = document.getElementById('deleteBtn');
+    configBtn.onclick = () => abrirPopup('popupConfig');
 
-    selectBtn.onclick = ()=>{
-      modoSelecao = !modoSelecao;
-      descricoes.forEach(d=>d.selected=false);
-      deleteBtn.style.display = modoSelecao?'inline-block':'none';
-      render();
-    };
-
-    deleteBtn.onclick = ()=>{
-      const selected = descricoes.filter(d=>d.selected);
-      if(selected.length===0) return showNoti('Nenhum item selecionado.');
-      descricoes = descricoes.filter(d=>!d.selected);
-      modoSelecao=false;
-      deleteBtn.style.display='none';
-      salvar();
-      showNoti('Itens excluídos!');
-    };
-
-    // Rascunhos
-    const draftBtn = document.getElementById('draftBtn');
-    draftBtn.onclick = ()=>{
-      renderDrafts();
-      abrirPopup('popupDrafts');
-      fecharPopup('popupConfig');
-    };
-
-    function renderDrafts(){
-      const list = document.getElementById('draftList');
-      list.innerHTML='';
-      drafts.forEach((d,i)=>{
-        const div = document.createElement('div');
-        div.style.background='#2a2a2a';
-        div.style.padding='10px';
-        div.style.borderRadius='8px';
-        div.style.cursor='pointer';
-        div.textContent=d.titulo;
-        div.onclick = ()=>{
-          titulo.value=d.titulo;
-          km.value=d.km;
-          valor.value=d.valor;
-          descricao.value=d.descricao;
-          editIndex=null;
-          abrirPopup('popupAdd');
-        };
-        const delBtn = document.createElement('button');
-        delBtn.textContent='🗑️';
-        delBtn.style.marginLeft='5px';
-        delBtn.onclick=(e)=>{
-          e.stopPropagation();
-          drafts.splice(i,1);
-          salvar();
-          renderDrafts();
-          showNoti('Rascunho excluído!');
-        };
-        div.appendChild(delBtn);
-        list.appendChild(div);
-      });
-    }
-
-    // Tema
     function alternarTema(){
       document.body.classList.toggle('light');
-      if(document.body.classList.contains('light')) logoImg.src='img/Design sem nome (1).png';
-      else logoImg.src='img/Design sem nome.png';
+      if(document.body.classList.contains('light')){
+        logoImg.src="img/Design sem nome (1).png";
+      } else {
+        logoImg.src="img/Design sem nome.png";
+      }
     }
 
-    // Backup
-    function abrirPopupBackup(){ abrirPopup('popupBackup'); }
-
-    function exportarBackup(){
-      const data={descricoes, drafts, numero};
-      const blob = new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
-      const a=document.createElement("a");
-      a.href=URL.createObjectURL(blob);
-      a.download="backup_sharkhub.json";
-      a.click();
-      URL.revokeObjectURL(a.href);
-      showNoti("✅ Backup exportado!");
-    }
-
-    document.getElementById("inputBackup").addEventListener("change",(event)=>{
-      const file = event.target.files[0];
-      if(!file) return;
-      const reader = new FileReader();
-      reader.onload=(e)=>{
-        try{
-          const data=JSON.parse(e.target.result);
-          descricoes=data.descricoes||[];
-          drafts=data.drafts||[];
-          numero=data.numero||"(00) 0000-0000";
-          telefoneBox.value=numero;
-          salvar();
-          showNoti("✅ Backup importado!");
-        }catch(err){ showNoti("❌ Erro: "+err.message); }
-      };
-      reader.readAsText(file);
-    });
-
-    // Formatação km/valor
-    km.addEventListener("input", ()=>{
-      km.value=km.value.replace(/\D/g,"").replace(/\B(?=(\d{3})+(?!\d))/g,".");
-    });
-    valor.addEventListener("input", ()=>{
-      let v=valor.value.replace(/\D/g,"");
-      v=(v/100).toFixed(2)+"";
-      v=v.replace(".",",").replace(/\B(?=(\d{3})+(?!\d))/g,".");
-      valor.value=v;
-    });
-
-    search.addEventListener('input',render);
-    window.onload=render;
+    window.onload = () => { render(); renderDrafts(); }
   </script>
 </body>
 </html>
