@@ -4,9 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SharkHub Post</title>
+  <!-- Favicon -->
   <link rel="icon" type="image/png" href="img/fivecon.png">
+
   <style>
     * { box-sizing: border-box; font-family: Arial, sans-serif; }
+
     body {
       background-color: #121212;
       color: #fff;
@@ -15,7 +18,6 @@
       display: flex;
       flex-direction: column;
       min-height: 100vh;
-      transition: background 0.3s, color 0.3s;
     }
 
     header {
@@ -39,7 +41,7 @@
     }
 
     #telefoneBox {
-      background: #2a2a2a;
+      background: #3a3a3a;
       border: none;
       color: #fff;
       padding: 8px;
@@ -48,27 +50,24 @@
     }
 
     header input[type="text"] {
-      background: #2a2a2a;
+      background: #3a3a3a;
       border: none;
       padding: 8px;
       border-radius: 8px;
       color: #fff;
-      flex: 1;
-      margin: 0 10px;
     }
 
     header button {
-      background: #94cf4f;
+      background: #94CF4F;
       border: none;
       color: white;
       padding: 10px 15px;
       border-radius: 8px;
       cursor: pointer;
       margin: 5px;
-      transition: background 0.2s;
     }
 
-    header button:hover { background: #7ebf42; }
+    header button:hover { background: #7DB63A; }
 
     main {
       flex: 1;
@@ -83,12 +82,16 @@
       border-radius: 10px;
       padding: 15px;
       position: relative;
-      transition: transform 0.2s, background 0.2s;
-      cursor: pointer;
+      transition: transform 0.2s;
     }
 
-    .card.selected { background: #333333; }
-    .card:hover { transform: scale(1.02); }
+    .card:hover { transform: scale(1.02); background: #2a2a2a; }
+
+    /* Título da moto verde */
+    .card h4 {
+      color: #94CF4F;
+      margin: 0 0 8px 0;
+    }
 
     .edit-btn {
       position: absolute;
@@ -104,18 +107,24 @@
 
     .card:hover .edit-btn { display: block; }
 
+    .card input[type="checkbox"] {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      transform: scale(1.3);
+      display: none;
+    }
+
+    .card.selected input[type="checkbox"] { display: block; }
+
     .popup {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.7);
+      background: rgba(0, 0, 0, 0.7);
       display: none;
       justify-content: center;
       align-items: center;
-      opacity: 0;
-      transition: opacity 0.3s;
     }
-
-    .popup.show { display: flex; opacity: 1; }
 
     .popup-content {
       background: #1e1e1e;
@@ -123,12 +132,12 @@
       border-radius: 10px;
       width: 90%;
       max-width: 400px;
-      transition: transform 0.3s;
     }
 
-    .popup-content input, .popup-content textarea {
+    .popup-content input,
+    .popup-content textarea {
       width: 100%;
-      background: #2a2a2a;
+      background: #3a3a3a;
       border: none;
       color: #fff;
       padding: 8px;
@@ -137,7 +146,7 @@
     }
 
     .popup-content button {
-      background: #94cf4f;
+      background: #94CF4F;
       color: white;
       border: none;
       padding: 10px 15px;
@@ -145,6 +154,8 @@
       cursor: pointer;
       margin: 8px 5px 0 0;
     }
+
+    .popup-content button:hover { background: #7DB63A; }
 
     footer {
       background: #1e1e1e;
@@ -154,28 +165,6 @@
       font-size: 14px;
     }
 
-    .notification {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #94cf4f;
-      color: #fff;
-      padding: 10px 20px;
-      border-radius: 6px;
-      margin-top: 5px;
-      min-width: 200px;
-      text-align: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: all 0.5s ease;
-    }
-
-    body.light { background: #e5e5e5; color: #000; }
-    body.light .popup-content { background: #fff; color: #000; }
-    body.light header, body.light footer { background: #ccc; color: #000; }
-    body.light #telefoneBox, body.light header input[type="text"] { background: #f2f2f2; color: #000; }
-
     @media (max-width: 600px) {
       header input { width: 100%; margin-top: 10px; }
     }
@@ -184,14 +173,15 @@
 <body>
   <header>
     <div id="logoHeader">
-      <img id="logoImg" src="img/Design sem nome.png" alt="Logo SharkHub">
+      <img src="img/Design sem nome.png" alt="Logo SharkHub">
       <span>📲</span>
       <input type="text" id="telefoneBox" value="(00) 0000-0000" />
     </div>
+
     <input type="text" id="search" placeholder="Pesquisar...">
+
     <div>
       <button id="addBtn">Adicionar</button>
-      <button id="draftBtn">Rascunho</button>
       <button id="selectBtn">Selecionar</button>
       <button id="deleteBtn" style="display:none;">🗑️ Excluir</button>
       <button id="configBtn">Configurações</button>
@@ -202,7 +192,7 @@
 
   <footer>SharkHub Post © 2025</footer>
 
-  <!-- Popups -->
+  <!-- POPUP ADICIONAR/EDITAR -->
   <div class="popup" id="popupAdd">
     <div class="popup-content">
       <h3 id="popupTitle">Nova Descrição</h3>
@@ -210,41 +200,43 @@
       <input type="text" id="km" placeholder="Quilometragem">
       <input type="text" id="valor" placeholder="Valor">
       <textarea id="descricao" placeholder="Descrição..."></textarea>
-      <div style="display:flex;gap:10px;">
-        <button id="salvarBtn">Salvar</button>
-        <button id="rascunhoBtn">Rascunho</button>
-        <button id="cancelarBtn">Cancelar</button>
-      </div>
+      <button id="salvarBtn">Salvar</button>
+      <button id="cancelarBtn">Cancelar</button>
     </div>
   </div>
 
+  <!-- POPUP CONFIGURAÇÕES -->
   <div class="popup" id="popupConfig">
     <div class="popup-content">
       <h3>Configurações</h3>
       <button onclick="alternarTema()">Alternar Tema</button>
-      <button onclick="abrirPopup('popupDrafts')">Gerenciar Rascunhos</button>
+      <button onclick="abrirPopupBackup()">💾 Backup</button>
       <button onclick="fecharPopup('popupConfig')">Fechar</button>
     </div>
   </div>
 
-  <div class="popup" id="popupDrafts">
+  <!-- POPUP BACKUP -->
+  <div id="popupBackup" class="popup">
     <div class="popup-content">
-      <h3>Rascunhos</h3>
-      <div id="draftsContainer" style="display:flex;flex-direction:column;gap:10px;"></div>
-      <button onclick="fecharPopup('popupDrafts')">Fechar</button>
+      <h3>Backup / Importar-Exportar</h3>
+      <p>Escolha o que deseja fazer:</p>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <button onclick="exportarBackup()">⬇️ Exportar dados</button>
+        <input type="file" id="inputBackup" style="display:none;" accept=".json" />
+        <button onclick="document.getElementById('inputBackup').click()">⬆️ Importar dados</button>
+        <button onclick="fecharPopup('popupBackup')">Fechar</button>
+      </div>
     </div>
   </div>
 
   <script>
     let descricoes = JSON.parse(localStorage.getItem('descricoes') || '[]');
-    let rascunhos = JSON.parse(localStorage.getItem('rascunhos') || '[]');
     let numero = localStorage.getItem('numero') || "(00) 0000-0000";
     let editIndex = null;
     let modoSelecao = false;
 
     const telefoneBox = document.getElementById('telefoneBox');
     const cardsContainer = document.getElementById('cardsContainer');
-    const logoImg = document.getElementById('logoImg');
 
     telefoneBox.value = numero;
     telefoneBox.addEventListener("input", () => {
@@ -252,39 +244,33 @@
       localStorage.setItem('numero', numero);
     });
 
-    function showNotification(text) {
-      const notif = document.createElement('div');
-      notif.className = 'notification';
-      notif.innerText = text;
-      document.body.appendChild(notif);
-      setTimeout(() => notif.style.opacity = 1, 50);
-      setTimeout(() => { notif.style.opacity = 0; setTimeout(()=>notif.remove(),500); }, 3000);
-    }
-
     function render() {
       cardsContainer.innerHTML = "";
       const search = document.getElementById('search').value.toLowerCase();
       descricoes.filter(d => d.titulo.toLowerCase().includes(search)).forEach((d, i) => {
         const card = document.createElement('div');
         card.className = 'card';
-        if (modoSelecao) card.classList.add('selectable');
-        if (d.selected) card.classList.add('selected');
+        if (modoSelecao) card.classList.add('selected');
+
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.dataset.index = i;
 
         const editBtn = document.createElement('button');
         editBtn.className = 'edit-btn';
         editBtn.innerHTML = '✏️';
-        editBtn.onclick = (e) => { e.stopPropagation(); abrirPopupAdd(i); };
+        editBtn.onclick = (e) => { e.stopPropagation(); editarDescricao(i); };
 
-        card.innerHTML = `<h4 style="color:#94cf4f">${d.titulo}</h4><p>KM: ${d.km}</p><p>Valor: ${d.valor}</p>`;
+        card.innerHTML = `<h4>${d.titulo}</h4><p>KM: ${d.km}</p><p>Valor: ${d.valor}</p>`;
+        card.prepend(checkbox);
         card.appendChild(editBtn);
 
         card.onclick = () => {
-          if (modoSelecao) {
-            d.selected = !d.selected;
-            render();
-          } else {
-            navigator.clipboard.writeText(`${d.descricao}\n📲 ${numero}`);
-            showNotification("Descrição copiada!");
+          if (modoSelecao) checkbox.checked = !checkbox.checked;
+          else {
+            const texto = `${d.descricao}\n📲 ${numero}`;
+            navigator.clipboard.writeText(texto);
+            alert('Descrição copiada com telefone!');
           }
         };
 
@@ -292,113 +278,119 @@
       });
     }
 
-    function salvarLocal() {
+    function salvar() {
       localStorage.setItem('descricoes', JSON.stringify(descricoes));
+      localStorage.setItem('numero', numero);
       render();
     }
 
-    function abrirPopup(id) { 
-      fecharPopup('popupConfig');
-      fecharPopup('popupDrafts');
-      document.getElementById(id).classList.add('show'); 
-    }
-    function fecharPopup(id) { document.getElementById(id).classList.remove('show'); }
+    function abrirPopup(id) { document.getElementById(id).style.display = 'flex'; }
+    function fecharPopup(id) { document.getElementById(id).style.display = 'none'; }
 
-    function abrirPopupAdd(index=null){
-      editIndex = index;
-      if(index!==null){
-        const d = descricoes[index];
-        titulo.value = d.titulo;
-        km.value = d.km;
-        valor.value = d.valor;
-        descricao.value = d.descricao;
-        popupTitle.textContent = "Editar Descrição";
-      } else {
-        titulo.value = km.value = valor.value = descricao.value = "";
-        popupTitle.textContent = "Nova Descrição";
-      }
+    document.getElementById('addBtn').onclick = () => {
+      editIndex = null;
+      titulo.value = km.value = valor.value = descricao.value = "";
+      popupTitle.textContent = "Nova Descrição";
       abrirPopup('popupAdd');
-    }
+    };
 
-    addBtn.onclick = () => abrirPopupAdd();
+    km.addEventListener("input", () => {
+      km.value = km.value.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    });
+
+    valor.addEventListener("input", () => {
+      let v = valor.value.replace(/\D/g, "");
+      v = (v / 100).toFixed(2) + "";
+      v = v.replace(".", ",");
+      v = v.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      valor.value = v;
+    });
 
     salvarBtn.onclick = () => {
       const t = titulo.value.trim();
-      if(!t) return alert("Digite um título");
-      const d = {titulo:t, km:km.value, valor:valor.value, descricao:descricao.value};
-      if(editIndex!==null) descricoes[editIndex]=d;
-      else descricoes.push(d);
+      if (!t) return alert("Digite um título.");
+      const d = { titulo: t, km: km.value, valor: valor.value, descricao: descricao.value };
+      if (editIndex === null) descricoes.push(d);
+      else descricoes[editIndex] = d;
       fecharPopup('popupAdd');
-      salvarLocal();
-      showNotification("Descrição salva!");
+      salvar();
     };
 
     cancelarBtn.onclick = () => fecharPopup('popupAdd');
 
-    rascunhoBtn.onclick = () => {
-      const t = titulo.value.trim();
-      if(!t) return alert("Digite um título");
-      const d = {titulo:t, km:km.value, valor:valor.value, descricao:descricao.value};
-      rascunhos.push(d);
-      localStorage.setItem('rascunhos', JSON.stringify(rascunhos));
-      fecharPopup('popupAdd');
-      showNotification("Rascunho salvo!");
+    function editarDescricao(i) {
+      const d = descricoes[i];
+      editIndex = i;
+      titulo.value = d.titulo;
+      km.value = d.km;
+      valor.value = d.valor;
+      descricao.value = d.descricao;
+      popupTitle.textContent = "Editar Descrição";
+      abrirPopup('popupAdd');
+    }
+
+    deleteBtn.onclick = () => {
+      const selecionados = document.querySelectorAll('.card input[type="checkbox"]:checked');
+      if (selecionados.length === 0) return alert("Nenhum item selecionado.");
+      if (!confirm("Excluir selecionados?")) return;
+      const indices = Array.from(selecionados).map(cb => parseInt(cb.dataset.index));
+      descricoes = descricoes.filter((_, i) => !indices.includes(i));
+      modoSelecao = false;
+      deleteBtn.style.display = 'none';
+      salvar();
     };
 
     selectBtn.onclick = () => {
       modoSelecao = !modoSelecao;
       deleteBtn.style.display = modoSelecao ? 'inline-block' : 'none';
-      descricoes.forEach(d=>d.selected=false);
       render();
     };
 
-    deleteBtn.onclick = () => {
-      descricoes = descricoes.filter(d=>!d.selected);
-      modoSelecao=false;
-      deleteBtn.style.display='none';
-      salvarLocal();
-      showNotification("Descrição(s) excluída(s)!");
-    };
-
-    draftBtn.onclick = () => abrirPopup('popupDrafts');
-
-    function renderDrafts(){
-      const container = document.getElementById('draftsContainer');
-      container.innerHTML="";
-      rascunhos.forEach((d,i)=>{
-        const div = document.createElement('div');
-        div.className='card';
-        div.style.cursor='pointer';
-        div.innerHTML=`<h4 style="color:#94cf4f">${d.titulo}</h4><p>KM: ${d.km}</p><p>Valor: ${d.valor}</p>`;
-        div.onclick = ()=>{ abrirPopupAddFromDraft(i); };
-        container.appendChild(div);
-      });
-    }
-
-    function abrirPopupAddFromDraft(i){
-      const d = rascunhos[i];
-      editIndex = null;
-      titulo.value = d.titulo;
-      km.value = d.km;
-      valor.value = d.valor;
-      descricao.value = d.descricao;
-      popupTitle.textContent = "Editar Rascunho";
-      fecharPopup('popupDrafts');
-      abrirPopup('popupAdd');
-    }
-
     configBtn.onclick = () => abrirPopup('popupConfig');
+    search.addEventListener('input', render);
 
-    function alternarTema(){
+    function alternarTema() {
       document.body.classList.toggle('light');
-      if(document.body.classList.contains('light')){
-        logoImg.src="img/Design sem nome (1).png";
+      if (document.body.classList.contains('light')) {
+        document.body.style.background = '#f2f2f2';
+        document.body.style.color = '#000';
       } else {
-        logoImg.src="img/Design sem nome.png";
+        document.body.style.background = '#121212';
+        document.body.style.color = '#fff';
       }
     }
 
-    window.onload = () => { render(); renderDrafts(); }
+    function abrirPopupBackup() { document.getElementById('popupBackup').style.display = 'flex'; }
+
+    function exportarBackup() {
+      const data = { descricoes, numero };
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "backup_sharkhub.json";
+      a.click();
+      URL.revokeObjectURL(a.href);
+      alert("✅ Backup exportado!");
+    }
+
+    document.getElementById("inputBackup").addEventListener("change", (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const data = JSON.parse(e.target.result);
+          descricoes = data.descricoes || [];
+          numero = data.numero || "(00) 0000-0000";
+          telefoneBox.value = numero;
+          salvar();
+          alert("✅ Backup importado!");
+        } catch (err) { alert("❌ Erro: " + err.message); }
+      };
+      reader.readAsText(file);
+    });
+
+    window.onload = render;
   </script>
 </body>
 </html>
