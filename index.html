@@ -180,7 +180,7 @@ footer { background: #1e1e1e; padding: 10px; text-align: center; color: #888; fo
 
 /* Contador de descrições */
 #contador {
-  position: fixed;
+  position: fixed;      /* fica preso no canto */
   top: 15px;
   right: 15px;
   background: #94CF4F;
@@ -194,6 +194,7 @@ footer { background: #1e1e1e; padding: 10px; text-align: center; color: #888; fo
   justify-content: center;
   align-items: center;
   box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  z-index: 999;         /* sempre acima dos outros elementos */
   animation: pulse 1s ease;
 }
 
@@ -282,7 +283,7 @@ body.light #notification {
 <main id="cardsContainer"></main>
 <footer>SharkHub Post © 2025</footer>
 
-<!-- POPUP ADICIONAR/EDITAR -->
+<!-- POPUPS e scripts -->
 <div class="popup" id="popupAdd">
   <div class="popup-content">
     <h3 id="popupTitle">Nova Descrição</h3>
@@ -295,7 +296,6 @@ body.light #notification {
   </div>
 </div>
 
-<!-- POPUP CONFIGURAÇÕES -->
 <div class="popup" id="popupConfig">
   <div class="popup-content">
     <h3>Configurações</h3>
@@ -305,7 +305,6 @@ body.light #notification {
   </div>
 </div>
 
-<!-- POPUP BACKUP -->
 <div id="popupBackup" class="popup">
   <div class="popup-content">
     <h3>Backup / Importar-Exportar</h3>
@@ -319,7 +318,6 @@ body.light #notification {
   </div>
 </div>
 
-<!-- Notificação do site -->
 <div id="notification"></div>
 
 <script>
@@ -419,8 +417,8 @@ km.addEventListener("input", ()=>{
 
 valor.addEventListener("input", ()=>{
   let v=valor.value.replace(/\D/g,"");
-  v=(v/100).toFixed(2)+"";
-  v=v.replace(".",",");
+  v=(v/100).toFixed(2)+""; 
+  v=v.replace(".",","); 
   v=v.replace(/\B(?=(\d{3})+(?!\d))/g,".");
   valor.value=v;
 });
