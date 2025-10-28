@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SharkHub Post</title>
 <link rel="icon" type="image/png" href="img/fivecon.png">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;900&display=swap" rel="stylesheet">
 
 <style>
 * { box-sizing: border-box; font-family: Arial, sans-serif; transition: all 0.3s ease; }
@@ -156,6 +157,7 @@ footer { background: #1e1e1e; padding: 10px; text-align: center; color: #888; fo
 
 @media (max-width: 600px) { header input { width: 100%; margin-top: 10px; } }
 
+/* Notificação estilo push */
 #notification {
   position: fixed;
   bottom: 20px;
@@ -174,6 +176,32 @@ footer { background: #1e1e1e; padding: 10px; text-align: center; color: #888; fo
   display: block;
   opacity: 1;
   transform: translateX(-50%) translateY(0);
+}
+
+/* Contador de descrições */
+#contador {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  background: #94CF4F;
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 900;
+  font-size: 18px;
+  padding: 10px 14px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  animation: pulse 1s ease;
+}
+
+/* pulse animation */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
 }
 
 /* === Modo Claro === */
@@ -233,7 +261,7 @@ body.light #notification {
 <body>
 <header>
   <div id="logoHeader">
-    <img id="logoSharkHub" src="img/Design sem nome.png" alt="Logo SharkHub">
+    <img id="logoImg" src="img/Design sem nome.png" alt="Logo SharkHub">
     <span>📲</span>
     <input type="text" id="telefoneBox" value="(00) 0000-0000" />
   </div>
@@ -248,10 +276,13 @@ body.light #notification {
   </div>
 </header>
 
+<!-- Contador de descrições -->
+<div id="contador">0</div>
+
 <main id="cardsContainer"></main>
 <footer>SharkHub Post © 2025</footer>
 
-<!-- POPUPS -->
+<!-- POPUP ADICIONAR/EDITAR -->
 <div class="popup" id="popupAdd">
   <div class="popup-content">
     <h3 id="popupTitle">Nova Descrição</h3>
@@ -264,6 +295,7 @@ body.light #notification {
   </div>
 </div>
 
+<!-- POPUP CONFIGURAÇÕES -->
 <div class="popup" id="popupConfig">
   <div class="popup-content">
     <h3>Configurações</h3>
@@ -273,6 +305,7 @@ body.light #notification {
   </div>
 </div>
 
+<!-- POPUP BACKUP -->
 <div id="popupBackup" class="popup">
   <div class="popup-content">
     <h3>Backup / Importar-Exportar</h3>
@@ -286,6 +319,7 @@ body.light #notification {
   </div>
 </div>
 
+<!-- Notificação do site -->
 <div id="notification"></div>
 
 <script>
@@ -297,7 +331,8 @@ let modoSelecao = false;
 const telefoneBox = document.getElementById('telefoneBox');
 const cardsContainer = document.getElementById('cardsContainer');
 const notification = document.getElementById('notification');
-const logo = document.getElementById('logoSharkHub');
+const contador = document.getElementById('contador');
+const logoImg = document.getElementById('logoImg');
 
 telefoneBox.value = numero;
 telefoneBox.addEventListener("input", () => {
@@ -305,17 +340,28 @@ telefoneBox.addEventListener("input", () => {
   localStorage.setItem('numero', numero);
 });
 
-function mostrarNotificacao(msg){
+function mostrarNotificacao(msg) {
   notification.textContent = msg;
   notification.classList.add('show');
-  setTimeout(()=>notification.classList.remove('show'),3000);
+  setTimeout(() => notification.classList.remove('show'), 3000);
 }
 
-function render(){
-  cardsContainer.innerHTML="";
+function atualizarContador() {
+  contador.textContent = descricoes.length;
+  contador.style.animation = 'pulse 0.5s';
+  setTimeout(()=> contador.style.animation='', 500);
+}
+
+function atualizarLogo() {
+  if(document.body.classList.contains('light')) logoImg.src='img/Design sem nome (1).png';
+  else logoImg.src='img/Design sem nome.png';
+}
+
+function render() {
+  cardsContainer.innerHTML = "";
   const search = document.getElementById('search').value.toLowerCase();
-  descricoes.filter(d=>d.titulo.toLowerCase().includes(search)).forEach((d,i)=>{
-    const card = document.createElement('div');
+  descricoes.filter(d => d.titulo.toLowerCase().includes(search)).forEach((d,i)=>{
+    const card=document.createElement('div');
     card.className='card';
     if(modoSelecao) card.classList.add('selected');
 
@@ -326,46 +372,52 @@ function render(){
     const editBtn=document.createElement('button');
     editBtn.className='edit-btn';
     editBtn.innerHTML='✏️';
-    editBtn.onclick=(e)=>{ e.stopPropagation(); editarDescricao(i); };
+    editBtn.onclick = (e)=>{ e.stopPropagation(); editarDescricao(i); };
 
-    card.innerHTML=`<h4>${d.titulo}</h4><p>KM: ${d.km}</p><p>Valor: ${d.valor}</p>`;
+    card.innerHTML = `<h4>${d.titulo}</h4><p>KM: ${d.km}</p><p>Valor: ${d.valor}</p>`;
     card.prepend(checkbox);
     card.appendChild(editBtn);
 
-    card.onclick=()=>{
-      if(modoSelecao) checkbox.checked=!checkbox.checked;
+    card.onclick = ()=>{
+      if(modoSelecao) checkbox.checked = !checkbox.checked;
       else {
-        const texto=`${d.descricao}\n📲 ${numero}`;
+        const texto = `${d.descricao}\n📲 ${numero}`;
         navigator.clipboard.writeText(texto);
         mostrarNotificacao("Descrição copiada com telefone!");
       }
     };
-
     cardsContainer.appendChild(card);
   });
+  atualizarContador();
 }
 
-function salvar(){
-  localStorage.setItem('descricoes',JSON.stringify(descricoes));
-  localStorage.setItem('numero',numero);
+function salvar() {
+  localStorage.setItem('descricoes', JSON.stringify(descricoes));
+  localStorage.setItem('numero', numero);
   render();
 }
 
-function abrirPopup(id){ document.getElementById(id).classList.add('show'); }
-function fecharPopup(id){ document.getElementById(id).classList.remove('show'); }
+function abrirPopup(id) { 
+  const p = document.getElementById(id);
+  p.classList.add('show');
+}
+function fecharPopup(id) { 
+  const p = document.getElementById(id);
+  p.classList.remove('show');
+}
 
-document.getElementById('addBtn').onclick=()=>{
+document.getElementById('addBtn').onclick = ()=>{
   editIndex=null;
   titulo.value=km.value=valor.value=descricao.value="";
   popupTitle.textContent="Nova Descrição";
   abrirPopup('popupAdd');
 };
 
-km.addEventListener("input",()=>{
+km.addEventListener("input", ()=>{
   km.value=km.value.replace(/\D/g,"").replace(/\B(?=(\d{3})+(?!\d))/g,".");
 });
 
-valor.addEventListener("input",()=>{
+valor.addEventListener("input", ()=>{
   let v=valor.value.replace(/\D/g,"");
   v=(v/100).toFixed(2)+"";
   v=v.replace(".",",");
@@ -373,7 +425,7 @@ valor.addEventListener("input",()=>{
   valor.value=v;
 });
 
-salvarBtn.onclick=()=>{
+salvarBtn.onclick = ()=>{
   const t=titulo.value.trim();
   if(!t) return mostrarNotificacao("Digite um título.");
   const d={titulo:t, km:km.value, valor:valor.value, descricao:descricao.value};
@@ -384,7 +436,7 @@ salvarBtn.onclick=()=>{
   mostrarNotificacao("Descrição salva!");
 };
 
-cancelarBtn.onclick=()=>fecharPopup('popupAdd');
+cancelarBtn.onclick = ()=>fecharPopup('popupAdd');
 
 function editarDescricao(i){
   const d=descricoes[i];
@@ -397,7 +449,7 @@ function editarDescricao(i){
   abrirPopup('popupAdd');
 }
 
-deleteBtn.onclick=()=>{
+deleteBtn.onclick = ()=>{
   const selecionados=document.querySelectorAll('.card input[type="checkbox"]:checked');
   if(selecionados.length===0) return mostrarNotificacao("Nenhum item selecionado.");
   if(!confirm("Excluir selecionados?")) return;
@@ -409,25 +461,24 @@ deleteBtn.onclick=()=>{
   mostrarNotificacao("Itens excluídos!");
 };
 
-selectBtn.onclick=()=>{
+selectBtn.onclick = ()=>{
   modoSelecao=!modoSelecao;
   deleteBtn.style.display=modoSelecao?'inline-block':'none';
   render();
 };
 
-configBtn.onclick=()=>abrirPopup('popupConfig');
-search.addEventListener('input',render);
+configBtn.onclick = ()=>abrirPopup('popupConfig');
+search.addEventListener('input', render);
 
 function alternarTema(){
   document.body.classList.toggle('light');
-  // Trocar logo conforme tema
-  logo.src=document.body.classList.contains('light')?"img/Design sem nome (1).png":"img/Design sem nome.png";
+  atualizarLogo();
 }
 
 function abrirPopupBackup(){ abrirPopup('popupBackup'); }
 
 function exportarBackup(){
-  const data={descricoes,numero};
+  const data={descricoes, numero};
   const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
   const a=document.createElement("a");
   a.href=URL.createObjectURL(blob);
@@ -454,7 +505,10 @@ document.getElementById("inputBackup").addEventListener("change",(event)=>{
   reader.readAsText(file);
 });
 
-window.onload=render;
+window.onload=()=>{
+  render();
+  atualizarLogo();
+};
 </script>
 </body>
 </html>
