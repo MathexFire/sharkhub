@@ -423,15 +423,43 @@ valor.addEventListener("input", ()=>{
   valor.value=v;
 });
 
+function editarDescricao(i){
+  const d = descricoes[i];
+  editIndex = i;
+  titulo.value = d.titulo;
+  km.value = d.km;
+  valor.value = d.valor;
+  descricao.value = d.descricao;
+  popupTitle.textContent = "Editar Descrição";
+  salvarBtn.dataset.editing = i; // armazenar o índice no botão
+  abrirPopup('popupAdd');
+}
+
 salvarBtn.onclick = ()=>{
-  const t=titulo.value.trim();
+  const t = titulo.value.trim();
   if(!t) return mostrarNotificacao("Digite um título.");
-  const d={titulo:t, km:km.value, valor:valor.value, descricao:descricao.value};
-  if(editIndex===null) descricoes.push(d);
-  else descricoes[editIndex]=d;
+
+  const d = {
+    titulo: t,
+    km: km.value,
+    valor: valor.value,
+    descricao: descricao.value
+  };
+
+  // Verifica se é edição ou novo
+  const indexEditando = salvarBtn.dataset.editing;
+  if(indexEditando !== undefined && indexEditando !== "") {
+    descricoes[parseInt(indexEditando)] = d;
+    delete salvarBtn.dataset.editing; // limpa o estado
+  } else {
+    descricoes.push(d);
+  }
+
   fecharPopup('popupAdd');
   salvar();
   mostrarNotificacao("Descrição salva!");
+};
+
 };
 
 cancelarBtn.onclick = ()=>fecharPopup('popupAdd');
@@ -510,4 +538,5 @@ window.onload=()=>{
 </script>
 </body>
 </html>
+
 
