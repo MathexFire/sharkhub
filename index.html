@@ -6,7 +6,6 @@
 <title>SharkHub Post</title>
 <link rel="icon" type="image/png" href="img/fivecon.png">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;900&display=swap" rel="stylesheet">
-
 <style>
 * { box-sizing: border-box; font-family: Arial, sans-serif; transition: all 0.3s ease; }
 
@@ -180,7 +179,7 @@ footer { background: #1e1e1e; padding: 10px; text-align: center; color: #888; fo
 
 /* Contador de descrições */
 #contador {
-  position: fixed;      /* fica preso no canto */
+  position: fixed;
   top: 15px;
   right: 15px;
   background: #94CF4F;
@@ -194,11 +193,10 @@ footer { background: #1e1e1e; padding: 10px; text-align: center; color: #888; fo
   justify-content: center;
   align-items: center;
   box-shadow: 0 0 10px rgba(0,0,0,0.5);
-  z-index: 999;         /* sempre acima dos outros elementos */
+  z-index: 999;
   animation: pulse 1s ease;
 }
 
-/* pulse animation */
 @keyframes pulse {
   0% { transform: scale(1); }
   50% { transform: scale(1.15); }
@@ -211,52 +209,17 @@ body.light {
   color: #000;
 }
 
-body.light header {
-  background: #fff;
-}
-
-body.light #telefoneBox,
-body.light header input[type="text"] {
-  background: #e0e0e0;
-  color: #000;
-}
-
-body.light .card {
-  background: #fff;
-  color: #000;
-}
-
-body.light .card h4 {
-  color: #2a7f1d;
-}
-
-body.light .popup-content {
-  background: #fff;
-  color: #000;
-}
-
-body.light .popup-content input,
-body.light .popup-content textarea {
-  background: #e0e0e0;
-  color: #000;
-}
-
-body.light header button,
-body.light .popup-content button {
-  background: #2a7f1d;
-  color: #fff;
-}
-
-body.light header button:hover,
-body.light .popup-content button:hover {
-  background: #1f5c13;
-}
-
+body.light header { background: #fff; }
+body.light #telefoneBox, body.light header input[type="text"] { background: #e0e0e0; color: #000; }
+body.light .card { background: #fff; color: #000; }
+body.light .card h4 { color: #2a7f1d; }
+body.light .popup-content { background: #fff; color: #000; }
+body.light .popup-content input, body.light .popup-content textarea { background: #e0e0e0; color: #000; }
+body.light header button, body.light .popup-content button { background: #2a7f1d; color: #fff; }
+body.light header button:hover, body.light .popup-content button:hover { background: #1f5c13; }
 body.light footer { background: #e0e0e0; color: #555; }
+body.light #notification { background: #2a7f1d; }
 
-body.light #notification {
-  background: #2a7f1d;
-}
 </style>
 </head>
 <body>
@@ -266,9 +229,7 @@ body.light #notification {
     <span>📲</span>
     <input type="text" id="telefoneBox" value="(00) 0000-0000" />
   </div>
-
   <input type="text" id="search" placeholder="Pesquisar...">
-
   <div>
     <button id="addBtn">Adicionar</button>
     <button id="selectBtn">Selecionar</button>
@@ -277,13 +238,11 @@ body.light #notification {
   </div>
 </header>
 
-<!-- Contador de descrições -->
 <div id="contador">0</div>
-
 <main id="cardsContainer"></main>
 <footer>SharkHub Post © 2025</footer>
 
-<!-- POPUPS e scripts -->
+<!-- POPUPS -->
 <div class="popup" id="popupAdd">
   <div class="popup-content">
     <h3 id="popupTitle">Nova Descrição</h3>
@@ -323,7 +282,6 @@ body.light #notification {
 <script>
 let descricoes = JSON.parse(localStorage.getItem('descricoes') || '[]');
 let numero = localStorage.getItem('numero') || "(00) 0000-0000";
-let editIndex = null;
 let modoSelecao = false;
 
 const telefoneBox = document.getElementById('telefoneBox');
@@ -331,6 +289,7 @@ const cardsContainer = document.getElementById('cardsContainer');
 const notification = document.getElementById('notification');
 const contador = document.getElementById('contador');
 const logoImg = document.getElementById('logoImg');
+const salvarBtn = document.getElementById('salvarBtn');
 
 telefoneBox.value = numero;
 telefoneBox.addEventListener("input", () => {
@@ -358,34 +317,38 @@ function atualizarLogo() {
 function render() {
   cardsContainer.innerHTML = "";
   const search = document.getElementById('search').value.toLowerCase();
-  descricoes.filter(d => d.titulo.toLowerCase().includes(search)).forEach((d,i)=>{
-    const card=document.createElement('div');
-    card.className='card';
+  descricoes.forEach((d, idx)=>{
+    if (!d.titulo.toLowerCase().includes(search)) return;
+
+    const card = document.createElement('div');
+    card.className = 'card';
     if(modoSelecao) card.classList.add('selected');
 
-    const checkbox=document.createElement('input');
-    checkbox.type='checkbox';
-    checkbox.dataset.index=i;
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.dataset.index = idx;
 
-    const editBtn=document.createElement('button');
-    editBtn.className='edit-btn';
-    editBtn.innerHTML='✏️';
-    editBtn.onclick = (e)=>{ e.stopPropagation(); editarDescricao(i); };
+    const editBtn = document.createElement('button');
+    editBtn.className = 'edit-btn';
+    editBtn.innerHTML = '✏️';
+    editBtn.onclick = (e) => { e.stopPropagation(); editarDescricao(idx); };
 
     card.innerHTML = `<h4>${d.titulo}</h4><p>KM: ${d.km}</p><p>Valor: ${d.valor}</p>`;
     card.prepend(checkbox);
     card.appendChild(editBtn);
 
-    card.onclick = ()=>{
-      if(modoSelecao) checkbox.checked = !checkbox.checked;
+    card.onclick = () => {
+      if (modoSelecao) checkbox.checked = !checkbox.checked;
       else {
         const texto = `${d.descricao}\n📲 ${numero}`;
         navigator.clipboard.writeText(texto);
         mostrarNotificacao("Descrição copiada com telefone!");
       }
     };
+
     cardsContainer.appendChild(card);
   });
+
   atualizarContador();
 }
 
@@ -395,17 +358,11 @@ function salvar() {
   render();
 }
 
-function abrirPopup(id) { 
-  const p = document.getElementById(id);
-  p.classList.add('show');
-}
-function fecharPopup(id) { 
-  const p = document.getElementById(id);
-  p.classList.remove('show');
-}
+function abrirPopup(id) { document.getElementById(id).classList.add('show'); }
+function fecharPopup(id) { document.getElementById(id).classList.remove('show'); }
 
 document.getElementById('addBtn').onclick = ()=>{
-  editIndex=null;
+  delete salvarBtn.dataset.editing; // reseta edição
   titulo.value=km.value=valor.value=descricao.value="";
   popupTitle.textContent="Nova Descrição";
   abrirPopup('popupAdd');
@@ -423,37 +380,15 @@ valor.addEventListener("input", ()=>{
   valor.value=v;
 });
 
-function editarDescricao(i){
-  const d = descricoes[i];
-  editIndex = i;
-  titulo.value = d.titulo;
-  km.value = d.km;
-  valor.value = d.valor;
-  descricao.value = d.descricao;
-  popupTitle.textContent = "Editar Descrição";
-  salvarBtn.dataset.editing = i; // armazenar o índice no botão
-  abrirPopup('popupAdd');
-}
-
 salvarBtn.onclick = ()=>{
-  const t = titulo.value.trim();
+  const t=titulo.value.trim();
   if(!t) return mostrarNotificacao("Digite um título.");
+  const d={titulo:t, km:km.value, valor:valor.value, descricao:descricao.value};
 
-  const d = {
-    titulo: t,
-    km: km.value,
-    valor: valor.value,
-    descricao: descricao.value
-  };
-
-  // Verifica se é edição ou novo
-  const indexEditando = salvarBtn.dataset.editing;
-  if(indexEditando !== undefined && indexEditando !== "") {
-    descricoes[parseInt(indexEditando)] = d;
-    delete salvarBtn.dataset.editing; // limpa o estado
-  } else {
-    descricoes.push(d);
-  }
+  if(salvarBtn.dataset.editing !== undefined){
+    const i=parseInt(salvarBtn.dataset.editing);
+    descricoes[i] = d;
+  } else descricoes.push(d);
 
   fecharPopup('popupAdd');
   salvar();
@@ -464,12 +399,12 @@ cancelarBtn.onclick = ()=>fecharPopup('popupAdd');
 
 function editarDescricao(i){
   const d=descricoes[i];
-  editIndex=i;
   titulo.value=d.titulo;
   km.value=d.km;
   valor.value=d.valor;
   descricao.value=d.descricao;
   popupTitle.textContent="Editar Descrição";
+  salvarBtn.dataset.editing = i;
   abrirPopup('popupAdd');
 }
 
@@ -536,6 +471,3 @@ window.onload=()=>{
 </script>
 </body>
 </html>
-
-
-
