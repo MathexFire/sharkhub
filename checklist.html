@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checklist - SharkHub</title>
+<link rel="icon" type="image/png" href="img/fivecon.png">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;900&display=swap" rel="stylesheet">
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-family:Arial, sans-serif; }
+
+body {
+  background:#121212;
+  color:#fff;
+  padding:20px;
+  transition:0.3s;
+}
+
+header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+#logo {
+  width:160px;
+}
+
+h2 { margin-bottom:15px; color:#94CF4F; }
+
+#timerBox {
+  background:#1e1e1e;
+  padding:15px;
+  border-radius:10px;
+  font-size:22px;
+  font-weight:900;
+  font-family:'Poppins', sans-serif;
+  text-align:center;
+  width:220px;
+}
+
+button {
+  padding:10px 15px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  background:#94CF4F;
+  color:#fff;
+  margin:5px;
+  transition:0.2s;
+}
+button:hover { background:#7db63a; }
+
+#lista {
+  margin-top:20px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.item {
+  background:#1e1e1e;
+  padding:12px;
+  border-radius:8px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.item span {
+  font-size:18px;
+  font-weight:600;
+}
+
+.btnBox button {
+  font-size:17px;
+}
+
+/* Modo claro */
+body.light { background:#f2f2f2; color:#000; }
+body.light .item { background:#fff; }
+body.light #timerBox { background:#fff; color:#000; }
+body.light button { background:#2a7f1d; }
+body.light button:hover { background:#1f5c13; }
+</style>
+</head>
+
+<body>
+
+<header>
+  <img id="logo" src="img/Design sem nome.png">
+  <div id="timerBox">00:00</div>
+</header>
+
+<h2>Checklist de Motos</h2>
+
+<div id="lista"></div>
+
+<script>
+/* ================================
+      CARREGAR DADOS DO SITE
+================================= */
+
+let descricoes   = JSON.parse(localStorage.getItem("descricoes") || "[]");
+let temaClaro    = document.body.classList.contains("light");
+let recorde      = localStorage.getItem("check_record") || null;
+
+document.body.classList.toggle("light", localStorage.getItem("tema") === "light");
+
+if (document.body.classList.contains("light"))
+  document.getElementById("logo").src = "img/Design sem nome (1).png";
+
+/* ================================
+      TIMER
+================================= */
+
+let segundos = 0;
+let ativo = false;
+let intervalo = null;
+
+function formatar(seg){
+  let m = Math.floor(seg / 60);
+  let s = seg % 60;
+  return `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+}
+
+function iniciarTimer(){
+  if(ativo) return;
+  ativo = true;
+  intervalo = setInterval(()=>{
+    segundos++;
+    document.getElementById("timerBox").textContent = formatar(segundos);
+  },1000);
+}
+
+function pausarTimer(){
+  ativo = false;
+  clearInterval(intervalo);
+}
+
+function despausarTimer(){
+  if(!ativo) iniciarTimer();
+}
+
+/* Começa parado */
+document.getElementById("timerBox").textContent = "00:00";
+
+
+/* ================================
+      RENDERIZAR LISTA
+================================= */
+
+function renderLista(){
+
+  const lista = document.getElementById("lista");
+  lista.innerHTML = "";
+
+  descricoes.forEach((d, i) => {
+
+    const div = document.createElement("div");
+    div.className = "item";
+
+    div.innerHTML = `
+      <span>${d.titulo}</span>
+      <div class="btnBox">
+        <button onclick="copiar(${i})">📋</button>
+        <button onclick="camera(${i})">📷</button>
+        <button onclick="concluir(${i})">✅</button>
+      </div>
+    `;
+
+    lista.appendChild(div);
+  });
+}
+
+/* ================================
+      FUNÇÕES DE AÇÃO
+================================= */
+
+function salvar(){
+  localStorage.setItem("descricoes", JSON.stringify(descricoes));
+}
+
+function copiar(i){
+  const d = descricoes[i];
+  navigator.clipboard.writeText(`${d.descricao}\n📲 ${localStorage.getItem("numero")}`);
+  despausarTimer();
+}
+
+function camera(i){
+  descricoes[i].needsPhoto = true;
+  salvar();
+  alert("📷 Marcado que precisa foto!");
+}
+
+function concluir(i){
+  descricoes[i].needsPhoto = false;
+  descricoes.splice(i,1);
+
+  salvar();
+  renderLista();
+
+  if(descricoes.length === 0) finalizarChecklist();
+}
+
+/* ================================
+      FINALIZAR CHECKLIST
+================================= */
+
+function finalizarChecklist(){
+  pausarTimer();
+
+  let tempoFinal = segundos;
+
+  let msg = `Checklist finalizado!\nTempo: ${formatar(tempoFinal)}`;
+
+  if(recorde === null || tempoFinal < parseInt(recorde)){
+    localStorage.setItem("check_record", tempoFinal);
+    msg += `\n\n🏆 NOVO RECORDE!`;
+  } else {
+    msg += `\n\nRecorde atual: ${formatar(parseInt(recorde))}`;
+  }
+
+  alert(msg);
+
+  segundos = 0;
+  document.getElementById("timerBox").textContent = "00:00";
+}
+
+/* ================================
+      INICIAR
+================================= */
+
+window.onload = () => {
+  // copiar lista original pra edição do checklist
+  descricoes = JSON.parse(localStorage.getItem("descricoes") || "[]")
+    .map(d => ({...d}));
+
+  renderLista();
+};
+</script>
+
+</body>
+</html>
