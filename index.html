@@ -4,265 +4,355 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SharkHub Post</title>
-<link rel="icon" type="image/png" href="img/fivecon.png">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;900&display=swap" rel="stylesheet">
 <style>
-/* === SEU ESTILO ORIGINAL + AJUSTE DO CHECKLIST === */
-* { box-sizing: border-box; font-family: Arial, sans-serif; transition: all 0.3s ease; }
-body {
-  background-color: #121212;
-  color: #fff;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #1e1e1e;
-  padding: 10px 20px;
-  flex-wrap: wrap;
-}
-#logoHeader { display: flex; align-items: center; gap: 10px; }
-#logoHeader img { width: 150px; height: auto; }
-#telefoneBox {
-  background: #3a3a3a;
-  border: none;
-  color: #fff;
-  padding: 8px;
-  border-radius: 8px;
-  width: 160px;
-}
-header input[type="text"] {
-  background: #3a3a3a;
-  border: none;
-  padding: 8px;
-  border-radius: 8px;
-  color: #fff;
-}
-header button {
-  background: #94CF4F;
-  border: none;
-  color: white;
-  padding: 10px 15px;
-  border-radius: 8px;
-  cursor: pointer;
-  margin: 5px;
-}
-header button:hover { background: #7DB63A; }
-main {
-  flex: 1;
-  padding: 20px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 15px;
-}
-.card {
-  background: #1e1e1e;
-  border-radius: 10px;
-  padding: 15px;
-  position: relative;
-  transition: transform 0.2s, background 0.3s;
-}
-.card:hover { transform: scale(1.02); background: #2a2a2a; }
-.card h4 { color: #94CF4F; margin: 0 0 8px 0; }
-footer { background: #1e1e1e; padding: 10px; text-align: center; color: #888; font-size: 14px; }
+  :root {
+    --verde: #90c64c;
+    --cinza: #333;
+    --claro: #f4f4f4;
+  }
 
-/* === ESTILOS ADICIONAIS DO CHECKLIST === */
-#checklistContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-#timer { font-size: 16px; margin-bottom: 10px; font-weight: bold; }
-.check-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: #2a2a2a;
-  padding: 10px;
-  border-radius: 6px;
-}
-.check-item label { flex: 1; margin-left: 8px; }
-#cameraPreview { width: 100%; border-radius: 8px; margin-top: 10px; }
+  body {
+    background-color: var(--cinza);
+    color: white;
+    font-family: Arial, sans-serif;
+    transition: 0.3s;
+  }
 
-/* === POPUP PADRÃO === */
-.popup {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.7);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: 1000;
-}
-.popup.show { display: flex; opacity: 1; }
-.popup-content {
-  background: #1e1e1e;
-  padding: 20px;
-  border-radius: 10px;
-  width: 90%;
-  max-width: 400px;
-  transform: translateY(-30px);
-  transition: transform 0.3s ease;
-}
-.popup.show .popup-content { transform: translateY(0); }
-.popup-content button {
-  background: #94CF4F;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 8px;
-  cursor: pointer;
-  margin: 8px 5px 0 0;
-}
-.popup-content button:hover { background: #7DB63A; }
+  body.claro {
+    background-color: var(--claro);
+    color: black;
+  }
 
-#notification {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #94CF4F;
-  color: #fff;
-  padding: 12px 25px;
-  border-radius: 8px;
-  display: none;
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  z-index: 2000;
-}
-#notification.show { display: block; opacity: 1; }
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #202020;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+  }
+
+  header.claro {
+    background-color: #e0e0e0;
+  }
+
+  header button {
+    background: var(--verde);
+    border: none;
+    padding: 8px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+  }
+
+  #contadorDescricoes {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    background: var(--verde);
+    color: white;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 18px;
+    z-index: 1000;
+  }
+
+  #cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    padding: 20px;
+  }
+
+  .card {
+    background: #2c2c2c;
+    border-radius: 15px;
+    padding: 15px;
+    position: relative;
+    transition: 0.3s;
+  }
+
+  body.claro .card {
+    background: #fff;
+    color: #111;
+  }
+
+  .editar-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--verde);
+    font-size: 20px;
+  }
+
+  /* Modal checklist */
+  #checklistModal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8);
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+  }
+
+  #checklistModal.active {
+    display: flex;
+  }
+
+  #checklistBox {
+    background: #1e1e1e;
+    color: white;
+    border-radius: 20px;
+    padding: 20px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 80%;
+    overflow-y: auto;
+    position: relative;
+  }
+
+  body.claro #checklistBox {
+    background: #fff;
+    color: #000;
+  }
+
+  #timerDisplay {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
+  .check-item {
+    display: flex;
+    justify-content: space-between;
+    background: #2e2e2e;
+    padding: 8px;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    align-items: center;
+  }
+
+  body.claro .check-item {
+    background: #f2f2f2;
+  }
+
+  .check-item button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--verde);
+    font-size: 20px;
+  }
+
+  #recordInfo {
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+
+  #closeChecklist {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    background: none;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+    color: var(--verde);
+  }
 </style>
 </head>
 <body>
 
 <header>
-  <div id="logoHeader">
-    <img id="logoImg" src="img/Design sem nome.png" alt="Logo SharkHub">
-    <input type="text" id="telefoneBox" value="(00) 0000-0000">
-  </div>
+  <h2>SharkHub Post</h2>
   <div>
-    <button id="addBtn">Adicionar</button>
-    <button id="configBtn">Configurações</button>
-    <button id="checklistBtn">📋 Checklist</button>
+    <button onclick="abrirChecklist()">Checklist</button>
+    <button onclick="toggleTema()">Tema</button>
   </div>
 </header>
 
-<main id="cardsContainer"></main>
-<footer>SharkHub Post © 2025</footer>
-<div id="notification"></div>
+<div id="contadorDescricoes">0</div>
 
-<!-- POPUP DO CHECKLIST -->
-<div id="popupChecklist" class="popup">
-  <div class="popup-content">
-    <h3>Checklist de Inspeção</h3>
-    <div id="timer">⏱ Tempo: 00:00</div>
-    <div id="checklistContainer"></div>
-    <video id="cameraPreview" autoplay playsinline></video>
-    <button id="fotoBtn">📸 Tirar Foto</button>
-    <button id="fecharChecklistBtn">Fechar</button>
+<main id="cards"></main>
+
+<!-- Modal do Checklist -->
+<div id="checklistModal">
+  <div id="checklistBox">
+    <button id="closeChecklist" onclick="fecharChecklist()">✖</button>
+    <div id="recordInfo"></div>
+    <div id="timerDisplay">00:00</div>
+    <div style="text-align:center;">
+      <button onclick="playTimer()">▶️</button>
+      <button onclick="pauseTimer()">⏸️</button>
+      <button onclick="resetTimer()">🔁</button>
+    </div>
+    <hr>
+    <div id="listaChecklist"></div>
   </div>
 </div>
 
 <script>
-// === FUNÇÕES DE UTILIDADE ===
-function mostrarNotificacao(msg) {
-  const n = document.getElementById("notification");
-  n.textContent = msg;
-  n.classList.add("show");
-  setTimeout(() => n.classList.remove("show"), 2000);
+let descricoes = JSON.parse(localStorage.getItem('descricoes')) || [];
+let modoClaro = localStorage.getItem('tema') === 'claro';
+let timer, tempo = 0, rodando = false;
+let recorde = parseInt(localStorage.getItem('recordeChecklist')) || null;
+let ultimoTempo = parseInt(localStorage.getItem('ultimoTempoChecklist')) || null;
+
+// Função de renderização de cards
+function renderCards() {
+  const cardsDiv = document.getElementById("cards");
+  cardsDiv.innerHTML = "";
+  descricoes.forEach((desc, i) => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <button class="editar-btn" onclick="editarDescricao(${i})">✏️</button>
+      <p>${desc}</p>
+    `;
+    cardsDiv.appendChild(card);
+  });
+  atualizarContador();
 }
 
-function abrirPopup(id) {
-  const p = document.getElementById(id);
-  p.classList.add("show");
+// Contador de descrições
+function atualizarContador() {
+  document.getElementById("contadorDescricoes").textContent = descricoes.length;
 }
 
-function fecharPopup(id) {
-  const p = document.getElementById(id);
-  p.classList.remove("show");
+// Editar
+function editarDescricao(i) {
+  const nova = prompt("Edite a descrição:", descricoes[i]);
+  if (nova && nova.trim()) {
+    descricoes[i] = nova.trim();
+    salvarDescricoes();
+    renderCards();
+  }
 }
 
-// === CHECKLIST ===
-const checklistPadrao = [
-  "Pneus em bom estado",
-  "Freios funcionando",
-  "Luzes e setas ok",
-  "Painel funcionando",
-  "Documentos conferidos",
-  "Nível de óleo verificado",
-  "Corrente lubrificada"
-];
+// Tema
+function toggleTema() {
+  modoClaro = !modoClaro;
+  document.body.classList.toggle("claro", modoClaro);
+  document.querySelector("header").classList.toggle("claro", modoClaro);
+  localStorage.setItem("tema", modoClaro ? "claro" : "escuro");
+}
 
-const checklistContainer = document.getElementById("checklistContainer");
-const timerEl = document.getElementById("timer");
-let tempo = 0, intervalo, stream = null;
+// Checklist
+function abrirChecklist() {
+  document.getElementById("checklistModal").classList.add("active");
+  carregarChecklist();
+}
 
-function iniciarChecklist() {
-  checklistContainer.innerHTML = "";
-  checklistPadrao.forEach((item, i) => {
+function fecharChecklist() {
+  document.getElementById("checklistModal").classList.remove("active");
+  if (!rodando) return;
+  pauseTimer();
+  localStorage.setItem("ultimoTempoChecklist", tempo);
+  if (!recorde || tempo < recorde) {
+    recorde = tempo;
+    localStorage.setItem("recordeChecklist", tempo);
+    alert("🏆 Novo recorde!");
+  } else {
+    alert("Checklist concluída! Tempo: " + formatarTempo(tempo));
+  }
+}
+
+function carregarChecklist() {
+  const lista = document.getElementById("listaChecklist");
+  lista.innerHTML = "";
+  descricoes.forEach((desc, i) => {
     const div = document.createElement("div");
     div.className = "check-item";
-    div.innerHTML = `<input type="checkbox" id="chk${i}"><label for="chk${i}">${item}</label>`;
-    checklistContainer.appendChild(div);
+    div.innerHTML = `
+      <span>${desc}</span>
+      <div>
+        <button onclick="camera(${i})">📸</button>
+        <button onclick="confere(${i})">✅</button>
+      </div>
+    `;
+    lista.appendChild(div);
   });
+  atualizarInfo();
+}
 
+function camera(i) {
+  if (!descricoes[i].includes("📸")) {
+    descricoes[i] += " 📸";
+    salvarDescricoes();
+  }
+  renderCards();
+}
+
+function confere(i) {
+  descricoes.splice(i, 1);
+  salvarDescricoes();
+  carregarChecklist();
+  renderCards();
+  if (descricoes.length === 0) fecharChecklist();
+}
+
+function salvarDescricoes() {
+  localStorage.setItem('descricoes', JSON.stringify(descricoes));
+  atualizarContador();
+}
+
+// Timer
+function playTimer() {
+  if (!rodando) {
+    rodando = true;
+    timer = setInterval(() => {
+      tempo++;
+      document.getElementById("timerDisplay").textContent = formatarTempo(tempo);
+    }, 1000);
+  }
+}
+
+function pauseTimer() {
+  clearInterval(timer);
+  rodando = false;
+}
+
+function resetTimer() {
+  clearInterval(timer);
   tempo = 0;
-  clearInterval(intervalo);
-  intervalo = setInterval(() => {
-    tempo++;
-    const m = String(Math.floor(tempo / 60)).padStart(2, "0");
-    const s = String(tempo % 60).padStart(2, "0");
-    timerEl.textContent = `⏱ Tempo: ${m}:${s}`;
-  }, 1000);
-
-  iniciarCamera();
+  document.getElementById("timerDisplay").textContent = "00:00";
+  rodando = false;
 }
 
-async function iniciarCamera() {
-  try {
-    stream = await navigator.mediaDevices.getUserMedia({ video: true });
-    document.getElementById("cameraPreview").srcObject = stream;
-  } catch {
-    mostrarNotificacao("⚠️ Câmera não acessível");
-  }
+function formatarTempo(segundos) {
+  const m = String(Math.floor(segundos / 60)).padStart(2, '0');
+  const s = String(segundos % 60).padStart(2, '0');
+  return `${m}:${s}`;
 }
 
-// Tirar foto
-document.getElementById("fotoBtn").onclick = () => {
-  if (!stream) return mostrarNotificacao("Câmera não iniciada");
-  const video = document.getElementById("cameraPreview");
-  const canvas = document.createElement("canvas");
-  canvas.width = video.videoWidth;
-  canvas.height = video.videoHeight;
-  const ctx = canvas.getContext("2d");
-  ctx.drawImage(video, 0, 0);
-  const foto = canvas.toDataURL("image/png");
-  localStorage.setItem("fotoChecklist", foto);
-  mostrarNotificacao("📸 Foto salva localmente!");
-};
+function atualizarInfo() {
+  let txt = "";
+  if (recorde) txt += `🏁 Recorde: ${formatarTempo(recorde)}<br>`;
+  if (ultimoTempo) txt += `⏱️ Último: ${formatarTempo(ultimoTempo)}<br>`;
+  document.getElementById("recordInfo").innerHTML = txt;
+}
 
-// Abrir checklist
-document.getElementById("checklistBtn").onclick = () => {
-  abrirPopup("popupChecklist");
-  iniciarChecklist();
-};
-
-// Fechar checklist
-document.getElementById("fecharChecklistBtn").onclick = () => {
-  fecharPopup("popupChecklist");
-  clearInterval(intervalo);
-  if (stream) {
-    stream.getTracks().forEach(t => t.stop());
-    stream = null;
-  }
-};
+// Inicialização
+if (modoClaro) {
+  document.body.classList.add("claro");
+  document.querySelector("header").classList.add("claro");
+}
+renderCards();
 </script>
 </body>
 </html>
