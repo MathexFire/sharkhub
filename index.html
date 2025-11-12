@@ -1,14 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SharkHub Post 🦈</title>
-  <style>
-    :root {
-      --bg-dark: #121212;<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SharkHub Post</title>
@@ -65,7 +57,6 @@ header button {
   cursor: pointer;
   margin: 5px;
 }
-
 header button:hover { background: #7DB63A; }
 
 main {
@@ -99,7 +90,6 @@ main {
   font-size: 18px;
   display: none;
 }
-
 .card:hover .edit-btn { display: block; }
 
 .card input[type="checkbox"] {
@@ -109,7 +99,6 @@ main {
   transform: scale(1.3);
   display: none;
 }
-
 .card.selected input[type="checkbox"] { display: block; }
 
 .popup {
@@ -122,7 +111,6 @@ main {
   opacity: 0;
   transition: opacity 0.3s ease;
 }
-
 .popup.show { display: flex; opacity: 1; }
 
 .popup-content {
@@ -132,9 +120,8 @@ main {
   width: 90%;
   max-width: 400px;
   transform: translateY(-30px);
-  transition: transform 0.3s ease, background 0.3s ease, color 0.3s ease;
+  transition: transform 0.3s ease;
 }
-
 .popup.show .popup-content { transform: translateY(0); }
 
 .popup-content input,
@@ -157,14 +144,17 @@ main {
   cursor: pointer;
   margin: 8px 5px 0 0;
 }
-
 .popup-content button:hover { background: #7DB63A; }
 
-footer { background: #1e1e1e; padding: 10px; text-align: center; color: #888; font-size: 14px; }
+footer {
+  background: #1e1e1e;
+  padding: 10px;
+  text-align: center;
+  color: #888;
+  font-size: 14px;
+}
 
-@media (max-width: 600px) { header input { width: 100%; margin-top: 10px; } }
-
-/* Notificação estilo push */
+/* NOTIFICAÇÃO */
 #notification {
   position: fixed;
   bottom: 20px;
@@ -178,14 +168,13 @@ footer { background: #1e1e1e; padding: 10px; text-align: center; color: #888; fo
   opacity: 0;
   transition: opacity 0.4s ease, transform 0.4s ease;
 }
-
 #notification.show {
   display: block;
   opacity: 1;
   transform: translateX(-50%) translateY(0);
 }
 
-/* Contador de descrições */
+/* CONTADOR */
 #contador {
   position: fixed;
   top: 15px;
@@ -211,55 +200,55 @@ footer { background: #1e1e1e; padding: 10px; text-align: center; color: #888; fo
   100% { transform: scale(1); }
 }
 
-/* === Modo Claro === */
-body.light {
-  background: #f2f2f2;
-  color: #000;
-}
-
+/* MODO CLARO */
+body.light { background: #f2f2f2; color: #000; }
 body.light header { background: #fff; }
-body.light #telefoneBox, body.light header input[type="text"] { background: #e0e0e0; color: #000; }
-body.light .card { background: #fff; color: #000; }
-body.light .card h4 { color: #2a7f1d; }
-body.light .popup-content { background: #fff; color: #000; }
-body.light .popup-content input, body.light .popup-content textarea { background: #e0e0e0; color: #000; }
-body.light header button, body.light .popup-content button { background: #2a7f1d; color: #fff; }
-body.light header button:hover, body.light .popup-content button:hover { background: #1f5c13; }
-body.light footer { background: #e0e0e0; color: #555; }
-body.light #notification { background: #2a7f1d; }
-
+body.light .card { background: #fff; color:#000; }
+body.light .popup-content { background:#fff; color:#000; }
+body.light #notification { background:#2a7f1d; }
 </style>
 </head>
+
 <body>
 <header>
   <div id="logoHeader">
-    <img id="logoImg" src="img/Design sem nome.png" alt="Logo SharkHub">
+    <img id="logoImg" src="img/Design sem nome.png">
     <span>📲</span>
-    <input type="text" id="telefoneBox" value="(00) 0000-0000" />
+    <input type="text" id="telefoneBox" value="(00) 0000-0000">
   </div>
+
   <input type="text" id="search" placeholder="Pesquisar...">
+
   <div>
     <button id="addBtn">Adicionar</button>
     <button id="selectBtn">Selecionar</button>
     <button id="deleteBtn" style="display:none;">🗑️ Excluir</button>
+
+    <!-- ✅ CHECKLIST abre em nova aba -->
+    <a href="checklist.html" target="_blank">
+      <button>Checklist</button>
+    </a>
+
     <button id="configBtn">Configurações</button>
   </div>
 </header>
 
 <div id="contador">0</div>
+
 <main id="cardsContainer"></main>
+
 <footer>SharkHub Post © 2025</footer>
 
 <!-- POPUPS -->
 <div class="popup" id="popupAdd">
   <div class="popup-content">
     <h3 id="popupTitle">Nova Descrição</h3>
-    <input type="text" id="titulo" placeholder="Título">
-    <input type="text" id="km" placeholder="Quilometragem">
-    <input type="text" id="valor" placeholder="Valor">
-    <textarea id="descricao" placeholder="Descrição..."></textarea>
+    <input id="titulo">
+    <input id="km">
+    <input id="valor">
+    <textarea id="descricao"></textarea>
     <button id="salvarBtn">Salvar</button>
-    <button id="cancelarBtn">Cancelar</button>
+    <button onclick="fecharPopup('popupAdd')">Cancelar</button>
   </div>
 </div>
 
@@ -267,500 +256,162 @@ body.light #notification { background: #2a7f1d; }
   <div class="popup-content">
     <h3>Configurações</h3>
     <button onclick="alternarTema()">Alternar Tema</button>
-    <button onclick="abrirPopupBackup()">💾 Backup</button>
+    <button onclick="abrirPopup('popupBackup')">💾 Backup</button>
     <button onclick="fecharPopup('popupConfig')">Fechar</button>
   </div>
 </div>
 
-<div id="popupBackup" class="popup">
+<div class="popup" id="popupBackup">
   <div class="popup-content">
     <h3>Backup / Importar-Exportar</h3>
-    <p>Escolha o que deseja fazer:</p>
-    <div style="display:flex;flex-direction:column;gap:10px;">
-      <button onclick="exportarBackup()">⬇️ Exportar dados</button>
-      <input type="file" id="inputBackup" style="display:none;" accept=".json" />
-      <button onclick="document.getElementById('inputBackup').click()">⬆️ Importar dados</button>
-      <button onclick="fecharPopup('popupBackup')">Fechar</button>
-    </div>
+    <button onclick="exportarBackup()">⬇️ Exportar dados</button>
+    <input type="file" id="inputBackup" style="display:none;" accept=".json">
+    <button onclick="document.getElementById('inputBackup').click()">⬆️ Importar dados</button>
+    <button onclick="fecharPopup('popupBackup')">Fechar</button>
   </div>
 </div>
 
 <div id="notification"></div>
 
 <script>
+/* ====================
+      VARIÁVEIS
+==================== */
 let descricoes = JSON.parse(localStorage.getItem('descricoes') || '[]');
-let numero = localStorage.getItem('numero') || "(00) 0000-0000";
-let modoSelecao = false;
+let numero     = localStorage.getItem('numero') || "(00) 0000-0000";
+let editando   = null;
 
-const telefoneBox = document.getElementById('telefoneBox');
-const cardsContainer = document.getElementById('cardsContainer');
-const notification = document.getElementById('notification');
-const contador = document.getElementById('contador');
-const logoImg = document.getElementById('logoImg');
-const salvarBtn = document.getElementById('salvarBtn');
+/* ====================
+      FUNÇÕES
+==================== */
 
-telefoneBox.value = numero;
-telefoneBox.addEventListener("input", () => {
-  numero = telefoneBox.value;
-  localStorage.setItem('numero', numero);
-});
-
-function mostrarNotificacao(msg) {
-  notification.textContent = msg;
-  notification.classList.add('show');
-  setTimeout(() => notification.classList.remove('show'), 3000);
-}
-
-function atualizarContador() {
-  contador.textContent = descricoes.length;
-  contador.style.animation = 'pulse 0.5s';
-  setTimeout(()=> contador.style.animation='', 500);
-}
-
-function atualizarLogo() {
-  if(document.body.classList.contains('light')) logoImg.src='img/Design sem nome (1).png';
-  else logoImg.src='img/Design sem nome.png';
+function salvarLocal() {
+  localStorage.setItem("descricoes", JSON.stringify(descricoes));
+  localStorage.setItem("numero", numero);
 }
 
 function render() {
-  cardsContainer.innerHTML = "";
-  const search = document.getElementById('search').value.toLowerCase();
-  descricoes.forEach((d, idx)=>{
-    if (!d.titulo.toLowerCase().includes(search)) return;
+  const container = document.getElementById("cardsContainer");
+  container.innerHTML = "";
 
-    const card = document.createElement('div');
-    card.className = 'card';
-    if(modoSelecao) card.classList.add('selected');
+  const filtro = document.getElementById("search").value.toLowerCase();
 
-    const checkbox = document.createElement('input');
-    checkbox.type = 'checkbox';
-    checkbox.dataset.index = idx;
+  descricoes.forEach((d, i) => {
+    if (!d.titulo.toLowerCase().includes(filtro)) return;
 
-    const editBtn = document.createElement('button');
-    editBtn.className = 'edit-btn';
-    editBtn.innerHTML = '✏️';
-    editBtn.onclick = (e) => { e.stopPropagation(); editarDescricao(idx); };
+    const card = document.createElement("div");
+    card.className = "card";
 
-    card.innerHTML = `<h4>${d.titulo}</h4><p>KM: ${d.km}</p><p>Valor: ${d.valor}</p>`;
-    card.prepend(checkbox);
+    card.innerHTML = `
+      <h4>${d.titulo} ${d.needsPhoto ? "📷" : ""}</h4>
+      <p>KM: ${d.km}</p>
+      <p>Valor: ${d.valor}</p>
+    `;
+
+    const editBtn = document.createElement("button");
+    editBtn.className = "edit-btn";
+    editBtn.innerHTML = "✏️";
+    editBtn.onclick = e => {
+      e.stopPropagation();
+      abrirEditor(i);
+    };
+
     card.appendChild(editBtn);
 
     card.onclick = () => {
-      if (modoSelecao) checkbox.checked = !checkbox.checked;
-      else {
-        const texto = `${d.descricao}\n📲 ${numero}`;
-        navigator.clipboard.writeText(texto);
-        mostrarNotificacao("Descrição copiada com telefone!");
-      }
+      navigator.clipboard.writeText(`${d.descricao}\n📲 ${numero}`);
+      mostrarNotificacao("Descrição copiada!");
     };
 
-    cardsContainer.appendChild(card);
+    container.appendChild(card);
   });
 
-  atualizarContador();
+  document.getElementById("contador").textContent = descricoes.length;
 }
 
-function salvar() {
-  localStorage.setItem('descricoes', JSON.stringify(descricoes));
-  localStorage.setItem('numero', numero);
-  render();
+function abrirPopup(id){ document.getElementById(id).classList.add("show"); }
+function fecharPopup(id){ document.getElementById(id).classList.remove("show"); }
+
+function mostrarNotificacao(msg){
+  const n = document.getElementById("notification");
+  n.textContent = msg;
+  n.classList.add("show");
+  setTimeout(()=> n.classList.remove("show"), 2500);
 }
 
-function abrirPopup(id) { document.getElementById(id).classList.add('show'); }
-function fecharPopup(id) { document.getElementById(id).classList.remove('show'); }
+/* ====================
+      EDITAR / ADD
+==================== */
 
-document.getElementById('addBtn').onclick = ()=>{
-  delete salvarBtn.dataset.editing; // reseta edição
-  titulo.value=km.value=valor.value=descricao.value="";
-  popupTitle.textContent="Nova Descrição";
-  abrirPopup('popupAdd');
+function abrirEditor(i){
+  editando = i;
+  const d = descricoes[i];
+  titulo.value = d.titulo;
+  km.value     = d.km;
+  valor.value  = d.valor;
+  descricao.value = d.descricao;
+  popupTitle.textContent = "Editar Descrição";
+  abrirPopup("popupAdd");
+}
+
+document.getElementById("addBtn").onclick = () => {
+  editando = null;
+  titulo.value = km.value = valor.value = descricao.value = "";
+  popupTitle.textContent = "Nova Descrição";
+  abrirPopup("popupAdd");
 };
 
-km.addEventListener("input", ()=>{
-  km.value=km.value.replace(/\D/g,"").replace(/\B(?=(\d{3})+(?!\d))/g,".");
-});
+document.getElementById("salvarBtn").onclick = () => {
+  const d = {
+    titulo: titulo.value,
+    km: km.value,
+    valor: valor.value,
+    descricao: descricao.value,
+    needsPhoto: descricoes[editando]?.needsPhoto || false
+  };
 
-valor.addEventListener("input", ()=>{
-  let v=valor.value.replace(/\D/g,"");
-  v=(v/100).toFixed(2)+""; 
-  v=v.replace(".",","); 
-  v=v.replace(/\B(?=(\d{3})+(?!\d))/g,".");
-  valor.value=v;
-});
+  if (editando === null) descricoes.push(d);
+  else descricoes[editando] = d;
 
-salvarBtn.onclick = ()=>{
-  const t=titulo.value.trim();
-  if(!t) return mostrarNotificacao("Digite um título.");
-  const d={titulo:t, km:km.value, valor:valor.value, descricao:descricao.value};
-
-  if(salvarBtn.dataset.editing !== undefined){
-    const i=parseInt(salvarBtn.dataset.editing);
-    descricoes[i] = d;
-  } else descricoes.push(d);
-
-  fecharPopup('popupAdd');
-  salvar();
+  salvarLocal();
+  render();
+  fecharPopup("popupAdd");
   mostrarNotificacao("Descrição salva!");
 };
 
-cancelarBtn.onclick = ()=>fecharPopup('popupAdd');
-
-function editarDescricao(i){
-  const d=descricoes[i];
-  titulo.value=d.titulo;
-  km.value=d.km;
-  valor.value=d.valor;
-  descricao.value=d.descricao;
-  popupTitle.textContent="Editar Descrição";
-  salvarBtn.dataset.editing = i;
-  abrirPopup('popupAdd');
-}
-
-deleteBtn.onclick = ()=>{
-  const selecionados=document.querySelectorAll('.card input[type="checkbox"]:checked');
-  if(selecionados.length===0) return mostrarNotificacao("Nenhum item selecionado.");
-  if(!confirm("Excluir selecionados?")) return;
-  const indices=Array.from(selecionados).map(cb=>parseInt(cb.dataset.index));
-  descricoes=descricoes.filter((_,i)=>!indices.includes(i));
-  modoSelecao=false;
-  deleteBtn.style.display='none';
-  salvar();
-  mostrarNotificacao("Itens excluídos!");
-};
-
-selectBtn.onclick = ()=>{
-  modoSelecao=!modoSelecao;
-  deleteBtn.style.display=modoSelecao?'inline-block':'none';
-  render();
-};
-
-configBtn.onclick = ()=>abrirPopup('popupConfig');
-search.addEventListener('input', render);
-
-function alternarTema(){
-  document.body.classList.toggle('light');
-  atualizarLogo();
-}
-
-function abrirPopupBackup(){ abrirPopup('popupBackup'); }
-
+/* ====================
+      BACKUP
+==================== */
 function exportarBackup(){
-  const data={descricoes, numero};
-  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
-  const a=document.createElement("a");
-  a.href=URL.createObjectURL(blob);
-  a.download="backup_sharkhub.json";
+  const blob = new Blob([JSON.stringify({descricoes, numero}, null, 2)], {type:"application/json"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "backup_sharkhub.json";
   a.click();
-  URL.revokeObjectURL(a.href);
-  mostrarNotificacao("✅ Backup exportado!");
 }
 
-document.getElementById("inputBackup").addEventListener("change",(event)=>{
-  const file=event.target.files[0];
+document.getElementById("inputBackup").addEventListener("change", e => {
+  const file = e.target.files[0];
   if(!file) return;
-  const reader=new FileReader();
-  reader.onload=(e)=>{
-    try{
-      const data=JSON.parse(e.target.result);
-      descricoes=data.descricoes||[];
-      numero=data.numero||"(00) 0000-0000";
-      telefoneBox.value=numero;
-      salvar();
-      mostrarNotificacao("✅ Backup importado!");
-    }catch(err){ mostrarNotificacao("❌ Erro: "+err.message); }
+  const reader = new FileReader();
+  reader.onload = e => {
+    const data = JSON.parse(e.target.result);
+    descricoes = data.descricoes;
+    numero = data.numero;
+    salvarLocal();
+    render();
   };
   reader.readAsText(file);
 });
 
-window.onload=()=>{
-  render();
-  atualizarLogo();
-};
+/* ====================
+      TEMA
+==================== */
+function alternarTema(){
+  document.body.classList.toggle("light");
+}
+
+window.onload = render;
 </script>
 </body>
 </html>
-
-      --bg-light: #f8f8f8;
-      --text-dark: #ffffff;
-      --text-light: #000000;
-      --accent: #90c64c;
-    }
-    body {
-      margin: 0;
-      font-family: "Poppins", sans-serif;
-      background: var(--bg-dark);
-      color: var(--text-dark);
-      transition: 0.3s;
-    }
-    body.light {
-      background: var(--bg-light);
-      color: var(--text-light);
-    }
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 20px;
-      background: rgba(255, 255, 255, 0.05);
-    }
-    .logo {
-      font-weight: bold;
-      font-size: 1.4rem;
-    }
-    .btns {
-      display: flex;
-      gap: 10px;
-    }
-    button {
-      background: var(--accent);
-      border: none;
-      color: #fff;
-      padding: 6px 14px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-    button:hover {
-      opacity: 0.85;
-    }
-    .card {
-      background: rgba(255, 255, 255, 0.05);
-      margin: 15px;
-      padding: 15px;
-      border-radius: 12px;
-      position: relative;
-    }
-    body.light .card {
-      background: rgba(0, 0, 0, 0.05);
-    }
-    .edit-btn {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: none;
-      color: var(--accent);
-      font-size: 1.1rem;
-    }
-    /* Checklist */
-    #checklistOverlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.9);
-      display: none;
-      flex-direction: column;
-      color: white;
-      z-index: 999;
-      overflow-y: auto;
-      padding: 20px;
-    }
-    body.light #checklistOverlay {
-      background: rgba(255, 255, 255, 0.9);
-      color: black;
-    }
-    #checklistOverlay.active {
-      display: flex;
-    }
-    .check-item {
-      background: rgba(255, 255, 255, 0.1);
-      margin: 10px 0;
-      padding: 10px;
-      border-radius: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    body.light .check-item {
-      background: rgba(0, 0, 0, 0.05);
-    }
-    .check-actions {
-      display: flex;
-      gap: 10px;
-    }
-    .timer {
-      font-size: 1.2rem;
-      margin-top: 15px;
-      text-align: center;
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <div class="logo">🦈 SharkHub Post</div>
-    <div class="btns">
-      <button id="themeBtn">Tema</button>
-      <button id="checklistBtn">Checklist</button>
-      <button id="configBtn">⚙️</button>
-    </div>
-  </header>
-
-  <main id="cardsContainer"></main>
-
-  <!-- Checklist -->
-  <div id="checklistOverlay">
-    <h2>📋 Checklist de Motos</h2>
-    <div class="timer">
-      Tempo: <span id="timerDisplay">00:00</span> | 
-      Recorde: <span id="bestTime">--:--</span> | 
-      Último: <span id="lastTime">--:--</span>
-    </div>
-    <div class="check-actions" style="justify-content:center; margin:10px 0;">
-      <button id="playPause">▶️</button>
-      <button id="resetChecklist">🔄 Reset</button>
-      <button id="closeChecklist">❌ Fechar</button>
-    </div>
-    <div id="checklistItems"></div>
-  </div>
-
-  <script>
-    const cardsContainer = document.getElementById("cardsContainer");
-    const checklistOverlay = document.getElementById("checklistOverlay");
-    const checklistItems = document.getElementById("checklistItems");
-    const timerDisplay = document.getElementById("timerDisplay");
-    const bestTimeEl = document.getElementById("bestTime");
-    const lastTimeEl = document.getElementById("lastTime");
-    const playPauseBtn = document.getElementById("playPause");
-
-    let theme = localStorage.getItem("theme") || "dark";
-    document.body.classList.toggle("light", theme === "light");
-
-    const themeBtn = document.getElementById("themeBtn");
-    themeBtn.onclick = () => {
-      theme = theme === "dark" ? "light" : "dark";
-      document.body.classList.toggle("light", theme === "light");
-      localStorage.setItem("theme", theme);
-    };
-
-    // mock descriptions
-    let motos = JSON.parse(localStorage.getItem("motos")) || [
-      { nome: "CG 160 Start", desc: "Moto prática e econômica.", camera: false },
-      { nome: "XRE 190", desc: "Pronta pra qualquer terreno.", camera: false },
-      { nome: "Fazer 250", desc: "Potência e conforto juntos.", camera: false },
-    ];
-
-    function renderCards() {
-      cardsContainer.innerHTML = "";
-      motos.forEach((m, i) => {
-        const card = document.createElement("div");
-        card.className = "card";
-        card.innerHTML = `
-          <h3>${m.nome}${m.camera ? " 📸" : ""}</h3>
-          <p>${m.desc}</p>
-          <button class="edit-btn" onclick="editMoto(${i})">✏️</button>
-        `;
-        cardsContainer.appendChild(card);
-      });
-      localStorage.setItem("motos", JSON.stringify(motos));
-    }
-    renderCards();
-
-    // editar moto
-    window.editMoto = (i) => {
-      const nome = prompt("Editar título:", motos[i].nome);
-      const desc = prompt("Editar descrição:", motos[i].desc);
-      if (nome && desc) {
-        motos[i].nome = nome;
-        motos[i].desc = desc;
-        localStorage.setItem("motos", JSON.stringify(motos));
-        renderCards();
-      }
-    };
-
-    // checklist
-    let timer = 0;
-    let interval = null;
-    let bestTime = localStorage.getItem("bestTime") || null;
-    let lastTime = localStorage.getItem("lastTime") || null;
-
-    function updateTimeDisplay() {
-      timerDisplay.textContent = new Date(timer * 1000).toISOString().substr(14, 5);
-      bestTimeEl.textContent = bestTime ? new Date(bestTime * 1000).toISOString().substr(14, 5) : "--:--";
-      lastTimeEl.textContent = lastTime ? new Date(lastTime * 1000).toISOString().substr(14, 5) : "--:--";
-    }
-    updateTimeDisplay();
-
-    playPauseBtn.onclick = () => {
-      if (interval) {
-        clearInterval(interval);
-        interval = null;
-        playPauseBtn.textContent = "▶️";
-      } else {
-        interval = setInterval(() => {
-          timer++;
-          updateTimeDisplay();
-        }, 1000);
-        playPauseBtn.textContent = "⏸️";
-      }
-    };
-
-    document.getElementById("checklistBtn").onclick = () => {
-      checklistOverlay.classList.add("active");
-      buildChecklist();
-    };
-
-    document.getElementById("closeChecklist").onclick = () => {
-      checklistOverlay.classList.remove("active");
-      if (interval) {
-        clearInterval(interval);
-        interval = null;
-        playPauseBtn.textContent = "▶️";
-      }
-    };
-
-    document.getElementById("resetChecklist").onclick = () => {
-      timer = 0;
-      motos.forEach((m) => (m.checked = false));
-      buildChecklist();
-      updateTimeDisplay();
-    };
-
-    function buildChecklist() {
-      checklistItems.innerHTML = "";
-      motos.forEach((m, i) => {
-        const div = document.createElement("div");
-        div.className = "check-item";
-        div.innerHTML = `
-          <span>${m.nome}${m.camera ? " 📸" : ""}</span>
-          <div class="check-actions">
-            <button onclick="toggleCamera(${i})">📸</button>
-            <button onclick="confirmMoto(${i})">✅</button>
-          </div>
-        `;
-        checklistItems.appendChild(div);
-      });
-    }
-
-    window.toggleCamera = (i) => {
-      motos[i].camera = !motos[i].camera;
-      localStorage.setItem("motos", JSON.stringify(motos));
-      renderCards();
-      buildChecklist();
-    };
-
-    window.confirmMoto = (i) => {
-      motos[i].camera = false;
-      motos[i].checked = true;
-      localStorage.setItem("motos", JSON.stringify(motos));
-      renderCards();
-      buildChecklist();
-
-      if (motos.every((m) => m.checked)) {
-        clearInterval(interval);
-        interval = null;
-        playPauseBtn.textContent = "▶️";
-        lastTime = timer;
-        localStorage.setItem("lastTime", lastTime);
-        if (!bestTime || timer < bestTime) {
-          bestTime = timer;
-          localStorage.setItem("bestTime", bestTime);
-          alert("🎉 Novo recorde: " + new Date(bestTime * 1000).toISOString().substr(14, 5));
-        } else {
-          alert("Checklist concluída! Tempo: " + new Date(timer * 1000).toISOString().substr(14, 5));
-        }
-        timer = 0;
-        updateTimeDisplay();
-      }
-    };
-  </script>
-</body>
-</html>
-
