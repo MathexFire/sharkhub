@@ -1,358 +1,292 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SharkHub Post</title>
-<style>
-  :root {
-    --verde: #90c64c;
-    --cinza: #333;
-    --claro: #f4f4f4;
-  }
-
-  body {
-    background-color: var(--cinza);
-    color: white;
-    font-family: Arial, sans-serif;
-    transition: 0.3s;
-  }
-
-  body.claro {
-    background-color: var(--claro);
-    color: black;
-  }
-
-  header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px;
-    background-color: #202020;
-    position: sticky;
-    top: 0;
-    z-index: 999;
-  }
-
-  header.claro {
-    background-color: #e0e0e0;
-  }
-
-  header button {
-    background: var(--verde);
-    border: none;
-    padding: 8px 14px;
-    border-radius: 10px;
-    cursor: pointer;
-    color: white;
-    font-weight: bold;
-  }
-
-  #contadorDescricoes {
-    position: fixed;
-    top: 15px;
-    right: 15px;
-    background: var(--verde);
-    color: white;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 900;
-    font-size: 18px;
-    z-index: 1000;
-  }
-
-  #cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 15px;
-    padding: 20px;
-  }
-
-  .card {
-    background: #2c2c2c;
-    border-radius: 15px;
-    padding: 15px;
-    position: relative;
-    transition: 0.3s;
-  }
-
-  body.claro .card {
-    background: #fff;
-    color: #111;
-  }
-
-  .editar-btn {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    color: var(--verde);
-    font-size: 20px;
-  }
-
-  /* Modal checklist */
-  #checklistModal {
-    display: none;
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0,0,0,0.8);
-    justify-content: center;
-    align-items: center;
-    z-index: 2000;
-  }
-
-  #checklistModal.active {
-    display: flex;
-  }
-
-  #checklistBox {
-    background: #1e1e1e;
-    color: white;
-    border-radius: 20px;
-    padding: 20px;
-    width: 90%;
-    max-width: 600px;
-    max-height: 80%;
-    overflow-y: auto;
-    position: relative;
-  }
-
-  body.claro #checklistBox {
-    background: #fff;
-    color: #000;
-  }
-
-  #timerDisplay {
-    font-size: 22px;
-    font-weight: bold;
-    margin-bottom: 10px;
-    text-align: center;
-  }
-
-  .check-item {
-    display: flex;
-    justify-content: space-between;
-    background: #2e2e2e;
-    padding: 8px;
-    border-radius: 10px;
-    margin-bottom: 8px;
-    align-items: center;
-  }
-
-  body.claro .check-item {
-    background: #f2f2f2;
-  }
-
-  .check-item button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: var(--verde);
-    font-size: 20px;
-  }
-
-  #recordInfo {
-    text-align: center;
-    margin-bottom: 10px;
-    font-weight: bold;
-  }
-
-  #closeChecklist {
-    position: absolute;
-    top: 8px;
-    right: 12px;
-    background: none;
-    border: none;
-    font-size: 22px;
-    cursor: pointer;
-    color: var(--verde);
-  }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SharkHub Post 🦈</title>
+  <style>
+    :root {
+      --bg-dark: #121212;
+      --bg-light: #f8f8f8;
+      --text-dark: #ffffff;
+      --text-light: #000000;
+      --accent: #90c64c;
+    }
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-dark);
+      transition: 0.3s;
+    }
+    body.light {
+      background: var(--bg-light);
+      color: var(--text-light);
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .logo {
+      font-weight: bold;
+      font-size: 1.4rem;
+    }
+    .btns {
+      display: flex;
+      gap: 10px;
+    }
+    button {
+      background: var(--accent);
+      border: none;
+      color: #fff;
+      padding: 6px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    button:hover {
+      opacity: 0.85;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      margin: 15px;
+      padding: 15px;
+      border-radius: 12px;
+      position: relative;
+    }
+    body.light .card {
+      background: rgba(0, 0, 0, 0.05);
+    }
+    .edit-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: none;
+      color: var(--accent);
+      font-size: 1.1rem;
+    }
+    /* Checklist */
+    #checklistOverlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.9);
+      display: none;
+      flex-direction: column;
+      color: white;
+      z-index: 999;
+      overflow-y: auto;
+      padding: 20px;
+    }
+    body.light #checklistOverlay {
+      background: rgba(255, 255, 255, 0.9);
+      color: black;
+    }
+    #checklistOverlay.active {
+      display: flex;
+    }
+    .check-item {
+      background: rgba(255, 255, 255, 0.1);
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    body.light .check-item {
+      background: rgba(0, 0, 0, 0.05);
+    }
+    .check-actions {
+      display: flex;
+      gap: 10px;
+    }
+    .timer {
+      font-size: 1.2rem;
+      margin-top: 15px;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
-
-<header>
-  <h2>SharkHub Post</h2>
-  <div>
-    <button onclick="abrirChecklist()">Checklist</button>
-    <button onclick="toggleTema()">Tema</button>
-  </div>
-</header>
-
-<div id="contadorDescricoes">0</div>
-
-<main id="cards"></main>
-
-<!-- Modal do Checklist -->
-<div id="checklistModal">
-  <div id="checklistBox">
-    <button id="closeChecklist" onclick="fecharChecklist()">✖</button>
-    <div id="recordInfo"></div>
-    <div id="timerDisplay">00:00</div>
-    <div style="text-align:center;">
-      <button onclick="playTimer()">▶️</button>
-      <button onclick="pauseTimer()">⏸️</button>
-      <button onclick="resetTimer()">🔁</button>
+  <header>
+    <div class="logo">🦈 SharkHub Post</div>
+    <div class="btns">
+      <button id="themeBtn">Tema</button>
+      <button id="checklistBtn">Checklist</button>
+      <button id="configBtn">⚙️</button>
     </div>
-    <hr>
-    <div id="listaChecklist"></div>
+  </header>
+
+  <main id="cardsContainer"></main>
+
+  <!-- Checklist -->
+  <div id="checklistOverlay">
+    <h2>📋 Checklist de Motos</h2>
+    <div class="timer">
+      Tempo: <span id="timerDisplay">00:00</span> | 
+      Recorde: <span id="bestTime">--:--</span> | 
+      Último: <span id="lastTime">--:--</span>
+    </div>
+    <div class="check-actions" style="justify-content:center; margin:10px 0;">
+      <button id="playPause">▶️</button>
+      <button id="resetChecklist">🔄 Reset</button>
+      <button id="closeChecklist">❌ Fechar</button>
+    </div>
+    <div id="checklistItems"></div>
   </div>
-</div>
 
-<script>
-let descricoes = JSON.parse(localStorage.getItem('descricoes')) || [];
-let modoClaro = localStorage.getItem('tema') === 'claro';
-let timer, tempo = 0, rodando = false;
-let recorde = parseInt(localStorage.getItem('recordeChecklist')) || null;
-let ultimoTempo = parseInt(localStorage.getItem('ultimoTempoChecklist')) || null;
+  <script>
+    const cardsContainer = document.getElementById("cardsContainer");
+    const checklistOverlay = document.getElementById("checklistOverlay");
+    const checklistItems = document.getElementById("checklistItems");
+    const timerDisplay = document.getElementById("timerDisplay");
+    const bestTimeEl = document.getElementById("bestTime");
+    const lastTimeEl = document.getElementById("lastTime");
+    const playPauseBtn = document.getElementById("playPause");
 
-// Função de renderização de cards
-function renderCards() {
-  const cardsDiv = document.getElementById("cards");
-  cardsDiv.innerHTML = "";
-  descricoes.forEach((desc, i) => {
-    const card = document.createElement("div");
-    card.className = "card";
-    card.innerHTML = `
-      <button class="editar-btn" onclick="editarDescricao(${i})">✏️</button>
-      <p>${desc}</p>
-    `;
-    cardsDiv.appendChild(card);
-  });
-  atualizarContador();
-}
+    let theme = localStorage.getItem("theme") || "dark";
+    document.body.classList.toggle("light", theme === "light");
 
-// Contador de descrições
-function atualizarContador() {
-  document.getElementById("contadorDescricoes").textContent = descricoes.length;
-}
+    const themeBtn = document.getElementById("themeBtn");
+    themeBtn.onclick = () => {
+      theme = theme === "dark" ? "light" : "dark";
+      document.body.classList.toggle("light", theme === "light");
+      localStorage.setItem("theme", theme);
+    };
 
-// Editar
-function editarDescricao(i) {
-  const nova = prompt("Edite a descrição:", descricoes[i]);
-  if (nova && nova.trim()) {
-    descricoes[i] = nova.trim();
-    salvarDescricoes();
+    // mock descriptions
+    let motos = JSON.parse(localStorage.getItem("motos")) || [
+      { nome: "CG 160 Start", desc: "Moto prática e econômica.", camera: false },
+      { nome: "XRE 190", desc: "Pronta pra qualquer terreno.", camera: false },
+      { nome: "Fazer 250", desc: "Potência e conforto juntos.", camera: false },
+    ];
+
+    function renderCards() {
+      cardsContainer.innerHTML = "";
+      motos.forEach((m, i) => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <h3>${m.nome}${m.camera ? " 📸" : ""}</h3>
+          <p>${m.desc}</p>
+          <button class="edit-btn" onclick="editMoto(${i})">✏️</button>
+        `;
+        cardsContainer.appendChild(card);
+      });
+      localStorage.setItem("motos", JSON.stringify(motos));
+    }
     renderCards();
-  }
-}
 
-// Tema
-function toggleTema() {
-  modoClaro = !modoClaro;
-  document.body.classList.toggle("claro", modoClaro);
-  document.querySelector("header").classList.toggle("claro", modoClaro);
-  localStorage.setItem("tema", modoClaro ? "claro" : "escuro");
-}
+    // editar moto
+    window.editMoto = (i) => {
+      const nome = prompt("Editar título:", motos[i].nome);
+      const desc = prompt("Editar descrição:", motos[i].desc);
+      if (nome && desc) {
+        motos[i].nome = nome;
+        motos[i].desc = desc;
+        localStorage.setItem("motos", JSON.stringify(motos));
+        renderCards();
+      }
+    };
 
-// Checklist
-function abrirChecklist() {
-  document.getElementById("checklistModal").classList.add("active");
-  carregarChecklist();
-}
+    // checklist
+    let timer = 0;
+    let interval = null;
+    let bestTime = localStorage.getItem("bestTime") || null;
+    let lastTime = localStorage.getItem("lastTime") || null;
 
-function fecharChecklist() {
-  document.getElementById("checklistModal").classList.remove("active");
-  if (!rodando) return;
-  pauseTimer();
-  localStorage.setItem("ultimoTempoChecklist", tempo);
-  if (!recorde || tempo < recorde) {
-    recorde = tempo;
-    localStorage.setItem("recordeChecklist", tempo);
-    alert("🏆 Novo recorde!");
-  } else {
-    alert("Checklist concluída! Tempo: " + formatarTempo(tempo));
-  }
-}
+    function updateTimeDisplay() {
+      timerDisplay.textContent = new Date(timer * 1000).toISOString().substr(14, 5);
+      bestTimeEl.textContent = bestTime ? new Date(bestTime * 1000).toISOString().substr(14, 5) : "--:--";
+      lastTimeEl.textContent = lastTime ? new Date(lastTime * 1000).toISOString().substr(14, 5) : "--:--";
+    }
+    updateTimeDisplay();
 
-function carregarChecklist() {
-  const lista = document.getElementById("listaChecklist");
-  lista.innerHTML = "";
-  descricoes.forEach((desc, i) => {
-    const div = document.createElement("div");
-    div.className = "check-item";
-    div.innerHTML = `
-      <span>${desc}</span>
-      <div>
-        <button onclick="camera(${i})">📸</button>
-        <button onclick="confere(${i})">✅</button>
-      </div>
-    `;
-    lista.appendChild(div);
-  });
-  atualizarInfo();
-}
+    playPauseBtn.onclick = () => {
+      if (interval) {
+        clearInterval(interval);
+        interval = null;
+        playPauseBtn.textContent = "▶️";
+      } else {
+        interval = setInterval(() => {
+          timer++;
+          updateTimeDisplay();
+        }, 1000);
+        playPauseBtn.textContent = "⏸️";
+      }
+    };
 
-function camera(i) {
-  if (!descricoes[i].includes("📸")) {
-    descricoes[i] += " 📸";
-    salvarDescricoes();
-  }
-  renderCards();
-}
+    document.getElementById("checklistBtn").onclick = () => {
+      checklistOverlay.classList.add("active");
+      buildChecklist();
+    };
 
-function confere(i) {
-  descricoes.splice(i, 1);
-  salvarDescricoes();
-  carregarChecklist();
-  renderCards();
-  if (descricoes.length === 0) fecharChecklist();
-}
+    document.getElementById("closeChecklist").onclick = () => {
+      checklistOverlay.classList.remove("active");
+      if (interval) {
+        clearInterval(interval);
+        interval = null;
+        playPauseBtn.textContent = "▶️";
+      }
+    };
 
-function salvarDescricoes() {
-  localStorage.setItem('descricoes', JSON.stringify(descricoes));
-  atualizarContador();
-}
+    document.getElementById("resetChecklist").onclick = () => {
+      timer = 0;
+      motos.forEach((m) => (m.checked = false));
+      buildChecklist();
+      updateTimeDisplay();
+    };
 
-// Timer
-function playTimer() {
-  if (!rodando) {
-    rodando = true;
-    timer = setInterval(() => {
-      tempo++;
-      document.getElementById("timerDisplay").textContent = formatarTempo(tempo);
-    }, 1000);
-  }
-}
+    function buildChecklist() {
+      checklistItems.innerHTML = "";
+      motos.forEach((m, i) => {
+        const div = document.createElement("div");
+        div.className = "check-item";
+        div.innerHTML = `
+          <span>${m.nome}${m.camera ? " 📸" : ""}</span>
+          <div class="check-actions">
+            <button onclick="toggleCamera(${i})">📸</button>
+            <button onclick="confirmMoto(${i})">✅</button>
+          </div>
+        `;
+        checklistItems.appendChild(div);
+      });
+    }
 
-function pauseTimer() {
-  clearInterval(timer);
-  rodando = false;
-}
+    window.toggleCamera = (i) => {
+      motos[i].camera = !motos[i].camera;
+      localStorage.setItem("motos", JSON.stringify(motos));
+      renderCards();
+      buildChecklist();
+    };
 
-function resetTimer() {
-  clearInterval(timer);
-  tempo = 0;
-  document.getElementById("timerDisplay").textContent = "00:00";
-  rodando = false;
-}
+    window.confirmMoto = (i) => {
+      motos[i].camera = false;
+      motos[i].checked = true;
+      localStorage.setItem("motos", JSON.stringify(motos));
+      renderCards();
+      buildChecklist();
 
-function formatarTempo(segundos) {
-  const m = String(Math.floor(segundos / 60)).padStart(2, '0');
-  const s = String(segundos % 60).padStart(2, '0');
-  return `${m}:${s}`;
-}
-
-function atualizarInfo() {
-  let txt = "";
-  if (recorde) txt += `🏁 Recorde: ${formatarTempo(recorde)}<br>`;
-  if (ultimoTempo) txt += `⏱️ Último: ${formatarTempo(ultimoTempo)}<br>`;
-  document.getElementById("recordInfo").innerHTML = txt;
-}
-
-// Inicialização
-if (modoClaro) {
-  document.body.classList.add("claro");
-  document.querySelector("header").classList.add("claro");
-}
-renderCards();
-</script>
+      if (motos.every((m) => m.checked)) {
+        clearInterval(interval);
+        interval = null;
+        playPauseBtn.textContent = "▶️";
+        lastTime = timer;
+        localStorage.setItem("lastTime", lastTime);
+        if (!bestTime || timer < bestTime) {
+          bestTime = timer;
+          localStorage.setItem("bestTime", bestTime);
+          alert("🎉 Novo recorde: " + new Date(bestTime * 1000).toISOString().substr(14, 5));
+        } else {
+          alert("Checklist concluída! Tempo: " + new Date(timer * 1000).toISOString().substr(14, 5));
+        }
+        timer = 0;
+        updateTimeDisplay();
+      }
+    };
+  </script>
 </body>
 </html>
