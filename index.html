@@ -448,14 +448,22 @@ function editarDescricao(i){
 }
 
 deleteBtn.onclick = ()=>{
-  const selecionados=document.querySelectorAll('.card input[type="checkbox"]:checked');
-  if(selecionados.length===0) return mostrarNotificacao("Nenhum item selecionado.");
-  if(!confirm("Excluir selecionados?")) return;
-  const indices=Array.from(selecionados).map(cb=>parseInt(cb.dataset.index));
-  descricoes=descricoes.filter((_,i)=>!indices.includes(i));
-  modoSelecao=false;
-  deleteBtn.style.display='none';
+  const selecionados = document.querySelectorAll('.card input[type="checkbox"]:checked');
+  if (selecionados.length === 0) return mostrarNotificacao("Nenhum item selecionado.");
+  if (!confirm("Excluir selecionados?")) return;
+
+  // Pega os índices dos itens selecionados e remove corretamente
+  const indices = Array.from(selecionados).map(cb => parseInt(cb.dataset.index));
+
+  // Remove os selecionados
+  descricoes = descricoes.filter((_, i) => !indices.includes(i));
+
+  // Salva e atualiza interface imediatamente
   salvar();
+  modoSelecao = false;
+  deleteBtn.style.display = 'none';
+  render(); // <-- garante que a tela seja redesenhada
+  atualizarContador(); // <-- força atualização do contador
   mostrarNotificacao("Itens excluídos!");
 };
 
@@ -490,15 +498,36 @@ document.getElementById("inputBackup").addEventListener("change",(event)=>{
   const file=event.target.files[0];
   if(!file) return;
   const reader=new FileReader();
-  reader.onload=(e)=>{
-    try{
-      const data=JSON.parse(e.target.result);
-      descricoes=data.descricoes||[];
-      numero=data.numero||"(00) 0000-0000";
-      telefoneBox.value=numero;
-      salvar();
-      mostrarNotificacao("✅ Backup importado!");
-    }catch(err){ mostrarNotificacao("❌ Erro: "+err.message); }
+reader.onload = (e) => {
+  try {
+    const data = JSON.parse(e.target.result);
+
+    // Mesclar descrições (sem apagar as que já existem)
+    const novasDescricoes = data.descricoes || [];
+    const existentes = descricoes.map(d => JSON.stringify(d));
+    const mescladas = [...descricoes];
+
+    novasDescricoes.forEach(nova => {
+      const str = JSON.stringify(nova);
+      if (!existentes.includes(str)) mescladas.push(nova);
+    });
+
+    descricoes = mescladas;
+
+    // Atualiza o número apenas se vier no backup
+    if (data.numero) {
+      numero = data.numero;
+      telefoneBox.value = numero;
+    }
+
+    salvar();
+    render();
+    mostrarNotificacao("✅ Backup importado e mesclado!");
+  } catch (err) {
+    mostrarNotificacao("❌ Erro ao importar: " + err.message);
+  }
+};
+
   };
   reader.readAsText(file);
 });
@@ -510,4 +539,5 @@ window.onload=()=>{
 </script>
 </body>
 </html>
+
 
