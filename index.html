@@ -157,7 +157,6 @@ footer { background: #1e1e1e; padding: 10px; text-align: center; color: #888; fo
 
 @media (max-width: 600px) { header input { width: 100%; margin-top: 10px; } }
 
-/* Notificação estilo push */
 #notification {
   position: fixed;
   bottom: 20px;
@@ -180,7 +179,7 @@ footer { background: #1e1e1e; padding: 10px; text-align: center; color: #888; fo
 
 /* Contador de descrições */
 #contador {
-  position: fixed;      /* fica preso no canto */
+  position: fixed;
   top: 15px;
   right: 15px;
   background: #94CF4F;
@@ -194,11 +193,10 @@ footer { background: #1e1e1e; padding: 10px; text-align: center; color: #888; fo
   justify-content: center;
   align-items: center;
   box-shadow: 0 0 10px rgba(0,0,0,0.5);
-  z-index: 999;         /* sempre acima dos outros elementos */
+  z-index: 999;
   animation: pulse 1s ease;
 }
 
-/* pulse animation */
 @keyframes pulse {
   0% { transform: scale(1); }
   50% { transform: scale(1.15); }
@@ -321,80 +319,115 @@ body.light #notification {
 <div id="notification"></div>
 
 <script>
+/* ----- dados iniciais ----- */
 let descricoes = JSON.parse(localStorage.getItem('descricoes') || '[]');
 let numero = localStorage.getItem('numero') || "(00) 0000-0000";
 let editIndex = null;
 let modoSelecao = false;
 
+/* ----- elementos ----- */
 const telefoneBox = document.getElementById('telefoneBox');
 const cardsContainer = document.getElementById('cardsContainer');
 const notification = document.getElementById('notification');
 const contador = document.getElementById('contador');
 const logoImg = document.getElementById('logoImg');
 
+const addBtn = document.getElementById('addBtn');
+const selectBtn = document.getElementById('selectBtn');
+const deleteBtn = document.getElementById('deleteBtn');
+const configBtn = document.getElementById('configBtn');
+const searchInput = document.getElementById('search');
+
+const titulo = document.getElementById('titulo');
+const km = document.getElementById('km');
+const valor = document.getElementById('valor');
+const descricao = document.getElementById('descricao');
+const salvarBtn = document.getElementById('salvarBtn');
+const cancelarBtn = document.getElementById('cancelarBtn');
+const popupTitle = document.getElementById('popupTitle');
+
+/* ----- init ----- */
 telefoneBox.value = numero;
 telefoneBox.addEventListener("input", () => {
   numero = telefoneBox.value;
   localStorage.setItem('numero', numero);
 });
 
+/* ----- notificações ----- */
 function mostrarNotificacao(msg) {
   notification.textContent = msg;
   notification.classList.add('show');
   setTimeout(() => notification.classList.remove('show'), 3000);
 }
 
+/* ----- contador ----- */
 function atualizarContador() {
   contador.textContent = descricoes.length;
   contador.style.animation = 'pulse 0.5s';
   setTimeout(()=> contador.style.animation='', 500);
 }
 
+/* ----- logo tema ----- */
 function atualizarLogo() {
   if(document.body.classList.contains('light')) logoImg.src='img/Design sem nome (1).png';
   else logoImg.src='img/Design sem nome.png';
 }
 
+/* ----- render ----- 
+   Usa índices globais (índice real dentro de `descricoes`) para evitar problemas ao filtrar.
+*/
 function render() {
   cardsContainer.innerHTML = "";
-  const search = document.getElementById('search').value.toLowerCase();
-  descricoes.filter(d => d.titulo.toLowerCase().includes(search)).forEach((d,i)=>{
-    const card=document.createElement('div');
-    card.className='card';
-    if(modoSelecao) card.classList.add('selected');
+  const search = searchInput.value.trim().toLowerCase();
 
-    const checkbox=document.createElement('input');
-    checkbox.type='checkbox';
-    checkbox.dataset.index=i;
+  descricoes.forEach((d, globalIndex) => {
+    if (search && !d.titulo.toLowerCase().includes(search)) return; // pular se não bater no filtro
 
-    const editBtn=document.createElement('button');
-    editBtn.className='edit-btn';
-    editBtn.innerHTML='✏️';
-    editBtn.onclick = (e)=>{ e.stopPropagation(); editarDescricao(i); };
+    const card = document.createElement('div');
+    card.className = 'card';
+    if (modoSelecao) card.classList.add('selected');
+
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.dataset.index = globalIndex; // índice global (importante)
+    checkbox.checked = false;
+
+    const editBtn = document.createElement('button');
+    editBtn.className = 'edit-btn';
+    editBtn.innerHTML = '✏️';
+    editBtn.onclick = (e) => { e.stopPropagation(); editarDescricao(globalIndex); };
 
     card.innerHTML = `<h4>${d.titulo}</h4><p>KM: ${d.km}</p><p>Valor: ${d.valor}</p>`;
     card.prepend(checkbox);
     card.appendChild(editBtn);
 
-    card.onclick = ()=>{
-      if(modoSelecao) checkbox.checked = !checkbox.checked;
-      else {
+    card.onclick = () => {
+      if (modoSelecao) {
+        checkbox.checked = !checkbox.checked;
+      } else {
         const texto = `${d.descricao}\n📲 ${numero}`;
-        navigator.clipboard.writeText(texto);
-        mostrarNotificacao("Descrição copiada com telefone!");
+        navigator.clipboard.writeText(texto).then(
+          () => mostrarNotificacao("Descrição copiada com telefone!"),
+          () => mostrarNotificacao("Não foi possível copiar para a área de transferência.")
+        );
       }
     };
+
     cardsContainer.appendChild(card);
   });
+
   atualizarContador();
 }
 
+/* ----- salvar (localStorage + UI) ----- */
 function salvar() {
   localStorage.setItem('descricoes', JSON.stringify(descricoes));
   localStorage.setItem('numero', numero);
+  atualizarContador();
   render();
 }
 
+/* ----- popups ----- */
 function abrirPopup(id) { 
   const p = document.getElementById(id);
   p.classList.add('show');
@@ -404,142 +437,143 @@ function fecharPopup(id) {
   p.classList.remove('show');
 }
 
-document.getElementById('addBtn').onclick = ()=>{
-  editIndex=null;
-  titulo.value=km.value=valor.value=descricao.value="";
-  popupTitle.textContent="Nova Descrição";
+/* ----- eventos UI ----- */
+addBtn.onclick = () => {
+  editIndex = null;
+  titulo.value = km.value = valor.value = descricao.value = "";
+  popupTitle.textContent = "Nova Descrição";
   abrirPopup('popupAdd');
 };
 
-km.addEventListener("input", ()=>{
-  km.value=km.value.replace(/\D/g,"").replace(/\B(?=(\d{3})+(?!\d))/g,".");
+km.addEventListener("input", () => {
+  km.value = km.value.replace(/\D/g,"").replace(/\B(?=(\d{3})+(?!\d))/g,".");
 });
 
-valor.addEventListener("input", ()=>{
-  let v=valor.value.replace(/\D/g,"");
-  v=(v/100).toFixed(2)+""; 
-  v=v.replace(".",","); 
-  v=v.replace(/\B(?=(\d{3})+(?!\d))/g,".");
-  valor.value=v;
+valor.addEventListener("input", () => {
+  let v = valor.value.replace(/\D/g,"");
+  v = (v/100).toFixed(2) + "";
+  v = v.replace(".",",");
+  v = v.replace(/\B(?=(\d{3})+(?!\d))/g,".");
+  valor.value = v;
 });
 
-salvarBtn.onclick = ()=>{
-  const t=titulo.value.trim();
-  if(!t) return mostrarNotificacao("Digite um título.");
-  const d={titulo:t, km:km.value, valor:valor.value, descricao:descricao.value};
-  if(editIndex===null) descricoes.push(d);
-  else descricoes[editIndex]=d;
+salvarBtn.onclick = () => {
+  const t = titulo.value.trim();
+  if (!t) return mostrarNotificacao("Digite um título.");
+  const d = { titulo: t, km: km.value, valor: valor.value, descricao: descricao.value };
+  if (editIndex === null) descricoes.push(d);
+  else descricoes[editIndex] = d;
   fecharPopup('popupAdd');
   salvar();
   mostrarNotificacao("Descrição salva!");
 };
 
-cancelarBtn.onclick = ()=>fecharPopup('popupAdd');
+cancelarBtn.onclick = () => fecharPopup('popupAdd');
 
-function editarDescricao(i){
-  const d=descricoes[i];
-  editIndex=i;
-  titulo.value=d.titulo;
-  km.value=d.km;
-  valor.value=d.valor;
-  descricao.value=d.descricao;
-  popupTitle.textContent="Editar Descrição";
+function editarDescricao(globalIndex) {
+  const d = descricoes[globalIndex];
+  if (!d) return mostrarNotificacao("Erro ao editar: item não existe.");
+  editIndex = globalIndex;
+  titulo.value = d.titulo;
+  km.value = d.km;
+  valor.value = d.valor;
+  descricao.value = d.descricao;
+  popupTitle.textContent = "Editar Descrição";
   abrirPopup('popupAdd');
 }
 
-deleteBtn.onclick = ()=>{
-  const selecionados = document.querySelectorAll('.card input[type="checkbox"]:checked');
+/* ----- exclusão (usando índices globais) ----- */
+deleteBtn.onclick = () => {
+  // pega checkboxes marcados (eles têm dataset.index = índice global)
+  const selecionados = Array.from(document.querySelectorAll('.card input[type="checkbox"]:checked'));
   if (selecionados.length === 0) return mostrarNotificacao("Nenhum item selecionado.");
   if (!confirm("Excluir selecionados?")) return;
 
-  // Pega os índices dos itens selecionados e remove corretamente
-  const indices = Array.from(selecionados).map(cb => parseInt(cb.dataset.index));
+  const indices = selecionados.map(cb => parseInt(cb.dataset.index)).filter(n => !isNaN(n));
+  // ordena índices decrescentes pra remover sem bagunçar os índices restantes
+  indices.sort((a,b) => b - a);
+  indices.forEach(i => { descricoes.splice(i, 1); });
 
-  // Remove os selecionados
-  descricoes = descricoes.filter((_, i) => !indices.includes(i));
-
-  // Salva e atualiza interface imediatamente
-  salvar();
   modoSelecao = false;
   deleteBtn.style.display = 'none';
-  render(); // <-- garante que a tela seja redesenhada
-  atualizarContador(); // <-- força atualização do contador
+  salvar();
   mostrarNotificacao("Itens excluídos!");
 };
 
-selectBtn.onclick = ()=>{
-  modoSelecao=!modoSelecao;
-  deleteBtn.style.display=modoSelecao?'inline-block':'none';
+selectBtn.onclick = () => {
+  modoSelecao = !modoSelecao;
+  deleteBtn.style.display = modoSelecao ? 'inline-block' : 'none';
   render();
 };
 
-configBtn.onclick = ()=>abrirPopup('popupConfig');
-search.addEventListener('input', render);
+configBtn.onclick = () => abrirPopup('popupConfig');
+searchInput.addEventListener('input', render);
 
+/* ----- tema ----- */
 function alternarTema(){
   document.body.classList.toggle('light');
   atualizarLogo();
 }
 
+/* ----- backup/export ----- */
 function abrirPopupBackup(){ abrirPopup('popupBackup'); }
 
 function exportarBackup(){
-  const data={descricoes, numero};
-  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
-  const a=document.createElement("a");
-  a.href=URL.createObjectURL(blob);
-  a.download="backup_sharkhub.json";
+  const data = { descricoes, numero };
+  const blob = new Blob([JSON.stringify(data,null,2)], { type:"application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "backup_sharkhub.json";
   a.click();
   URL.revokeObjectURL(a.href);
   mostrarNotificacao("✅ Backup exportado!");
 }
 
-document.getElementById("inputBackup").addEventListener("change",(event)=>{
-  const file=event.target.files[0];
-  if(!file) return;
-  const reader=new FileReader();
-reader.onload = (e) => {
-  try {
-    const data = JSON.parse(e.target.result);
+/* ----- importar: MESCLAR sem apagar o que já existe ----- */
+document.getElementById("inputBackup").addEventListener("change", (event) => {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const data = JSON.parse(e.target.result);
+      const novasDescricoes = Array.isArray(data.descricoes) ? data.descricoes : [];
 
-    // Mesclar descrições (sem apagar as que já existem)
-    const novasDescricoes = data.descricoes || [];
-    const existentes = descricoes.map(d => JSON.stringify(d));
-    const mescladas = [...descricoes];
+      // criar set de strings para comparar e evitar duplicatas
+      const existentesSet = new Set(descricoes.map(d => JSON.stringify(d)));
 
-    novasDescricoes.forEach(nova => {
-      const str = JSON.stringify(nova);
-      if (!existentes.includes(str)) mescladas.push(nova);
-    });
+      // adiciona somente se não existir (comparando JSON)
+      novasDescricoes.forEach(nova => {
+        const str = JSON.stringify(nova);
+        if (!existentesSet.has(str)) {
+          descricoes.push(nova);
+          existentesSet.add(str);
+        }
+      });
 
-    descricoes = mescladas;
+      // atualiza número apenas se backup trouxer
+      if (data.numero) {
+        numero = data.numero;
+        telefoneBox.value = numero;
+      }
 
-    // Atualiza o número apenas se vier no backup
-    if (data.numero) {
-      numero = data.numero;
-      telefoneBox.value = numero;
+      salvar();
+      mostrarNotificacao("✅ Backup importado e mesclado!");
+    } catch (err) {
+      mostrarNotificacao("❌ Erro ao importar: " + err.message);
+    } finally {
+      // limpar input para permitir importar mesmo o mesmo arquivo depois
+      event.target.value = "";
     }
-
-    salvar();
-    render();
-    mostrarNotificacao("✅ Backup importado e mesclado!");
-  } catch (err) {
-    mostrarNotificacao("❌ Erro ao importar: " + err.message);
-  }
-  
-};
-
   };
   reader.readAsText(file);
 });
 
-window.onload=()=>{
+/* ----- onload ----- */
+window.onload = () => {
   render();
   atualizarLogo();
 };
 </script>
 </body>
 </html>
-
-
-
