@@ -8,11 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;900&display=swap" rel="stylesheet">
 
 <style>
-* {
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
-  transition: all 0.3s ease;
-}
+* { box-sizing: border-box; font-family: Arial, sans-serif; transition: all 0.3s ease; }
 
 body {
   background-color: #121212;
@@ -24,33 +20,17 @@ body {
   min-height: 100vh;
 }
 
-/* ---------------- HEADER ---------------- */
-
 header {
-  display: flex;
-  flex-direction: column;
-  background: #1e1e1e;
-  padding: 10px 20px;
-}
-
-#topRow {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background: #1e1e1e;
+  padding: 10px 20px;
   flex-wrap: wrap;
-  margin-bottom: 10px;
 }
 
-#logoHeader {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-#logoHeader img {
-  width: 150px;
-  height: auto;
-}
+#logoHeader { display: flex; align-items: center; gap: 10px; }
+#logoHeader img { width: 150px; height: auto; }
 
 #telefoneBox {
   background: #3a3a3a;
@@ -61,18 +41,12 @@ header {
   width: 160px;
 }
 
-#search {
+header input[type="text"] {
   background: #3a3a3a;
   border: none;
   padding: 8px;
   border-radius: 8px;
   color: #fff;
-  width: 200px;
-}
-
-#btnRow {
-  display: flex;
-  gap: 10px;
 }
 
 header button {
@@ -82,56 +56,16 @@ header button {
   padding: 10px 15px;
   border-radius: 8px;
   cursor: pointer;
+  margin: 5px;
 }
 
-header button:hover {
-  background: #7DB63A;
-}
-
-/* --------------- BARRA DE LOGOS (FILTROS) ---------------- */
-
-#logoFilterBar {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  overflow-x: auto;
-  padding: 10px 0;
-  scrollbar-width: none;
-}
-
-#logoFilterBar::-webkit-scrollbar {
-  display: none;
-}
-
-.logoBtn {
-  cursor: pointer;
-  opacity: 0.6;
-  transition: 0.2s;
-}
-
-.logoBtn:hover {
-  opacity: 1;
-  transform: scale(1.1);
-}
-
-.logoBtn.active {
-  opacity: 1;
-  transform: scale(1.15);
-}
-
-.logoBtn img {
-  height: 45px;
-  width: auto;
-  user-select: none;
-}
-
-/* ---------------- GRID DOS CARDS ---------------- */
+header button:hover { background: #7DB63A; }
 
 main {
   flex: 1;
   padding: 20px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 15px;
 }
 
@@ -140,32 +74,12 @@ main {
   border-radius: 10px;
   padding: 15px;
   position: relative;
-  transition: 0.2s;
-  height: 180px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  transition: transform 0.2s, background 0.3s;
 }
 
-.card:hover {
-  transform: scale(1.03);
-  background: #2a2a2a;
-}
+.card:hover { transform: scale(1.02); background: #2a2a2a; }
 
-.card h4 {
-  color: #94CF4F;
-  margin: 0 0 5px 0;
-  font-size: 18px;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-}
-
-.card p {
-  margin: 2px 0;
-  color: #ccc;
-  font-size: 14px;
-}
+.card h4 { color: #94CF4F; margin: 0 0 8px 0; }
 
 .edit-btn {
   position: absolute;
@@ -179,9 +93,7 @@ main {
   display: none;
 }
 
-.card:hover .edit-btn {
-  display: block;
-}
+.card:hover .edit-btn { display: block; }
 
 .card input[type="checkbox"] {
   position: absolute;
@@ -191,11 +103,7 @@ main {
   display: none;
 }
 
-.card.selected input[type="checkbox"] {
-  display: block;
-}
-
-/* ---------------- POPUPS ---------------- */
+.card.selected input[type="checkbox"] { display: block; }
 
 .popup {
   position: fixed;
@@ -208,10 +116,7 @@ main {
   transition: opacity 0.3s ease;
 }
 
-.popup.show {
-  display: flex;
-  opacity: 1;
-}
+.popup.show { display: flex; opacity: 1; }
 
 .popup-content {
   background: #1e1e1e;
@@ -220,12 +125,10 @@ main {
   width: 90%;
   max-width: 400px;
   transform: translateY(-30px);
-  transition: 0.3s ease;
+  transition: transform 0.3s ease, background 0.3s ease, color 0.3s ease;
 }
 
-.popup.show .popup-content {
-  transform: translateY(0);
-}
+.popup.show .popup-content { transform: translateY(0); }
 
 .popup-content input,
 .popup-content textarea {
@@ -248,11 +151,11 @@ main {
   margin: 8px 5px 0 0;
 }
 
-.popup-content button:hover {
-  background: #7DB63A;
-}
+.popup-content button:hover { background: #7DB63A; }
 
-/* -------------- NOTIFICAÇÃO -------------- */
+footer { background: #1e1e1e; padding: 10px; text-align: center; color: #888; font-size: 14px; }
+
+@media (max-width: 600px) { header input { width: 100%; margin-top: 10px; } }
 
 #notification {
   position: fixed;
@@ -265,7 +168,7 @@ main {
   border-radius: 8px;
   display: none;
   opacity: 0;
-  transition: 0.4s;
+  transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
 #notification.show {
@@ -274,8 +177,7 @@ main {
   transform: translateX(-50%) translateY(0);
 }
 
-/* ------------- CONTADOR ------------- */
-
+/* Contador de descrições */
 #contador {
   position: fixed;
   top: 15px;
@@ -287,151 +189,143 @@ main {
   font-size: 18px;
   padding: 10px 14px;
   border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
   z-index: 999;
-  box-shadow: 0 0 10px #000;
+  animation: pulse 1s ease;
 }
 
-/* ----------------- FOOTER ----------------- */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
 
-footer {
-  background: #1e1e1e;
-  padding: 10px;
-  text-align: center;
-  color: #888;
-  font-size: 14px;
+/* === Modo Claro === */
+body.light {
+  background: #f2f2f2;
+  color: #000;
+}
+
+body.light header {
+  background: #fff;
+}
+
+body.light #telefoneBox,
+body.light header input[type="text"] {
+  background: #e0e0e0;
+  color: #000;
+}
+
+body.light .card {
+  background: #fff;
+  color: #000;
+}
+
+body.light .card h4 {
+  color: #2a7f1d;
+}
+
+body.light .popup-content {
+  background: #fff;
+  color: #000;
+}
+
+body.light .popup-content input,
+body.light .popup-content textarea {
+  background: #e0e0e0;
+  color: #000;
+}
+
+body.light header button,
+body.light .popup-content button {
+  background: #2a7f1d;
+  color: #fff;
+}
+
+body.light header button:hover,
+body.light .popup-content button:hover {
+  background: #1f5c13;
+}
+
+body.light footer { background: #e0e0e0; color: #555; }
+
+body.light #notification {
+  background: #2a7f1d;
 }
 </style>
 </head>
-
 <body>
-
 <header>
-
-  <!-- LINHA SUPERIOR -->
-  <div id="topRow">
-
-    <!-- LOGO + TELEFONE -->
-    <div id="logoHeader">
-      <img id="logoImg" src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Shark_Logo.png" alt="Logo SharkHub">
-      <span style="font-size:20px;">📲</span>
-      <input type="text" id="telefoneBox" value="(00) 0000-0000">
-    </div>
-
-    <!-- PESQUISA -->
-    <input type="text" id="search" placeholder="Pesquisar...">
-
-    <!-- BOTÕES -->
-    <div id="btnRow">
-      <button id="addBtn">Adicionar</button>
-      <button id="selectBtn">Selecionar</button>
-      <button id="deleteBtn" style="display:none;">🗑️ Excluir</button>
-      <button id="configBtn">Configurações</button>
-    </div>
-
+  <div id="logoHeader">
+    <img id="logoImg" src="img/Design sem nome.png" alt="Logo SharkHub">
+    <span>📲</span>
+    <input type="text" id="telefoneBox" value="(00) 0000-0000" />
   </div>
 
+  <input type="text" id="search" placeholder="Pesquisar...">
 
-  <!-- BARRA DE LOGOS (FILTRO) -->
-  <div id="logoFilterBar">
-
-    <div class="logoBtn" data-marca="honda">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Honda_logo.png">
-    </div>
-
-    <div class="logoBtn" data-marca="yamaha">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Yamaha_Motor_logo.png">
-    </div>
-
-    <div class="logoBtn" data-marca="bmw">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/BMW.svg">
-    </div>
-
-    <div class="logoBtn" data-marca="ducati">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/e/e5/Ducati_Logo.png">
-    </div>
-
-    <div class="logoBtn" data-marca="suzuki">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/5/58/Suzuki_logo_2.png">
-    </div>
-
-    <div class="logoBtn" data-marca="kawasaki">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Kawasaki-logo.svg">
-    </div>
-
+  <div>
+    <button id="addBtn">Adicionar</button>
+    <button id="selectBtn">Selecionar</button>
+    <button id="deleteBtn" style="display:none;">🗑️ Excluir</button>
+    <button id="configBtn">Configurações</button>
   </div>
-
 </header>
 
-<!-- CONTADOR -->
+<!-- Contador de descrições -->
 <div id="contador">0</div>
 
-<!-- GRID DOS CARDS -->
 <main id="cardsContainer"></main>
-
 <footer>SharkHub Post © 2025</footer>
 
-<!-- ======================= POPUP ADICIONAR ======================= -->
-
+<!-- POPUPS e scripts -->
 <div class="popup" id="popupAdd">
   <div class="popup-content">
     <h3 id="popupTitle">Nova Descrição</h3>
-
     <input type="text" id="titulo" placeholder="Título">
     <input type="text" id="km" placeholder="Quilometragem">
     <input type="text" id="valor" placeholder="Valor">
     <textarea id="descricao" placeholder="Descrição..."></textarea>
-
     <button id="salvarBtn">Salvar</button>
     <button id="cancelarBtn">Cancelar</button>
   </div>
 </div>
 
-<!-- ======================= POPUP CONFIG ======================= -->
-
 <div class="popup" id="popupConfig">
   <div class="popup-content">
     <h3>Configurações</h3>
-
     <button onclick="alternarTema()">Alternar Tema</button>
-
     <button onclick="abrirPopupBackup()">💾 Backup</button>
-
     <button onclick="fecharPopup('popupConfig')">Fechar</button>
   </div>
 </div>
 
-<!-- ======================= POPUP BACKUP ======================= -->
-
 <div id="popupBackup" class="popup">
   <div class="popup-content">
-    <h3>Backup / Importar - Exportar</h3>
+    <h3>Backup / Importar-Exportar</h3>
     <p>Escolha o que deseja fazer:</p>
-
     <div style="display:flex;flex-direction:column;gap:10px;">
       <button onclick="exportarBackup()">⬇️ Exportar dados</button>
-
-      <input type="file" id="inputBackup" style="display:none;" accept=".json">
-
+      <input type="file" id="inputBackup" style="display:none;" accept=".json" />
       <button onclick="document.getElementById('inputBackup').click()">⬆️ Importar dados</button>
-
       <button onclick="fecharPopup('popupBackup')">Fechar</button>
     </div>
-
   </div>
 </div>
 
-<!-- NOTIFICAÇÃO FLOAT -->
 <div id="notification"></div>
-<script>
 
-/* ------------------ DADOS INICIAIS ------------------ */
+<script>
+/* ----- dados iniciais ----- */
 let descricoes = JSON.parse(localStorage.getItem('descricoes') || '[]');
 let numero = localStorage.getItem('numero') || "(00) 0000-0000";
 let editIndex = null;
 let modoSelecao = false;
-let filtroMarca = null;
 
-/* ------------------ ELEMENTOS ------------------ */
+/* ----- elementos ----- */
 const telefoneBox = document.getElementById('telefoneBox');
 const cardsContainer = document.getElementById('cardsContainer');
 const notification = document.getElementById('notification');
@@ -452,119 +346,71 @@ const salvarBtn = document.getElementById('salvarBtn');
 const cancelarBtn = document.getElementById('cancelarBtn');
 const popupTitle = document.getElementById('popupTitle');
 
-/* ------------------ MAPA DE MARCAS ------------------ */
-const marcaKeywords = {
-  honda: ["cg", "titan", "fan", "biz", "start", "xre", "cb"],
-  yamaha: ["mt", "lander", "fazer", "r3", "factor", "neo"],
-  bmw: ["g310", "s1000", "f800", "k1600"],
-  ducati: ["panigale", "monster", "diavel", "streetfighter"],
-  suzuki: ["gsx", "hayabusa", "burgman"],
-  kawasaki: ["ninja", "z400", "z900", "versys"]
-};
+/* ----- init ----- */
+telefoneBox.value = numero;
+telefoneBox.addEventListener("input", () => {
+  numero = telefoneBox.value;
+  localStorage.setItem('numero', numero);
+});
 
-/* ------------------ NOTIFICAÇÕES ------------------ */
+/* ----- notificações ----- */
 function mostrarNotificacao(msg) {
   notification.textContent = msg;
   notification.classList.add('show');
   setTimeout(() => notification.classList.remove('show'), 3000);
 }
 
-/* ------------------ CONTADOR ------------------ */
+/* ----- contador ----- */
 function atualizarContador() {
   contador.textContent = descricoes.length;
+  contador.style.animation = 'pulse 0.5s';
+  setTimeout(()=> contador.style.animation='', 500);
 }
 
-/* ------------------ TEMA ------------------ */
-function alternarTema() {
-  document.body.classList.toggle('light');
-  atualizarLogo();
-}
-
+/* ----- logo tema ----- */
 function atualizarLogo() {
-  if (document.body.classList.contains('light')) {
-    logoImg.src = "img/Design sem nome (1).png";
-  } else {
-    logoImg.src = "img/Design sem nome.png";
-  }
+  if(document.body.classList.contains('light')) logoImg.src='img/Design sem nome (1).png';
+  else logoImg.src='img/Design sem nome.png';
 }
 
-/* ------------------ POPUP ------------------ */
-function abrirPopup(id) {
-  document.getElementById(id).classList.add('show');
-}
-function fecharPopup(id) {
-  document.getElementById(id).classList.remove('show');
-}
-
-/* ------------------ SALVAR ------------------ */
-function salvar() {
-  localStorage.setItem('descricoes', JSON.stringify(descricoes));
-  localStorage.setItem('numero', numero);
-  render();
-}
-
-/* ------------------ RENDER ------------------ */
+/* ----- render ----- 
+   Usa índices globais (índice real dentro de `descricoes`) para evitar problemas ao filtrar.
+*/
 function render() {
   cardsContainer.innerHTML = "";
   const search = searchInput.value.trim().toLowerCase();
 
-  descricoes.forEach((d, index) => {
+  descricoes.forEach((d, globalIndex) => {
+    if (search && !d.titulo.toLowerCase().includes(search)) return; // pular se não bater no filtro
 
-    /* --- FILTRO POR MARCA --- */
-    if (filtroMarca) {
-      const palavras = marcaKeywords[filtroMarca];
-      let pertence = false;
-
-      for (let p of palavras) {
-        if (d.titulo.toLowerCase().includes(p)) {
-          pertence = true;
-          break;
-        }
-      }
-
-      if (!pertence) return;
-    }
-
-    /* --- FILTRO DE PESQUISA --- */
-    if (search && !d.titulo.toLowerCase().includes(search)) return;
-
-    /* --- CRIAR CARD --- */
     const card = document.createElement('div');
     card.className = 'card';
     if (modoSelecao) card.classList.add('selected');
 
-    /* Checkbox */
     const checkbox = document.createElement('input');
-    checkbox.type = "checkbox";
-    checkbox.dataset.index = index;
+    checkbox.type = 'checkbox';
+    checkbox.dataset.index = globalIndex; // índice global (importante)
+    checkbox.checked = false;
 
-    /* Botão editar */
     const editBtn = document.createElement('button');
-    editBtn.className = "edit-btn";
-    editBtn.innerHTML = "✏️";
-    editBtn.onclick = (e) => { e.stopPropagation(); editarDescricao(index); };
+    editBtn.className = 'edit-btn';
+    editBtn.innerHTML = '✏️';
+    editBtn.onclick = (e) => { e.stopPropagation(); editarDescricao(globalIndex); };
 
-    /* Conteúdo do card */
-    card.innerHTML = `
-      <h4>${d.titulo}</h4>
-      <p>KM: ${d.km}</p>
-      <p>Valor: ${d.valor}</p>
-    `;
-
+    card.innerHTML = `<h4>${d.titulo}</h4><p>KM: ${d.km}</p><p>Valor: ${d.valor}</p>`;
     card.prepend(checkbox);
     card.appendChild(editBtn);
 
-    /* Clique para copiar */
     card.onclick = () => {
       if (modoSelecao) {
         checkbox.checked = !checkbox.checked;
-        return;
+      } else {
+        const texto = `${d.descricao}\n📲 ${numero}`;
+        navigator.clipboard.writeText(texto).then(
+          () => mostrarNotificacao("Descrição copiada com telefone!"),
+          () => mostrarNotificacao("Não foi possível copiar para a área de transferência.")
+        );
       }
-
-      const texto = `${d.descricao}\n📲 ${numero}`;
-      navigator.clipboard.writeText(texto).then(() => {
-        mostrarNotificacao("Descrição copiada!");
-      });
     };
 
     cardsContainer.appendChild(card);
@@ -573,174 +419,161 @@ function render() {
   atualizarContador();
 }
 
-/* ------------------ ADICIONAR ------------------ */
+/* ----- salvar (localStorage + UI) ----- */
+function salvar() {
+  localStorage.setItem('descricoes', JSON.stringify(descricoes));
+  localStorage.setItem('numero', numero);
+  atualizarContador();
+  render();
+}
+
+/* ----- popups ----- */
+function abrirPopup(id) { 
+  const p = document.getElementById(id);
+  p.classList.add('show');
+}
+function fecharPopup(id) { 
+  const p = document.getElementById(id);
+  p.classList.remove('show');
+}
+
+/* ----- eventos UI ----- */
 addBtn.onclick = () => {
   editIndex = null;
-  titulo.value = "";
-  km.value = "";
-  valor.value = "";
-  descricao.value = "";
+  titulo.value = km.value = valor.value = descricao.value = "";
   popupTitle.textContent = "Nova Descrição";
   abrirPopup('popupAdd');
 };
 
-/* ------------------ MÁSCARA KM ------------------ */
 km.addEventListener("input", () => {
-  km.value = km.value.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  km.value = km.value.replace(/\D/g,"").replace(/\B(?=(\d{3})+(?!\d))/g,".");
 });
 
-/* ------------------ MÁSCARA VALOR ------------------ */
 valor.addEventListener("input", () => {
-  let v = valor.value.replace(/\D/g, "");
-  v = (v / 100).toFixed(2) + "";
-  v = v.replace(".", ",");
-  v = v.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  let v = valor.value.replace(/\D/g,"");
+  v = (v/100).toFixed(2) + "";
+  v = v.replace(".",",");
+  v = v.replace(/\B(?=(\d{3})+(?!\d))/g,".");
   valor.value = v;
 });
 
-/* ------------------ SALVAR NO POPUP ------------------ */
 salvarBtn.onclick = () => {
   const t = titulo.value.trim();
-  if (!t) return mostrarNotificacao("Digite um título válido.");
-
-  const data = {
-    titulo: t,
-    km: km.value,
-    valor: valor.value,
-    descricao: descricao.value
-  };
-
-  if (editIndex === null) descricoes.push(data);
-  else descricoes[editIndex] = data;
-
+  if (!t) return mostrarNotificacao("Digite um título.");
+  const d = { titulo: t, km: km.value, valor: valor.value, descricao: descricao.value };
+  if (editIndex === null) descricoes.push(d);
+  else descricoes[editIndex] = d;
   fecharPopup('popupAdd');
   salvar();
-  mostrarNotificacao("Salvo com sucesso!");
+  mostrarNotificacao("Descrição salva!");
 };
 
-/* ------------------ CANCELAR ------------------ */
 cancelarBtn.onclick = () => fecharPopup('popupAdd');
 
-/* ------------------ EDITAR ------------------ */
-function editarDescricao(i) {
-  const d = descricoes[i];
-
-  editIndex = i;
+function editarDescricao(globalIndex) {
+  const d = descricoes[globalIndex];
+  if (!d) return mostrarNotificacao("Erro ao editar: item não existe.");
+  editIndex = globalIndex;
   titulo.value = d.titulo;
   km.value = d.km;
   valor.value = d.valor;
   descricao.value = d.descricao;
-
   popupTitle.textContent = "Editar Descrição";
   abrirPopup('popupAdd');
 }
 
-/* ------------------ SELEÇÃO ------------------ */
+/* ----- exclusão (usando índices globais) ----- */
+deleteBtn.onclick = () => {
+  // pega checkboxes marcados (eles têm dataset.index = índice global)
+  const selecionados = Array.from(document.querySelectorAll('.card input[type="checkbox"]:checked'));
+  if (selecionados.length === 0) return mostrarNotificacao("Nenhum item selecionado.");
+  if (!confirm("Excluir selecionados?")) return;
+
+  const indices = selecionados.map(cb => parseInt(cb.dataset.index)).filter(n => !isNaN(n));
+  // ordena índices decrescentes pra remover sem bagunçar os índices restantes
+  indices.sort((a,b) => b - a);
+  indices.forEach(i => { descricoes.splice(i, 1); });
+
+  modoSelecao = false;
+  deleteBtn.style.display = 'none';
+  salvar();
+  mostrarNotificacao("Itens excluídos!");
+};
+
 selectBtn.onclick = () => {
   modoSelecao = !modoSelecao;
-  deleteBtn.style.display = modoSelecao ? "inline-block" : "none";
+  deleteBtn.style.display = modoSelecao ? 'inline-block' : 'none';
   render();
 };
 
-/* ------------------ EXCLUSÃO ------------------ */
-deleteBtn.onclick = () => {
-  const selecionados = document.querySelectorAll(".card input:checked");
-  if (selecionados.length === 0) return mostrarNotificacao("Nenhum item selecionado.");
-
-  if (!confirm("Deseja excluir os itens selecionados?")) return;
-
-  const indices = [...selecionados].map(c => Number(c.dataset.index));
-  indices.sort((a, b) => b - a).forEach(i => descricoes.splice(i, 1));
-
-  modoSelecao = false;
-  deleteBtn.style.display = "none";
-  salvar();
-};
-
-/* ------------------ CONFIG ------------------ */
 configBtn.onclick = () => abrirPopup('popupConfig');
+searchInput.addEventListener('input', render);
 
-/* ------------------ PESQUISA ------------------ */
-searchInput.addEventListener("input", render);
+/* ----- tema ----- */
+function alternarTema(){
+  document.body.classList.toggle('light');
+  atualizarLogo();
+}
 
-/* ------------------ TELEFONE ------------------ */
-telefoneBox.value = numero;
-telefoneBox.addEventListener("input", () => {
-  numero = telefoneBox.value;
-  localStorage.setItem("numero", numero);
-});
+/* ----- backup/export ----- */
+function abrirPopupBackup(){ abrirPopup('popupBackup'); }
 
-/* ------------------ BACKUP ------------------ */
-function abrirPopupBackup() { abrirPopup('popupBackup'); }
-
-function exportarBackup() {
+function exportarBackup(){
   const data = { descricoes, numero };
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+  const blob = new Blob([JSON.stringify(data,null,2)], { type:"application/json" });
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
   a.download = "backup_sharkhub.json";
   a.click();
-  mostrarNotificacao("Backup exportado!");
+  URL.revokeObjectURL(a.href);
+  mostrarNotificacao("✅ Backup exportado!");
 }
 
+/* ----- importar: MESCLAR sem apagar o que já existe ----- */
 document.getElementById("inputBackup").addEventListener("change", (event) => {
   const file = event.target.files[0];
   if (!file) return;
   const reader = new FileReader();
-
   reader.onload = (e) => {
     try {
       const data = JSON.parse(e.target.result);
-      const novos = data.descricoes || [];
+      const novasDescricoes = Array.isArray(data.descricoes) ? data.descricoes : [];
 
-      const existenteSet = new Set(descricoes.map(d => JSON.stringify(d)));
+      // criar set de strings para comparar e evitar duplicatas
+      const existentesSet = new Set(descricoes.map(d => JSON.stringify(d)));
 
-      novos.forEach(n => {
-        const txt = JSON.stringify(n);
-        if (!existenteSet.has(txt)) descricoes.push(n);
+      // adiciona somente se não existir (comparando JSON)
+      novasDescricoes.forEach(nova => {
+        const str = JSON.stringify(nova);
+        if (!existentesSet.has(str)) {
+          descricoes.push(nova);
+          existentesSet.add(str);
+        }
       });
 
+      // atualiza número apenas se backup trouxer
       if (data.numero) {
         numero = data.numero;
         telefoneBox.value = numero;
       }
 
       salvar();
-      mostrarNotificacao("Backup importado!");
+      mostrarNotificacao("✅ Backup importado e mesclado!");
     } catch (err) {
-      mostrarNotificacao("Erro no arquivo.");
+      mostrarNotificacao("❌ Erro ao importar: " + err.message);
+    } finally {
+      // limpar input para permitir importar mesmo o mesmo arquivo depois
+      event.target.value = "";
     }
   };
-
   reader.readAsText(file);
 });
 
-/* ------------------ FILTRO POR LOGOS ------------------ */
-document.querySelectorAll(".logoBtn").forEach(btn => {
-  btn.onclick = () => {
-    const marca = btn.dataset.marca;
-
-    if (filtroMarca === marca) {
-      filtroMarca = null;
-      btn.classList.remove("active");
-    } else {
-      filtroMarca = marca;
-
-      document.querySelectorAll(".logoBtn").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-    }
-
-    render();
-  };
-});
-
-/* ------------------ ONLOAD ------------------ */
+/* ----- onload ----- */
 window.onload = () => {
-  atualizarLogo();
   render();
+  atualizarLogo();
 };
-
 </script>
-
 </body>
 </html>
